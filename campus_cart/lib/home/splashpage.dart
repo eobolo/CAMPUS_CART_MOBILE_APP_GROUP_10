@@ -7,7 +7,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xF3F6F6F6),
+        backgroundColor: Splashvisuals.backGroundColorA,
         body: Center(
           widthFactor: 243.0,
           heightFactor: 44.0,
@@ -26,7 +26,12 @@ class SplashScreen extends StatelessWidget {
                 width: 8.0,
                 height: 40.0,
               ),
-              Text("Campus Cart", style: Splashvisuals.textStyle)
+              Text(
+                "Campus Cart",
+                style: Splashvisuals.textStyle(
+                  32.0,
+                )
+              )
             ],
           ),
         ));

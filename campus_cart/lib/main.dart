@@ -1,8 +1,18 @@
 import 'package:campus_cart/home/getstartedpage.dart';
 import 'package:campus_cart/home/splashpage.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+void main() async {
+  // register firebase app
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // register your controllers
+
+  // run The App
   runApp(const MyApp());
 }
 
@@ -26,7 +36,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     Future.delayed(const Duration(seconds: 7), () {
       setState(() {
-        page = 0;
+        page = 1;
       });
     });
   }
@@ -42,3 +52,4 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
