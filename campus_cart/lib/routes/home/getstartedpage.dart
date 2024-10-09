@@ -1,8 +1,8 @@
-import 'package:campus_cart/home/starterpage1.dart';
-import 'package:campus_cart/home/starterpage2.dart';
-import 'package:campus_cart/state/splash_screen_state.dart';
+import 'package:campus_cart/routes/home/starterpage1.dart';
+import 'package:campus_cart/routes/home/starterpage2.dart';
+import 'package:campus_cart/routes/state/splash_screen_state.dart';
 import 'package:flutter/material.dart';
-import 'package:campus_cart/visuals/splashvisuals.dart';
+import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 
 class Getstartedpage extends StatefulWidget {
   const Getstartedpage({super.key});
