@@ -1,9 +1,9 @@
-import 'package:campus_cart/home/getstartedpage.dart';
-import 'package:campus_cart/home/splashpage.dart';
+import 'package:campus_cart/routes/home/getstartedpage.dart';
+import 'package:campus_cart/routes/home/splashpage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
+import 'package:campus_cart/routes/auth/sign_up.dart'
 
 void main() async {
   // register firebase app
@@ -49,7 +49,9 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         useMaterial3: true,
       ),
+      routes: {
+        '/sign'
+      },
     );
   }
 }
-
