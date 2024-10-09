@@ -5,10 +5,10 @@ class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  SignUpPageState createState() => SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class SignUpPageState extends State<SignUpPage> {
   bool _agreedToTerms = false;
 
   @override
@@ -20,7 +20,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             Column(
               children: [
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.39,
                   width: double.infinity,
                   child: Stack(
@@ -51,7 +51,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 height: 48,
                                 decoration: const BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('assets/images/bag-happy-bw.png'),
+                                    image: AssetImage(
+                                        'assets/images/bag-happy-bw.png'),
                                     fit: BoxFit.contain,
                                   ),
                                 ),
@@ -119,7 +120,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // Implement your sign-in navigation here
+                            // Implement sign-in navigation here
                           },
                           child: const Text(
                             'Log In',
@@ -220,7 +221,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           padding: const EdgeInsets.only(right: 25),
                           child: GestureDetector(
                             onTap: () {
-                              // Implement your password visibility toggle here
+                              // Implement password visibility toggle here
                             },
                             child: const Icon(Icons.visibility),
                           ),
@@ -253,7 +254,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     const SizedBox(height: 75),
 
-                    // Terms and conditions checkbox
                     Row(
                       children: [
                         Checkbox(
@@ -294,10 +294,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: _agreedToTerms
-                          ? () {
-                      }
-                          : null,
+                        onPressed: _agreedToTerms ? () {} : null,
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 60),
                           backgroundColor: const Color(0xFF202020),
@@ -311,15 +308,14 @@ class _SignUpPageState extends State<SignUpPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      child: const Text('Create Account')
-                    ),
+                        child: const Text('Create Account')),
                   ],
                 ),
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
+      ),
+    );
+  }
 }
