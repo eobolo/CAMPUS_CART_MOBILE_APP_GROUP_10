@@ -1,7 +1,7 @@
-import 'package:campus_cart/home/stackposition_2.dart';
-import 'package:campus_cart/state/splash_screen_state.dart';
+import 'package:campus_cart/routes/home/stackposition_2.dart';
+import 'package:campus_cart/routes/state/splash_screen_state.dart';
 import 'package:flutter/material.dart';
-import 'package:campus_cart/visuals/splashvisuals.dart';
+import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 
 class Starterpage2 extends StatefulWidget {
   const Starterpage2({super.key});

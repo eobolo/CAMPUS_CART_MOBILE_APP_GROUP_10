@@ -1,4 +1,4 @@
-import 'package:campus_cart/visuals/splashvisuals.dart';
+import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -26,12 +26,10 @@ class SplashScreen extends StatelessWidget {
                 width: 8.0,
                 height: 40.0,
               ),
-              Text(
-                "Campus Cart",
-                style: Splashvisuals.textStyle(
-                  32.0,
-                )
-              )
+              Text("Campus Cart",
+                  style: Splashvisuals.textStyle(
+                    32.0,
+                  ))
             ],
           ),
         ));

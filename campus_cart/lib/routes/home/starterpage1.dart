@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:campus_cart/home/stackposition_1.dart';
-import 'package:campus_cart/visuals/splashvisuals.dart';
+import 'package:campus_cart/routes/home/stackposition_1.dart';
+import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 
 class Starterpage1 extends StatelessWidget {
   const Starterpage1({super.key});
