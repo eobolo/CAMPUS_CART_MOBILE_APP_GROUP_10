@@ -1,16 +1,25 @@
+import 'package:campus_cart/auth/signup.dart';
+import 'package:campus_cart/controllers/user_controllers.dart';
 import 'package:campus_cart/home/getstartedpage.dart';
 import 'package:campus_cart/home/splashpage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
 import 'firebase_options.dart';
 
-
 void main() async {
+  // Ensure that Flutter's bindings are initialized before Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+
   // register firebase app
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // register your controllers
+  /*
+    register your controllers
+    - UserStateContoller
+  */
+  Get.put(UserStateController());
 
   // run The App
   runApp(const MyApp());
@@ -49,7 +58,9 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         useMaterial3: true,
       ),
+      routes: {
+        '/signin': (context) => const SignUpPage(),
+      },
     );
   }
 }
-
