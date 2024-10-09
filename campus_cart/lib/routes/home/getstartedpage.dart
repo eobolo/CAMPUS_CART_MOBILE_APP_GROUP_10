@@ -40,9 +40,7 @@ class _GetstartedpageState extends State<Getstartedpage> {
   }
 
   void onPressedGetStarted2() {
-    setState(() {
-      page = 0;
-    });
+    Navigator.pushNamed(context, '/signin');
   }
 
   @override
