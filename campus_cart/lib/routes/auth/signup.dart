@@ -1,7 +1,6 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:campus_cart/controllers/user_controllers.dart';
+import 'package:campus_cart/routes/controllers/user_controllers.dart';
 import 'package:flutter/material.dart';
-import 'package:campus_cart/visuals/splashvisuals.dart';
+import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 import 'package:get/get.dart';
 
 class SignUpPage extends StatefulWidget {

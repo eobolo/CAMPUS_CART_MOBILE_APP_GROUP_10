@@ -1,16 +1,11 @@
-<<<<<<< HEAD
-import 'package:campus_cart/auth/signup.dart';
-import 'package:campus_cart/controllers/user_controllers.dart';
-import 'package:campus_cart/home/getstartedpage.dart';
-import 'package:campus_cart/home/splashpage.dart';
-=======
 import 'package:campus_cart/routes/home/getstartedpage.dart';
 import 'package:campus_cart/routes/home/splashpage.dart';
->>>>>>> main
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'firebase_options.dart';
+import 'package:campus_cart/routes/controllers/user_controllers.dart';
+import 'package:campus_cart/routes/auth/signup.dart';
 
 void main() async {
   // Ensure that Flutter's bindings are initialized before Firebase
