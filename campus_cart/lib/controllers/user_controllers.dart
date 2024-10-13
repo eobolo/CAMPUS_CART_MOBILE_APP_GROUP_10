@@ -81,6 +81,10 @@ class UserStateController extends GetxController {
       // First, send the OTP for phone number verification
       await sendOTP(phoneNumber);
 
+      // start expiry countdown if otp has been sent this should be and async
+      // operation that shouldn't be awaited for 
+
+      // delay for 3 seconds
       await Future.delayed(const Duration(seconds: 3));
 
       createAccountMessage.value =

@@ -1,10 +1,11 @@
+import 'package:campus_cart/routes/auth/terms_and_conditions.dart';
 import 'package:campus_cart/routes/home/getstartedpage.dart';
 import 'package:campus_cart/routes/home/splashpage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'firebase_options.dart';
-import 'package:campus_cart/routes/controllers/user_controllers.dart';
+import 'package:campus_cart/controllers/user_controllers.dart';
 import 'package:campus_cart/routes/auth/signup.dart';
 
 void main() async {
@@ -54,12 +55,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Orders from Favourite Uni 😁",
+      debugShowCheckedModeBanner: false,
       home: loadPages[page],
       theme: ThemeData(
         useMaterial3: true,
       ),
       routes: {
-        '/signin': (context) => const SignUpPage(),
+        '/signup': (context) => const SignUpPage(),
+        '/terms_and_conditions': (context) => const TermsAndConditions(),
       },
     );
   }
