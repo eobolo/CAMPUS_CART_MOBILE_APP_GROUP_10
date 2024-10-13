@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'firebase_options.dart';
+import 'package:campus_cart/routes/auth/sign_up.dart';
 import 'package:campus_cart/routes/controllers/user_controllers.dart';
-import 'package:campus_cart/routes/auth/signup.dart';
 
 void main() async {
   // Ensure that Flutter's bindings are initialized before Firebase
@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       routes: {
-        '/signin': (context) => const SignUpPage(),
+        '/signup': (context) => const SignUpPage(),
       },
     );
   }
