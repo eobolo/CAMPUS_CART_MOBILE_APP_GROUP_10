@@ -7,6 +7,7 @@ class OtpVerification extends StatefulWidget {
   const OtpVerification({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _OtpVerificationState createState() => _OtpVerificationState();
 }
 
