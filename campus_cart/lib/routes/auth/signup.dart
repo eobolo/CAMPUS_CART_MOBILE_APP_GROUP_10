@@ -33,6 +33,10 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
     }
   }
 
+  void _onLogin() {
+    Navigator.pushNamed(context, '/login');
+  }
+
   void _onTermsAndCondition() {
     Navigator.pushNamed(context, '/terms_and_conditions');
   }
@@ -149,9 +153,7 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {
-                                // Implement your sign-in navigation here
-                              },
+                              onTap: _onLogin,
                               child: const Text(
                                 'Log In',
                                 style: TextStyle(
