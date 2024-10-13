@@ -30,7 +30,7 @@ class _SignInState extends State<SignIn> {
       body: SafeArea(
         child: Column(
           children: [
-            const Expanded(
+            Expanded(
               flex: 1,
               child: Center(
                 child: Row(
@@ -45,7 +45,7 @@ class _SignInState extends State<SignIn> {
                             fit: BoxFit.cover),
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Campus Cart',
                       style: TextStyle(
                         fontSize: 30,
@@ -87,7 +87,7 @@ class _SignInState extends State<SignIn> {
                             const Text(
                               "Don't have an account? ",
                               style:
-                              TextStyle(color: Colors.grey, fontSize: 18),
+                                  TextStyle(color: Colors.grey, fontSize: 18),
                             ),
                             GestureDetector(
                               onTap: _onSignUp,
@@ -141,9 +141,7 @@ class _SignInState extends State<SignIn> {
                         Align(
                           alignment: Alignment.bottomLeft,
                           child: TextButton(
-                            onPressed: () {
-
-                            },
+                            onPressed: () {},
                             child: const Text(
                               'Forgot Password?',
                               style: TextStyle(
