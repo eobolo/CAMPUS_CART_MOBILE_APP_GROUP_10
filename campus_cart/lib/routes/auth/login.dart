@@ -146,7 +146,7 @@ class _SignInState extends State<SignIn> {
                         Align(
                           alignment: Alignment.bottomLeft,
                           child: TextButton(
-                            // onpress forhot password handle navigation
+                            // onpress for otp password handle navigation
                             onPressed: () {},
                             child: const Text(
                               'Forgot Password?',
