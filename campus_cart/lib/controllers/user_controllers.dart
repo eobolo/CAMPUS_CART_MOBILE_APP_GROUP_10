@@ -92,8 +92,7 @@ class UserStateController extends GetxController {
 
       await Future.delayed(const Duration(seconds: 3));
 
-      // TODO do a push named navigation to the create account otp page
-
+      // TODO then redirect to OTP page
     } catch (e) {
       createAccountMessage.value = "Error during registration: $e";
     }
