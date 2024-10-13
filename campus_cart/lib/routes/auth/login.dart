@@ -214,14 +214,15 @@ class _SignInState extends State<SignIn> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(80.0),
                             ),
-                            minimumSize: const Size(double.infinity, 50.0),
+                            minimumSize: const Size(double.infinity, 60.0),
                           ),
                           child: const Text(
                             'Log In',
                             style: TextStyle(
-                              fontSize: 18.0,
+                              color: Color(0xFFFFFFFF),
+                              fontSize: 16,
+                              fontFamily: "DM Sans",
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
                             ),
                           ),
                         ),
