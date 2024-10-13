@@ -59,20 +59,6 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                     child: Stack(
                       children: [
                         Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Transform.scale(
-                            scale: 1.3,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('assets/images/mesh.png'),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Align(
                           alignment: Alignment.topCenter,
                           child: Padding(
                             padding: const EdgeInsets.only(top: 25),
@@ -80,8 +66,8 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  width: 48,
-                                  height: 48,
+                                  width: 40,
+                                  height: 40,
                                   decoration: const BoxDecoration(
                                     image: DecorationImage(
                                       image: AssetImage(
@@ -304,7 +290,8 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                                 onTap: () {
                                   // Implement your password visibility toggle here
                                 },
-                                child: const Icon(Icons.visibility),
+                                child: const Icon(Icons.visibility_outlined,
+                                    color: Color(0xFF202020)),
                               ),
                             ),
                             filled: true,
