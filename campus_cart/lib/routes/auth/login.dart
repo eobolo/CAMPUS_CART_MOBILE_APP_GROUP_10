@@ -10,6 +10,10 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final formSignInKey = GlobalKey<FormState>();
 
+  void _onSignUp() {
+    Navigator.pushNamed(context, '/signup');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +36,15 @@ class _SignInState extends State<SignIn> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.shopping_bag),
+                    Container(
+                      width: 40.0,
+                      height: 40.0,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/images/bag-happy.png"),
+                            fit: BoxFit.cover),
+                      ),
+                    ),
                     Text(
                       'Campus Cart',
                       style: TextStyle(
@@ -78,9 +90,7 @@ class _SignInState extends State<SignIn> {
                               TextStyle(color: Colors.grey, fontSize: 18),
                             ),
                             GestureDetector(
-                              onTap: () {
-                                // Add create account functionality here
-                              },
+                              onTap: _onSignUp,
                               child: const Text(
                                 'Create Account',
                                 style: TextStyle(
