@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:campus_cart/controllers/user_controllers.dart';
 import 'firebase_options.dart';
 import 'package:campus_cart/routes/auth/signup.dart';
+import 'package:campus_cart/routes/auth/signup_otp.dart';
 
 void main() async {
   // Ensure that Flutter's bindings are initialized before Firebase
@@ -63,6 +64,7 @@ class _MyAppState extends State<MyApp> {
       ),
       routes: {
         '/signup': (context) => const SignUpPage(),
+        '/signupOtp': (context) => const OtpVerification(),
         '/terms_and_conditions': (context) => const TermsAndConditions(),
         '/login': (context) => const SignIn(),
       },

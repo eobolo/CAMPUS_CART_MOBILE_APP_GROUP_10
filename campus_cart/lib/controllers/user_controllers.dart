@@ -91,8 +91,6 @@ class UserStateController extends GetxController {
           "User registration initiated! Please verify your phone number.";
 
       await Future.delayed(const Duration(seconds: 3));
-
-      // TODO then redirect to OTP page
     } catch (e) {
       createAccountMessage.value = "Error during registration: $e";
     }
