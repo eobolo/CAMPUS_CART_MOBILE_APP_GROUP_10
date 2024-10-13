@@ -17,7 +17,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amber,
+      backgroundColor: const Color(0xFFF5C147),
       // appBar: AppBar(
       //   title: const Center(
       //     child: Text('Campus Cart',
@@ -30,7 +30,7 @@ class _SignInState extends State<SignIn> {
       body: SafeArea(
         child: Column(
           children: [
-            const Expanded(
+            Expanded(
               flex: 1,
               child: Center(
                 child: Row(
@@ -45,10 +45,15 @@ class _SignInState extends State<SignIn> {
                             fit: BoxFit.cover),
                       ),
                     ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
                     Text(
                       'Campus Cart',
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "Recoleta",
                       ),
                     ),
                   ],
@@ -87,7 +92,7 @@ class _SignInState extends State<SignIn> {
                             const Text(
                               "Don't have an account? ",
                               style:
-                              TextStyle(color: Colors.grey, fontSize: 18),
+                                  TextStyle(color: Colors.grey, fontSize: 18),
                             ),
                             GestureDetector(
                               onTap: _onSignUp,
@@ -141,9 +146,8 @@ class _SignInState extends State<SignIn> {
                         Align(
                           alignment: Alignment.bottomLeft,
                           child: TextButton(
-                            onPressed: () {
-
-                            },
+                            // onpress forhot password handle navigation
+                            onPressed: () {},
                             child: const Text(
                               'Forgot Password?',
                               style: TextStyle(
@@ -155,6 +159,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         const SizedBox(height: 40.0),
                         ElevatedButton(
+                          // onpressed login validate form and also validate database before redirecting to homepage
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 15.0),
