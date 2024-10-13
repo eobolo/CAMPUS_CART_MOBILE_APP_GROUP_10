@@ -63,6 +63,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/signup': (context) => const SignUpPage(),
         '/terms_and_conditions': (context) => const TermsAndConditions(),
+        '/login': (context) => const SignIn(),
       },
     );
   }
