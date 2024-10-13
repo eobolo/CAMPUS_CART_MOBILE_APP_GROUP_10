@@ -1,11 +1,13 @@
+import 'package:campus_cart/routes/auth/login.dart';
+import 'package:campus_cart/routes/auth/terms_and_conditions.dart';
 import 'package:campus_cart/routes/home/getstartedpage.dart';
 import 'package:campus_cart/routes/home/splashpage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:campus_cart/controllers/user_controllers.dart';
 import 'firebase_options.dart';
 import 'package:campus_cart/routes/auth/signup.dart';
-import 'package:campus_cart/routes/controllers/user_controllers.dart';
 import 'package:campus_cart/routes/auth/signup_otp.dart';
 
 void main() async {
@@ -55,6 +57,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Orders from Favourite Uni 😁",
+      debugShowCheckedModeBanner: false,
       home: loadPages[page],
       theme: ThemeData(
         useMaterial3: true,
@@ -62,6 +65,8 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/signup': (context) => const SignUpPage(),
         '/signupOtp': (context) => const OtpVerification(),
+        '/terms_and_conditions': (context) => const TermsAndConditions(),
+        '/login': (context) => const SignIn(),
       },
     );
   }
