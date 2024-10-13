@@ -116,7 +116,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    'We sent a secret code to your email - ade....ba@gmail.com',
+                    'We sent a secret code to your phonenumber - ade....ba@gmail.com',
                     style: TextStyle(
                       fontSize: 14,
                       color: Color(0xFF606060),
