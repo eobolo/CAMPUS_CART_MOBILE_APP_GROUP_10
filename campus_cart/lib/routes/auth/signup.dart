@@ -1,4 +1,4 @@
-import 'package:campus_cart/routes/controllers/user_controllers.dart';
+import 'package:campus_cart/controllers/user_controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 import 'package:get/get.dart';
@@ -31,6 +31,10 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
     } else {
       userStateController.createAccountMessage.value = "Form is validated";
     }
+  }
+
+  void _onTermsAndCondition() {
+    Navigator.pushNamed(context, '/terms_and_conditions');
   }
 
   @override
@@ -349,30 +353,33 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                                 });
                               },
                             ),
-                            const Flexible(
-                              child: Text.rich(
-                                TextSpan(
-                                  text: 'By signing up, I agree to the ',
-                                  children: [
-                                    TextSpan(
-                                      text: 'Terms and Conditions',
-                                      style: TextStyle(
-                                        color: Color(0xFFD49400),
-                                        fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: Color(0xFFD49400),
-                                        decorationThickness: 2,
-                                        decorationStyle:
-                                            TextDecorationStyle.solid,
+                            Flexible(
+                              child: GestureDetector(
+                                onTap: _onTermsAndCondition,
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: 'By signing up, I agree to the ',
+                                    children: [
+                                      TextSpan(
+                                        text: 'Terms and Conditions',
+                                        style: TextStyle(
+                                          color: Color(0xFFD49400),
+                                          fontWeight: FontWeight.bold,
+                                          decoration: TextDecoration.underline,
+                                          decorationColor: Color(0xFFD49400),
+                                          decorationThickness: 2,
+                                          decorationStyle:
+                                              TextDecorationStyle.solid,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                style: TextStyle(
-                                  color: Color(0xFF505050),
-                                  fontSize: 14,
-                                  fontFamily: "DM Sans",
-                                  fontWeight: FontWeight.normal,
+                                    ],
+                                  ),
+                                  style: TextStyle(
+                                    color: Color(0xFF505050),
+                                    fontSize: 14,
+                                    fontFamily: "DM Sans",
+                                    fontWeight: FontWeight.normal,
+                                  ),
                                 ),
                               ),
                             ),
