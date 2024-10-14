@@ -254,10 +254,19 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                             Icons.arrow_drop_down,
                             color: Color(0xffffffff),
                           ),
+                          flagsButtonMargin:
+                              const EdgeInsets.only(left: 11, right: 15),
                           flagsButtonPadding:
                               const EdgeInsets.only(left: 10, right: 10),
                           textAlignVertical: TextAlignVertical.center,
                           keyboardType: TextInputType.phone,
+                          dropdownIconPosition: IconPosition.trailing,
+                          dropdownTextStyle: const TextStyle(
+                            color: Color(0xffffffff),
+                            fontSize: 14,
+                            fontFamily: "DM Sans",
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                         const SizedBox(height: 20),
 
