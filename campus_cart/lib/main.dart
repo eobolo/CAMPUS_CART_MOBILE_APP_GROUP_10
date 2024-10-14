@@ -9,6 +9,8 @@ import 'package:campus_cart/controllers/user_controllers.dart';
 import 'firebase_options.dart';
 import 'package:campus_cart/routes/auth/signup.dart';
 import 'package:campus_cart/routes/auth/signup_otp.dart';
+import 'package:campus_cart/routes/auth/forgot_password/reset_password_otp.dart';
+import 'package:campus_cart/routes/auth/forgot_password/reset_password.dart';
 
 void main() async {
   // Ensure that Flutter's bindings are initialized before Firebase
@@ -67,6 +69,8 @@ class _MyAppState extends State<MyApp> {
         '/signupOtp': (context) => const OtpVerification(),
         '/terms_and_conditions': (context) => const TermsAndConditions(),
         '/login': (context) => const SignIn(),
+        '/reset_password_otp': (context) => const OtpResetPassword(),
+        '/reset_password': (context) => const ResetPassword(),
       },
     );
   }
