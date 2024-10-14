@@ -2,6 +2,7 @@ import 'package:campus_cart/controllers/user_controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -59,20 +60,6 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                     child: Stack(
                       children: [
                         Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Transform.scale(
-                            scale: 1.3,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('assets/images/mesh.png'),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Align(
                           alignment: Alignment.topCenter,
                           child: Padding(
                             padding: const EdgeInsets.only(top: 25),
@@ -80,8 +67,8 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  width: 48,
-                                  height: 48,
+                                  width: 40,
+                                  height: 40,
                                   decoration: const BoxDecoration(
                                     image: DecorationImage(
                                       image: AssetImage(
@@ -229,23 +216,10 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                           ),
                         ),
                         const SizedBox(height: 15),
-                        TextFormField(
-                          validator: (validatePhoneNumber) {
-                            if (validatePhoneNumber == null ||
-                                validatePhoneNumber.isEmpty) {
-                              return 'Please enter a valid phone number';
-                            }
-                            return null; // Return null if valid
-                          },
-                          onSaved: (validatedPhoneNumber) {
-                            userStateController.phoneNumber.value =
-                                (validatedPhoneNumber as String)
-                                    .replaceAll(RegExp(r'\s+'), '');
-                          },
+                        IntlPhoneField(
                           controller: phoneController,
-                          keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
-                            hintText: 'e.g 079 252 5896',
+                            hintText: '00 000 00000',
                             filled: true,
                             fillColor: const Color(0xFFE5E5E5),
                             border: OutlineInputBorder(
@@ -253,10 +227,42 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                               borderSide: BorderSide.none,
                             ),
                             contentPadding: const EdgeInsets.symmetric(
-                                vertical: 23.0, horizontal: 30.0),
+                                vertical: 23.0, horizontal: 40.0),
                           ),
                           style: const TextStyle(
                             color: Color(0xFF909090),
+                            fontSize: 14,
+                            fontFamily: "DM Sans",
+                            fontWeight: FontWeight.normal,
+                          ),
+                          initialCountryCode: 'RW',
+                          onChanged: (phone) {
+                            userStateController.phoneNumber.value =
+                                phone.completeNumber;
+                          },
+                          validator: (phone) {
+                            if (phone == null || phone.number.isEmpty) {
+                              return 'Please enter a valid phone number';
+                            }
+                            return null;
+                          },
+                          dropdownDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(80),
+                            color: const Color(0xFF000000),
+                          ),
+                          dropdownIcon: const Icon(
+                            Icons.arrow_drop_down,
+                            color: Color(0xffffffff),
+                          ),
+                          flagsButtonMargin:
+                              const EdgeInsets.only(left: 11, right: 15),
+                          flagsButtonPadding:
+                              const EdgeInsets.only(left: 10, right: 10),
+                          textAlignVertical: TextAlignVertical.center,
+                          keyboardType: TextInputType.phone,
+                          dropdownIconPosition: IconPosition.trailing,
+                          dropdownTextStyle: const TextStyle(
+                            color: Color(0xffffffff),
                             fontSize: 14,
                             fontFamily: "DM Sans",
                             fontWeight: FontWeight.normal,
@@ -304,7 +310,8 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                                 onTap: () {
                                   // Implement your password visibility toggle here
                                 },
-                                child: const Icon(Icons.visibility),
+                                child: const Icon(Icons.visibility_outlined,
+                                    color: Color(0xFF202020)),
                               ),
                             ),
                             filled: true,

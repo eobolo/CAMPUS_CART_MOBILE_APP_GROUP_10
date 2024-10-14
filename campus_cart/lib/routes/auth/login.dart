@@ -1,3 +1,4 @@
+import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -41,7 +42,7 @@ class _SignInState extends State<SignIn> {
                       height: 40.0,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage("assets/images/bag-happy.png"),
+                            image: AssetImage("assets/images/bag-happy-bw.png"),
                             fit: BoxFit.cover),
                       ),
                     ),
@@ -53,22 +54,26 @@ class _SignInState extends State<SignIn> {
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w700,
-                        fontFamily: "Recoleta",
+                        color: Splashvisuals.textColor,
+                        fontFamily: 'Recoleta',
                       ),
                     ),
                   ],
                 ),
               ),
             ),
+            // Spacer(
+            //     // flex: 1,
+            //     ),
             Expanded(
-              flex: 8,
+              flex: 6,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(25.0, 40.0, 25.0, 10.0),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(35.0),
-                    topRight: Radius.circular(35.0),
+                    topLeft: Radius.circular(40.0),
+                    topRight: Radius.circular(40.0),
                   ),
                 ),
                 child: SingleChildScrollView(
@@ -80,9 +85,10 @@ class _SignInState extends State<SignIn> {
                         const Text(
                           'Log In',
                           style: TextStyle(
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
+                            color: Color(0xFF202020),
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "DM Sans",
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -91,58 +97,101 @@ class _SignInState extends State<SignIn> {
                           children: [
                             const Text(
                               "Don't have an account? ",
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 18),
+                              style: TextStyle(
+                                color: Color(0xFF202020),
+                                fontSize: 14,
+                                fontFamily: "DM Sans",
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
                             GestureDetector(
                               onTap: _onSignUp,
                               child: const Text(
                                 'Create Account',
                                 style: TextStyle(
-                                    color: Colors.orangeAccent,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18),
+                                  color: Color(0xFFD49400),
+                                  fontSize: 14,
+                                  fontFamily: "DM Sans",
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 25.0),
+                        const SizedBox(height: 30),
                         const Text(
                           'Email',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Color(0xFF202020),
+                            fontSize: 14,
+                            fontFamily: "DM Sans",
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         const SizedBox(height: 8),
                         TextFormField(
                           decoration: InputDecoration(
-                            hintText: ' campuscart@gmail.com',
-                            hintStyle: const TextStyle(color: Colors.grey),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
+                            hintText: 'e.g campuscart@alustudent.com',
                             filled: true,
-                            fillColor: Colors.grey.shade200,
+                            fillColor: const Color(0xFFE5E5E5),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(80),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 23.0, horizontal: 30.0),
+                          ),
+                          style: const TextStyle(
+                            color: Color(0xFF909090),
+                            fontSize: 14,
+                            fontFamily: "DM Sans",
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
                         const SizedBox(height: 25.0),
                         const Text(
                           'Password',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Color(0xFF202020),
+                            fontSize: 14,
+                            fontFamily: "DM Sans",
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         const SizedBox(height: 8),
                         TextFormField(
                           obscureText: true,
                           decoration: InputDecoration(
                             hintText: 'Enter your password',
-                            hintStyle: const TextStyle(color: Colors.grey),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0),
+                            suffixIcon: Padding(
+                              padding: const EdgeInsets.only(right: 25),
+                              child: GestureDetector(
+                                onTap: () {
+                                  // Implement your password visibility toggle here
+                                },
+                                child: const Icon(
+                                  Icons.visibility_outlined,
+                                  color: Color(0xFF202020),
+                                ),
+                              ),
                             ),
                             filled: true,
-                            fillColor: Colors.grey.shade200,
-                            suffixIcon: const Icon(Icons.visibility_off),
+                            fillColor: const Color(0xFFE5E5E5),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(80),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 23.0, horizontal: 30.0),
+                          ),
+                          style: const TextStyle(
+                            color: Color(0xFF909090),
+                            fontSize: 14,
+                            fontFamily: "DM Sans",
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
-                        const SizedBox(height: 10.0),
+                        const SizedBox(height: 8),
                         Align(
                           alignment: Alignment.bottomLeft,
                           child: TextButton(
@@ -151,8 +200,10 @@ class _SignInState extends State<SignIn> {
                             child: const Text(
                               'Forgot Password?',
                               style: TextStyle(
-                                color: Colors.orangeAccent,
-                                fontSize: 18,
+                                color: Color(0xFFD49400),
+                                fontSize: 14,
+                                fontFamily: "DM Sans",
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -163,18 +214,19 @@ class _SignInState extends State<SignIn> {
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 15.0),
-                            backgroundColor: Colors.black,
+                            backgroundColor: Color(0xff202020),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
+                              borderRadius: BorderRadius.circular(80.0),
                             ),
-                            minimumSize: const Size(double.infinity, 50.0),
+                            minimumSize: const Size(double.infinity, 60.0),
                           ),
                           child: const Text(
                             'Log In',
                             style: TextStyle(
-                              fontSize: 18.0,
+                              color: Color(0xFFFFFFFF),
+                              fontSize: 16,
+                              fontFamily: "DM Sans",
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
                             ),
                           ),
                         ),
