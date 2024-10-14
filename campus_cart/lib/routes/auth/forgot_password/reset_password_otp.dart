@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+// ignore: unused_import
 import 'dart:async';
 
 class OtpResetPassword extends StatefulWidget {
   const OtpResetPassword({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _OtpResetPasswordState createState() => _OtpResetPasswordState();
 }
 

@@ -238,7 +238,7 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                           initialCountryCode: 'RW',
                           onChanged: (phone) {
                             userStateController.phoneNumber.value =
-                                phone!.completeNumber;
+                                phone.completeNumber;
                           },
                           validator: (phone) {
                             if (phone == null || phone.number.isEmpty) {
