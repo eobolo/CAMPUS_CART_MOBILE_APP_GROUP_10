@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserStateController extends GetxController {
@@ -30,12 +31,16 @@ class UserStateController extends GetxController {
       const Duration(minutes: 5); // Set OTP validity duration
 
   // Function to send OTP to the user's phone number
-  Future<void> sendOTP(String phoneNumber) async {
+  Future<void> sendOTP(String phoneNumber, BuildContext context) async {
     try {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
           // do nothing after verification completed
+          // check if signup context is mounted before navigating to otppage
+          if (context.mounted) {
+            Navigator.pushNamed(context, '/signup_otp');
+          }
         },
         verificationFailed: (FirebaseAuthException e) {
           createAccountMessage.value = "Verification failed: ${e.message}";
@@ -76,13 +81,13 @@ class UserStateController extends GetxController {
   }
 
   // Function to register a new user with email and password after verifying OTP
-  Future<void> registerUser(String phoneNumber) async {
+  Future<void> registerUser(String phoneNumber, BuildContext context) async {
     try {
       // First, send the OTP for phone number verification
-      await sendOTP(phoneNumber);
+      await sendOTP(phoneNumber, context);
 
       // start expiry countdown if otp has been sent this should be and async
-      // operation that shouldn't be awaited for 
+      // operation that shouldn't be awaited for
 
       // delay for 3 seconds
       await Future.delayed(const Duration(seconds: 3));
@@ -146,11 +151,11 @@ class UserStateController extends GetxController {
   }
 
   // Function to resend the OTP if needed
-  Future<void> resendOTP(String phoneNumber) async {
+  Future<void> resendOTP(String phoneNumber, BuildContext context) async {
     if (!otpSent ||
         (otpSentTime != null &&
             DateTime.now().isAfter(otpSentTime!.add(otpValidityDuration)))) {
-      await sendOTP(phoneNumber);
+      await sendOTP(phoneNumber, context);
     } else {
       signUpOtpMessage.value =
           "Please wait for the current OTP to expire before requesting a new one.";

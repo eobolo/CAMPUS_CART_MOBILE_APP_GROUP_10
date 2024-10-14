@@ -29,7 +29,7 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
       userStateController.createAccountMessage.value =
           "Please Go and Read Terms and Conditions";
     } else {
-      userStateController.createAccountMessage.value = "Form is validated";
+      userStateController.registerUser(phoneController.text, context);
     }
   }
 

@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'dart:async';
 
-class OtpVerification extends StatefulWidget {
-  const OtpVerification({super.key});
+class SignUpOtpVerification extends StatefulWidget {
+  const SignUpOtpVerification({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _OtpVerificationState createState() => _OtpVerificationState();
+  _SignUpOtpVerificationState createState() => _SignUpOtpVerificationState();
 }
 
-class _OtpVerificationState extends State<OtpVerification> {
+class _SignUpOtpVerificationState extends State<SignUpOtpVerification> {
   final TextEditingController otpController = TextEditingController();
   bool isButtonDisabled = true;
-  int _counter = 50;
+  int _counter = 180;
   Timer? _timer;
 
   @override

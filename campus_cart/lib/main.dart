@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
       ),
       routes: {
         '/signup': (context) => const SignUpPage(),
-        '/signupOtp': (context) => const OtpVerification(),
+        '/signup_otp': (context) => const SignUpOtpVerification(),
         '/terms_and_conditions': (context) => const TermsAndConditions(),
         '/login': (context) => const SignIn(),
       },
