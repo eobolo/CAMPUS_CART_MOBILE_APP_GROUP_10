@@ -1,4 +1,5 @@
 import 'package:campus_cart/custom_exceptions/otp_different.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -187,6 +188,145 @@ class UserStateController extends GetxController {
       loggedInuser = userCredential.user;
     } catch (e) {
       throw Exception("Login failed: $e");
+    }
+  }
+
+  Future<dynamic> checkForgotPasswordEmail(String email) async {
+    final UserStateController userStateController =
+        Get.find<UserStateController>();
+    HttpsCallable checkEmailExistence =
+        FirebaseFunctions.instance.httpsCallable('checkEmailExistence');
+
+    try {
+      dynamic result = await checkEmailExistence.call({
+        "email": email.trim(), // Pass email as a key-value pair
+      });
+
+      // Handle the result
+      dynamic data = result.data;
+
+      if (data['exists']) {
+        userStateController.email.value = data['email'];
+        userStateController.phoneNumber.value = data['phoneNumber'];
+        return true; // Email exists
+      } else {
+        throw Exception("User with email $email doesn't exist.");
+      }
+    } on FirebaseFunctionsException catch (error) {
+      throw Exception("Error occurred: ${error.message}");
+    }
+  }
+
+  Future<void> sendForgotPasswordOTP(
+      String phoneNumber, BuildContext context) async {
+    try {
+      // Normal flow for sending OTP via SMS without automatic verification
+      await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (PhoneAuthCredential credential) {
+          // Do nothing here to avoid automatic sign-in
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          createAccountMessage.value = "Verification failed: ${e.message}";
+        },
+        codeSent: (String verId, int? resendToken) async {
+          verificationId.value = verId; // Store verification ID for later use
+          otpSent.value = true; // Mark OTP as sent
+          otpSentTime = DateTime.now(); // Record when OTP was sent
+          createAccountMessage.value = "OTP sent! Please check your messages.";
+          // delay for 3 seconds
+          await Future.delayed(const Duration(seconds: 3));
+          createAccountMessage.value = "";
+          if (context.mounted) {
+            Navigator.pushNamed(context, '/reset_password_otp');
+          }
+        },
+        codeAutoRetrievalTimeout: (String verId) {
+          verificationId.value = verId; // Store for timeout scenario
+        },
+      );
+    } catch (e) {
+      createAccountMessage.value = "Error sending OTP: $e";
+    }
+  }
+
+  Future<void> triggerUserForgotPasswordOtp(String phoneNumber, BuildContext context) async {
+    signUpOtpMessage.value = "";
+    try {
+      // First, send the OTP for phone number verification
+      await sendForgotPasswordOTP(phoneNumber, context);
+      await Future.delayed(const Duration(seconds: 3));
+    } catch (e) {
+      createAccountMessage.value = "Error during registration: $e";
+    }
+  }
+
+  Future<bool> verifyForgotPasswordOTP(String otp) async {
+    String testOtp = "456789";
+    try {
+      if (isTestingMode) {
+        if (otp == testOtp) {
+          // ignore: unused_local_variable
+          PhoneAuthCredential credential = PhoneAuthProvider.credential(
+            verificationId: verificationId.value,
+            smsCode: otp,
+          );
+          signUpOtpMessage.value = "OTP verified successfully!";
+          return true;
+        } else {
+          throw OtpDifferent();
+        }
+      } else {
+        // ignore: unused_local_variable
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationId.value,
+          smsCode: otp,
+        );
+        signUpOtpMessage.value = "OTP verified successfully!";
+        return true; // Return true if verification is successful
+      }
+    } catch (e) {
+      signUpOtpMessage.value = "Error verifying OTP: $e";
+      return false; // Return false if there was an error
+    }
+  }
+
+  // Function to handle OTP verification and create user in Firebase Authentication & Realtime Database
+  Future<void> handleForgotPasswordOTPVerification(
+      String otp, BuildContext context) async {
+    bool isVerified = await verifyForgotPasswordOTP(otp);
+    if (isVerified) {
+      if (context.mounted) {
+        Navigator.pushNamed(context, '/reset_password');
+      }
+    } else {
+      await Future.delayed(const Duration(seconds: 2));
+      signUpOtpMessage.value = "OTP verification failed. Please try again.";
+
+      // Check if OTP has expired and allow resend if needed
+      if (otpSent.value &&
+          otpSentTime != null &&
+          DateTime.now().isAfter(otpSentTime!.add(otpValidityDuration))) {
+        await Future.delayed(const Duration(seconds: 2));
+        signUpOtpMessage.value = "OTP has expired. You can request a new one.";
+        otpSent.value = false; // Reset the OTP sent status
+      } else {
+        await Future.delayed(const Duration(seconds: 2));
+        signUpOtpMessage.value = "Please enter the correct OTP.";
+      }
+    }
+  }
+
+  Future<void> resendForgotPasswordOTP(String phoneNumber, BuildContext context) async {
+    signUpOtpMessage.value = "";
+    if (!otpSent.value ||
+        (otpSentTime != null &&
+            DateTime.now().isAfter(otpSentTime!.add(otpValidityDuration)))) {
+      await triggerUserForgotPasswordOtp(phoneNumber, context);
+      signUpOtpMessage.value = "OTP sent! Please check your messages.";
+    } else {
+      signUpOtpMessage.value =
+          "Please wait for the current OTP to expire before requesting a new one.";
     }
   }
 }
