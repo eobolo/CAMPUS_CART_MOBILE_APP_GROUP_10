@@ -1,6 +1,7 @@
 import 'package:campus_cart/routes/auth/login.dart';
 import 'package:campus_cart/routes/auth/terms_and_conditions.dart';
 import 'package:campus_cart/routes/home/getstartedpage.dart';
+import 'package:campus_cart/routes/home/home.dart';
 import 'package:campus_cart/routes/home/splashpage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -71,6 +72,7 @@ class _MyAppState extends State<MyApp> {
         '/login': (context) => const SignIn(),
         '/reset_password_otp': (context) => const OtpResetPassword(),
         '/reset_password': (context) => const ResetPassword(),
+        '/home': (context) => const Home(),
       },
     );
   }
