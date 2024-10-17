@@ -1,14 +1,19 @@
+import 'package:campus_cart/controllers/user_controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ResetPasswordState createState() => _ResetPasswordState();
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
   final _formKey = GlobalKey<FormState>();
+  final UserStateController userStateController =
+      Get.find<UserStateController>();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
@@ -43,9 +48,35 @@ class _ResetPasswordState extends State<ResetPassword> {
         _isButtonDisabled = false;
       });
     } else {
+      // save password in state if validated
+      userStateController.password.value = _confirmPasswordController.text;
       setState(() {
         _isButtonDisabled = true;
       });
+    }
+  }
+
+  void _updateUserPassword() async {
+    try {
+      String result = await userStateController
+          .sendPasswordReset(); // Call the controller method
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(result), backgroundColor: Colors.green),
+        );
+      }
+      await Future.delayed(const Duration(seconds: 2));
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+    } catch (e) {
+      // Show error message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+        );
+      }
     }
   }
 
@@ -208,11 +239,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                           ),
                           const SizedBox(height: 40),
                           ElevatedButton(
-                            onPressed: _isButtonDisabled
-                                ? null
-                                : () {
-                                    // Navigate to the next screen
-                                  },
+                            onPressed:
+                                _isButtonDisabled ? null : _updateUserPassword,
                             style: ButtonStyle(
                               minimumSize: WidgetStateProperty.all(
                                   const Size(double.infinity, 60)),

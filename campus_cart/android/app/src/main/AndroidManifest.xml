@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.campus_cart">
     <application
         android:label="campus_cart"
         android:name="${applicationName}"
@@ -23,6 +23,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <!-- Handle Firebase Dynamic Links (your domain) -->
+                <data android:scheme="https"
+                      android:host="campuscrt.page.link"
+                      android:pathPrefix="/reset-password" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

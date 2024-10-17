@@ -21,7 +21,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Splashvisuals.boxDecorationColorB,
+      backgroundColor: const Color(0xFFF5C147),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -30,7 +30,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
             width: double.infinity,
             height: 170.0, // Same height as the previous AppBar
             decoration: BoxDecoration(
-              color: Splashvisuals.boxDecorationColorB,
+              color: const Color(0xFFF5C147),
             ),
             child: Padding(
               padding: const EdgeInsets.only(
@@ -211,7 +211,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
       child: Text(
         title,
         style: TextStyle(
-          color: Splashvisuals.boxDecorationColorB,
+          color: const Color(0xFFF5C147),
           fontSize: 18.0,
           fontWeight: FontWeight.bold,
         ),

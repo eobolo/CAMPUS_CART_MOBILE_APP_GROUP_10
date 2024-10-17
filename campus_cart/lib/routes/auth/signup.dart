@@ -16,8 +16,7 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final UserStateController userStateController =
-      Get.find<UserStateController>();
+  final UserStateController userStateController = Get.find<UserStateController>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _agreedToTerms = false;
 
@@ -30,7 +29,8 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
       userStateController.createAccountMessage.value =
           "Please Go and Read Terms and Conditions";
     } else {
-      userStateController.createAccountMessage.value = "Form is validated";
+      userStateController.registerUser(
+          userStateController.phoneNumber.value, context);
     }
   }
 
@@ -167,9 +167,8 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                         ),
                         const SizedBox(height: 15),
                         TextFormField(
-                          onSaved: (validatedEmail) {
-                            userStateController.email.value =
-                                validatedEmail as String;
+                          onChanged: (validatedEmail) {
+                            userStateController.email.value = validatedEmail;
                           },
                           validator: (validateEmail) {
                             const String emailPattern =
@@ -282,9 +281,9 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                         ),
                         const SizedBox(height: 15),
                         TextFormField(
-                          onSaved: (validatedPassword) {
+                          onChanged: (validatedPassword) {
                             userStateController.password.value =
-                                validatedPassword as String;
+                                validatedPassword;
                           },
                           validator: (validatePassword) {
                             // Regular expression for password validation

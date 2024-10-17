@@ -1,5 +1,7 @@
+import 'package:campus_cart/controllers/user_controllers.dart';
 import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -9,25 +11,69 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final formSignInKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final UserStateController userStateController =
+      Get.find<UserStateController>();
+  final _formSignInKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   void _onSignUp() {
     Navigator.pushNamed(context, '/signup');
   }
 
+  // put validation in forms using validator, use onchange to store and update
+  // user state controller password, email submit details auth and give responses
+  // based on results i.e failure or successmar
+  void _onLogin() async {
+    if (!(_formSignInKey.currentState!.validate())) {
+      return;
+    } else {
+      setState(() {
+        isLoading = true; // to make circular loading action
+      });
+      try {
+        // call firebase Aith method to login
+        await userStateController.loginUser(
+          userStateController.email.value.trim(),
+          userStateController.password.value.trim(),
+        );
+
+        setState(() {
+          isLoading =
+              false; // remove circular loading action incase user navigates there again
+        });
+
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+      } catch (e) {
+        setState(() {
+          isLoading =
+              false; // remove circular loading action since error occured
+        });
+        // Handle and show errors
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(e.toString()),
+            backgroundColor: const Color.fromARGB(255, 255, 63, 49),
+          ));
+        }
+      }
+    }
+  }
+
+  void _onForgotPassword() async {
+    // normally I should be directed to the forgot email page
+    // then inside there I get email and do this exact process there
+    // not here if alhassan as sent the code
+    Navigator.pushNamed(context, '/forget_password');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5C147),
-      // appBar: AppBar(
-      //   title: const Center(
-      //     child: Text('Campus Cart',
-      //     style: TextStyle(
-      //       fontSize: 20.0,
-      //       fontWeight: FontWeight.bold,
-      //     ),),
-      //   ),
-      // ),
+      backgroundColor: const Color(0xFFF5C147),
       body: SafeArea(
         child: Column(
           children: [
@@ -46,7 +92,9 @@ class _SignInState extends State<SignIn> {
                             fit: BoxFit.cover),
                       ),
                     ),
-                    const SizedBox(width: 10.0),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
                     Text(
                       'Campus Cart',
                       style: TextStyle(
@@ -60,9 +108,6 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
             ),
-            // Spacer(
-            //     // flex: 1,
-            //     ),
             Expanded(
               flex: 6,
               child: Container(
@@ -76,7 +121,7 @@ class _SignInState extends State<SignIn> {
                 ),
                 child: SingleChildScrollView(
                   child: Form(
-                    key: formSignInKey,
+                    key: _formSignInKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -128,6 +173,22 @@ class _SignInState extends State<SignIn> {
                         ),
                         const SizedBox(height: 8),
                         TextFormField(
+                          onChanged: (validatedEmail) {
+                            userStateController.email.value = validatedEmail;
+                          },
+                          validator: (validateEmail) {
+                            const String emailPattern =
+                                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+                            final RegExp emailRegExp = RegExp(emailPattern);
+                            if (validateEmail == null ||
+                                validateEmail.isEmpty) {
+                              return 'Please enter your email';
+                            } else if (!emailRegExp.hasMatch(validateEmail)) {
+                              return 'Please enter a valid email address';
+                            }
+                            return null;
+                          },
+                          controller: emailController,
                           decoration: InputDecoration(
                             hintText: 'e.g campuscart@alustudent.com',
                             filled: true,
@@ -158,6 +219,25 @@ class _SignInState extends State<SignIn> {
                         ),
                         const SizedBox(height: 8),
                         TextFormField(
+                          onChanged: (validatedPassword) {
+                            userStateController.password.value =
+                                validatedPassword;
+                          },
+                          validator: (validatePassword) {
+                            // Regular expression for password validation
+                            final RegExp passwordRegExp = RegExp(
+                              r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$',
+                            );
+                            if (validatePassword == null ||
+                                validatePassword.isEmpty) {
+                              return 'Please enter your password';
+                            } else if (!passwordRegExp
+                                .hasMatch(validatePassword)) {
+                              return 'Password must be at least 8 characters long,\ninclude an uppercase letter, a lowercase letter,\na number, and a special character.';
+                            }
+                            return null; // Return null if valid
+                          },
+                          controller: passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
                             hintText: 'Enter your password',
@@ -193,7 +273,8 @@ class _SignInState extends State<SignIn> {
                         Align(
                           alignment: Alignment.bottomLeft,
                           child: TextButton(
-                            onPressed: () {},
+                            // onpress for otp password handle navigation
+                            onPressed: _onForgotPassword,
                             child: const Text(
                               'Forgot Password?',
                               style: TextStyle(
@@ -206,26 +287,31 @@ class _SignInState extends State<SignIn> {
                           ),
                         ),
                         const SizedBox(height: 40.0),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 15.0),
-                            backgroundColor: Color(0xff202020),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(80.0),
-                            ),
-                            minimumSize: const Size(double.infinity, 60.0),
-                          ),
-                          child: const Text(
-                            'Log In',
-                            style: TextStyle(
-                              color: Color(0xFFFFFFFF),
-                              fontSize: 16,
-                              fontFamily: "DM Sans",
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                        isLoading
+                            ? Center(child: const CircularProgressIndicator())
+                            : ElevatedButton(
+                                // onpressed login validate form and also validate database before redirecting to homepage
+                                onPressed: _onLogin,
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15.0),
+                                  backgroundColor: Color(0xff202020),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(80.0),
+                                  ),
+                                  minimumSize:
+                                      const Size(double.infinity, 60.0),
+                                ),
+                                child: const Text(
+                                  'Log In',
+                                  style: TextStyle(
+                                    color: Color(0xFFFFFFFF),
+                                    fontSize: 16,
+                                    fontFamily: "DM Sans",
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                       ],
                     ),
                   ),
