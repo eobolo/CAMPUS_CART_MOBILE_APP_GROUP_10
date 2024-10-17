@@ -178,12 +178,12 @@ class _OtpResetPasswordState extends State<OtpResetPassword> {
                 // OTP input field
                 Pinput(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  length: 5,
+                  length: 6,
                   controller: otpController,
                   keyboardType: TextInputType.number,
-                  obscureText: otpController.text.length == 5,
+                  obscureText: otpController.text.length == 6,
                   defaultPinTheme: PinTheme(
-                    width: 60,
+                    width: 55,
                     height: 56,
                     textStyle: const TextStyle(
                       fontSize: 40,
@@ -267,7 +267,7 @@ class _OtpResetPasswordState extends State<OtpResetPassword> {
                                   vertical: 15, horizontal: 100)),
                         ),
                         child: const Text(
-                          'Continur',
+                          'Continue',
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

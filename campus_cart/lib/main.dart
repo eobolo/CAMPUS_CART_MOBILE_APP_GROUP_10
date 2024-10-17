@@ -1,3 +1,4 @@
+import 'package:campus_cart/routes/auth/forgot_password/forgot_password_page.dart';
 import 'package:campus_cart/routes/auth/login.dart';
 import 'package:campus_cart/routes/auth/terms_and_conditions.dart';
 import 'package:campus_cart/routes/home/getstartedpage.dart';
@@ -70,6 +71,7 @@ class _MyAppState extends State<MyApp> {
         '/signup_otp': (context) => const SignUpOtpVerification(),
         '/terms_and_conditions': (context) => const TermsAndConditions(),
         '/login': (context) => const SignIn(),
+        '/forget_password': (context) => const ForgotPasswordPage(),
         '/reset_password_otp': (context) => const OtpResetPassword(),
         '/reset_password': (context) => const ResetPassword(),
         '/home': (context) => const Home(),

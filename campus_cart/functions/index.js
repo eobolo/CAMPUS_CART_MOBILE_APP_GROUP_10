@@ -24,7 +24,8 @@ export const checkEmailExistence = functions.https.onCall(async (request) => {
     const userSnapshot = await db.ref(`campusCartUsers/${uid}`).once("value");
     const userData = userSnapshot.val();
     const phoneNumber = userData ? userData.PhoneNumber : null;
-    return {exists: true, email: userRecord.email, phoneNumber: phoneNumber};
+    return {exists: true, email: userRecord.email, phoneNumber: phoneNumber,
+      user: userRecord};
   } catch (error) {
     console.error("Error fetching user by email:", error);
     return {exists: false, email: email, phoneNumber: null};

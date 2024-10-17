@@ -182,7 +182,7 @@ class _SignUpOtpVerificationState extends State<SignUpOtpVerification> {
                     keyboardType: TextInputType.number,
                     obscureText: otpController.text.length == 6,
                     defaultPinTheme: PinTheme(
-                      width: 50,
+                      width: 55,
                       height: 56,
                       textStyle: const TextStyle(
                         fontSize: 40,

@@ -25,6 +25,7 @@ class UserStateController extends GetxController {
   // although it is dynamic only Null and User class from firebase auth is stored there
   // this is a perfect way to create reactive variables for databases classes
   dynamic loggedInuser = null.obs;
+  dynamic userDetailInsecure = null.obs;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
   PhoneAuthCredential? credential;
@@ -83,6 +84,7 @@ class UserStateController extends GetxController {
             smsCode: otp,
           );
           signUpOtpMessage.value = "OTP verified successfully!";
+          await Future.delayed(const Duration(seconds: 2));
           return true;
         } else {
           throw OtpDifferent();
@@ -94,6 +96,7 @@ class UserStateController extends GetxController {
           smsCode: otp,
         );
         signUpOtpMessage.value = "OTP verified successfully!";
+        await Future.delayed(const Duration(seconds: 2));
         return true; // Return true if verification is successful
       }
     } catch (e) {
@@ -108,7 +111,7 @@ class UserStateController extends GetxController {
     try {
       // First, send the OTP for phone number verification
       await sendOTP(phoneNumber, context);
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 2));
     } catch (e) {
       createAccountMessage.value = "Error during registration: $e";
     }
@@ -208,6 +211,7 @@ class UserStateController extends GetxController {
       if (data['exists']) {
         userStateController.email.value = data['email'];
         userStateController.phoneNumber.value = data['phoneNumber'];
+        userStateController.userDetailInsecure = data['user'];
         return true; // Email exists
       } else {
         throw Exception("User with email $email doesn't exist.");
@@ -250,7 +254,8 @@ class UserStateController extends GetxController {
     }
   }
 
-  Future<void> triggerUserForgotPasswordOtp(String phoneNumber, BuildContext context) async {
+  Future<void> triggerUserForgotPasswordOtp(
+      String phoneNumber, BuildContext context) async {
     signUpOtpMessage.value = "";
     try {
       // First, send the OTP for phone number verification
@@ -272,6 +277,7 @@ class UserStateController extends GetxController {
             smsCode: otp,
           );
           signUpOtpMessage.value = "OTP verified successfully!";
+          await Future.delayed(const Duration(seconds: 2));
           return true;
         } else {
           throw OtpDifferent();
@@ -283,6 +289,7 @@ class UserStateController extends GetxController {
           smsCode: otp,
         );
         signUpOtpMessage.value = "OTP verified successfully!";
+        await Future.delayed(const Duration(seconds: 2));
         return true; // Return true if verification is successful
       }
     } catch (e) {
@@ -317,7 +324,8 @@ class UserStateController extends GetxController {
     }
   }
 
-  Future<void> resendForgotPasswordOTP(String phoneNumber, BuildContext context) async {
+  Future<void> resendForgotPasswordOTP(
+      String phoneNumber, BuildContext context) async {
     signUpOtpMessage.value = "";
     if (!otpSent.value ||
         (otpSentTime != null &&
@@ -327,6 +335,27 @@ class UserStateController extends GetxController {
     } else {
       signUpOtpMessage.value =
           "Please wait for the current OTP to expire before requesting a new one.";
+    }
+  }
+
+  Future<dynamic> sendPasswordReset() async {
+    final UserStateController userStateController =
+        Get.find<UserStateController>();
+    try {
+      await _auth.sendPasswordResetEmail(email: userStateController.email.value.trim()); 
+      return "Password reset email sent successfully. redirect to login";
+    } on FirebaseAuthException catch (e) {
+      // Handle specific Firebase Auth exceptions
+      if (e.code == 'user-not-found') {
+        throw Exception("No user found for that email.");
+      } else if (e.code == 'invalid-email') {
+        throw Exception("The email address is not valid.");
+      } else {
+        throw Exception("An error occurred: ${e.message}");
+      }
+    } catch (e) {
+      // Handle any other exceptions
+      throw Exception("An unexpected error occurred: $e");
     }
   }
 }
