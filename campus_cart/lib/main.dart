@@ -13,6 +13,7 @@ import 'package:campus_cart/routes/auth/signup.dart';
 import 'package:campus_cart/routes/auth/signup_otp.dart';
 import 'package:campus_cart/routes/auth/forgot_password/reset_password_otp.dart';
 import 'package:campus_cart/routes/auth/forgot_password/reset_password.dart';
+import 'package:campus_cart/routes/profile/profile.dart';
 
 void main() async {
   // Ensure that Flutter's bindings are initialized before Firebase
