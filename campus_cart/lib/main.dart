@@ -18,51 +18,27 @@ void main() async {
   // Ensure that Flutter's bindings are initialized before Firebase
   WidgetsFlutterBinding.ensureInitialized();
 
-  // register firebase app
+  // Register firebase app
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  /*
-    register your controllers
-    - UserStateContoller
-  */
+
+  // Register your controllers
   Get.put(UserStateController());
 
-  // run The App
+  // Run the app
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  List<Widget> loadPages = [const SplashScreen(), const Getstartedpage()];
-  int page = 0;
-
-  /*
-    Async delay for the SplashScreen,
-    before switching to homePage.
-  */
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 7), () {
-      setState(() {
-        page = 1;
-      });
-    });
-  }
+class MyApp extends StatelessWidget {
+  const MyApp({super.key}); //  Add key parameter
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Orders from Favourite Uni 😁",
       debugShowCheckedModeBanner: false,
-      home: loadPages[page],
+      home: const MainWidget(), // Start with MainWidget
       theme: ThemeData(
         useMaterial3: true,
       ),
@@ -77,5 +53,32 @@ class _MyAppState extends State<MyApp> {
         '/home': (context) => const Home(),
       },
     );
+  }
+}
+
+class MainWidget extends StatefulWidget {
+  const MainWidget({super.key}); //  Add key parameter
+
+  @override
+  State<MainWidget> createState() => _MainWidgetState();
+}
+
+class _MainWidgetState extends State<MainWidget> {
+  List<Widget> loadPages = [const SplashScreen(), const Getstartedpage()];
+  int page = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 7), () {
+      setState(() {
+        page = 1; // Switch to the next page after the delay
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return loadPages[page]; // Display the current page based on the index
   }
 }
