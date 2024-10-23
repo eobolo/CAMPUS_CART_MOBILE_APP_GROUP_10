@@ -7,16 +7,13 @@ void main() {
 
 // Define MyApp class
 class MyApp extends StatelessWidget {
- const MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Profile Screen',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const ProfileScreen(), // Set ProfileScreen as the home widget
+      home: ProfileScreen(), // Set ProfileScreen as the home widget
     );
   }
 }
@@ -86,53 +83,72 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-
-                // Store Status
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFE3F5E1),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Text(
-                          'Vendor Store Created',
-                          style: TextStyle(
-                            color: Color(0xFF2E7D32),
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Row(
-                          children: [
-                            Text(
-                              'Visit Store',
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 14,
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_forward,
-                              size: 16,
-                              color: Colors.black54,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
+            ),
+
+            // Store Status Box
+            Container(
+              width: 260, // Define the width of the box
+              margin: const EdgeInsets.symmetric(horizontal: 16), // Add margin for spacing
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding inside the box
+              decoration: BoxDecoration(
+                color: Colors.white, // White background for the container
+                borderRadius: BorderRadius.circular(20), // Rounded corners
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 10,
+                    offset: Offset(0, 4), // Shadow effect for the box
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align start to reduce space
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFDEACB), // reddish background
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        'Are you a Vendor?',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 16, 16, 16), // Dark text color
+                          fontSize: 10,
+                        ),
+                        overflow: TextOverflow.ellipsis, // Prevent overflow
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 5), // Space between the two elements
+                  Flexible(
+                    child: TextButton(
+                      onPressed: () {
+                        // Action when the button is clicked
+                      },
+                      child: const Row(
+                        children: [
+                          Text(
+                            'Set Up a Store',
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 10,
+                            ),
+                            overflow: TextOverflow.ellipsis, // Prevent overflow
+                          ),
+                          Icon(
+                            Icons.arrow_forward,
+                            size: 20,
+                            color: Colors.black54,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
 
             const SizedBox(height: 24),
