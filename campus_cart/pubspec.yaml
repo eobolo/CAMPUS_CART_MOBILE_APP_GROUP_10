@@ -88,6 +88,7 @@ flutter:
     - assets/images/black_bag_happy.png
     - assets/images/mesh.png
     - assets/images/bag-happy-bw.png
+    - assets/images/pics1.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Main function that runs the app
 void main() {
   runApp(const MyApp());
 }
@@ -18,18 +17,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Your ProfileScreen widget code here
+// ProfileScreen widget code
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFABD23), // Yellow background
+      backgroundColor: const Color(0xFFFABD23),
       body: SafeArea(
         child: Column(
           children: [
-            // Header with back button and title
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -69,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   child: ClipOval(
                     child: Image.asset(
-                      'images/pics1.jpg', // Correct path to the local image asset
+                      'assets/images/pics1.jpg',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -88,41 +86,41 @@ class ProfileScreen extends StatelessWidget {
 
             // Store Status Box
             Container(
-              width: 260, // Define the width of the box
-              margin: const EdgeInsets.symmetric(horizontal: 16), // Add margin for spacing
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding inside the box
+              width: 260,
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: Colors.white, // White background for the container
-                borderRadius: BorderRadius.circular(20), // Rounded corners
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 10,
-                    offset: Offset(0, 4), // Shadow effect for the box
+                    offset: Offset(0, 4),
                   ),
                 ],
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align start to reduce space
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFDEACB), // reddish background
+                        color: const Color(0xFFFDEACB),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: const Text(
                         'Are you a Vendor?',
                         style: TextStyle(
-                          color: Color.fromARGB(255, 16, 16, 16), // Dark text color
+                          color: Color.fromARGB(255, 16, 16, 16),
                           fontSize: 10,
                         ),
-                        overflow: TextOverflow.ellipsis, // Prevent overflow
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 5), // Space between the two elements
+                  const SizedBox(width: 5),
                   Flexible(
                     child: TextButton(
                       onPressed: () {
@@ -136,11 +134,11 @@ class ProfileScreen extends StatelessWidget {
                               color: Colors.black54,
                               fontSize: 10,
                             ),
-                            overflow: TextOverflow.ellipsis, // Prevent overflow
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Icon(
                             Icons.arrow_forward,
-                            size: 20,
+                            size: 21,
                             color: Colors.black54,
                           ),
                         ],
@@ -151,52 +149,73 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 24),
-
-            // Menu Items
+            // Expanded section with white background and inner container
             Expanded(
-              child: Container(
-                margin: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ListView(
-                  padding: const EdgeInsets.all(8),
-                  children: [
-                    _buildMenuItem(
-                      icon: Icons.person_outline,
-                      title: 'Edit Profile',
-                      onTap: () {},
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: Colors.white, // White background
+                        borderRadius: BorderRadius.zero,
+                      ),
                     ),
-                    _buildMenuItem(
-                      icon: Icons.lock_outline,
-                      title: 'Security',
-                      onTap: () {},
+                  ),
+
+                  // Inner container with updated background and removed shadow
+                  Positioned(
+                    top: MediaQuery.of(context).size.height * 0.06,
+                    left: 16,
+                    right: 16,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF0F4F9), // New background color
+                        borderRadius: BorderRadius.circular(20), // Rounded edges
+                      ),
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          _buildMenuItem(
+                            icon: Icons.person_outline,
+                            title: 'Edit Profile',
+                            onTap: () {},
+                          ),
+                          _buildMenuItem(
+                            icon: Icons.lock_outline,
+                            title: 'Security',
+                            onTap: () {},
+                          ),
+                          _buildMenuItem(
+                            icon: Icons.location_on_outlined,
+                            title: 'Addresses',
+                            onTap: () {},
+                          ),
+                          _buildMenuItem(
+                            icon: Icons.phone_outlined,
+                            title: 'Contact Us',
+                            onTap: () {},
+                          ),
+                          _buildMenuItem(
+                            icon: Icons.help_outline,
+                            title: 'FAQs',
+                            onTap: () {},
+                          ),
+                          _buildMenuItem(
+                            icon: Icons.logout,
+                            title: 'Log Out',
+                            onTap: () {},
+                            textColor: Colors.red,
+                          ),
+                        ],
+                      ),
                     ),
-                    _buildMenuItem(
-                      icon: Icons.location_on_outlined,
-                      title: 'Addresses',
-                      onTap: () {},
-                    ),
-                    _buildMenuItem(
-                      icon: Icons.phone_outlined,
-                      title: 'Contact Us',
-                      onTap: () {},
-                    ),
-                    _buildMenuItem(
-                      icon: Icons.help_outline,
-                      title: 'FAQs',
-                      onTap: () {},
-                    ),
-                    _buildMenuItem(
-                      icon: Icons.logout,
-                      title: 'Log Out',
-                      onTap: () {},
-                      textColor: Colors.red,
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -215,7 +234,7 @@ class ProfileScreen extends StatelessWidget {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.grey[100],
+          color: Color(0xFFFFFFFF), // Set all icons' background to white
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(icon, color: textColor ?? Colors.black87),
