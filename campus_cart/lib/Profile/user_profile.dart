@@ -4,7 +4,6 @@ void main() {
   runApp(const MyApp());
 }
 
-// Define MyApp class
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -12,12 +11,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Profile Screen',
-      home: ProfileScreen(), // Set ProfileScreen as the home widget
+      home: ProfileScreen(),
     );
   }
 }
 
-// ProfileScreen widget code
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -30,31 +28,37 @@ class ProfileScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Row(
+              child: Stack(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () => Navigator.pop(context),
+                  // Back Button aligned to the left
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () => Navigator.pop(context),
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  const Text(
-                    'Profile',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
+                 
+                  const Center(
+                    child: Text(
+                      'Profile',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
 
-            // Profile Image and Name
+            
             Column(
               children: [
                 Container(
@@ -84,14 +88,14 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
 
-            // Store Status Box
+            
             Container(
               width: 260,
               margin: const EdgeInsets.symmetric(horizontal: 16),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(30), // Rounded corners
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
@@ -111,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: const Text(
-                        'Are you a Vendor?',
+                        'Are you a vendor?',
                         style: TextStyle(
                           color: Color.fromARGB(255, 16, 16, 16),
                           fontSize: 10,
@@ -124,12 +128,12 @@ class ProfileScreen extends StatelessWidget {
                   Flexible(
                     child: TextButton(
                       onPressed: () {
-                        // Action when the button is clicked
+                        
                       },
                       child: const Row(
                         children: [
                           Text(
-                            'Set Up a Store',
+                            'Set up store',
                             style: TextStyle(
                               color: Colors.black54,
                               fontSize: 10,
@@ -149,7 +153,6 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
 
-            // Expanded section with white background and inner container
             Expanded(
               child: Stack(
                 alignment: Alignment.topCenter,
@@ -160,22 +163,21 @@ class ProfileScreen extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.6,
                       width: double.infinity,
                       decoration: const BoxDecoration(
-                        color: Colors.white, // White background
+                        color: Colors.white,
                         borderRadius: BorderRadius.zero,
                       ),
                     ),
                   ),
 
-                  // Inner container with updated background and removed shadow
                   Positioned(
                     top: MediaQuery.of(context).size.height * 0.06,
                     left: 16,
                     right: 16,
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.52,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF0F4F9), // New background color
-                        borderRadius: BorderRadius.circular(20), // Rounded edges
+                        color: const Color(0xFFF0F4F9),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       padding: const EdgeInsets.all(16),
                       child: Column(
@@ -185,25 +187,45 @@ class ProfileScreen extends StatelessWidget {
                             title: 'Edit Profile',
                             onTap: () {},
                           ),
+                          const Divider(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            thickness: 0.1,
+                          ),
                           _buildMenuItem(
                             icon: Icons.lock_outline,
                             title: 'Security',
                             onTap: () {},
+                          ),
+                          const Divider(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            thickness: 0.1,
                           ),
                           _buildMenuItem(
                             icon: Icons.location_on_outlined,
                             title: 'Addresses',
                             onTap: () {},
                           ),
+                          const Divider(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            thickness: 0.1,
+                          ),
                           _buildMenuItem(
                             icon: Icons.phone_outlined,
                             title: 'Contact Us',
                             onTap: () {},
                           ),
+                          const Divider(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            thickness: 0.1,
+                          ),
                           _buildMenuItem(
                             icon: Icons.help_outline,
                             title: 'FAQs',
                             onTap: () {},
+                          ),
+                          const Divider(
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                            thickness: 0.1,
                           ),
                           _buildMenuItem(
                             icon: Icons.logout,
@@ -234,7 +256,7 @@ class ProfileScreen extends StatelessWidget {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Color(0xFFFFFFFF), // Set all icons' background to white
+          color: Color(0xFFFFFFFF),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(icon, color: textColor ?? Colors.black87),
