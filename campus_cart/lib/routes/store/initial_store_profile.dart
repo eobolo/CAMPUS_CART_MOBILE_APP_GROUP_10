@@ -4,11 +4,11 @@ import 'package:campus_cart/routes/visuals/icons.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'dart:io';
 
-class StoreProfile extends StatelessWidget {
+class InitialStoreProfile extends StatelessWidget {
   // const StoreProfile({super.key});
   final XFile? storeLogo;
 
-  const StoreProfile({super.key, this.storeLogo});
+  const InitialStoreProfile({super.key, this.storeLogo});
 
   @override
   Widget build(BuildContext context) {

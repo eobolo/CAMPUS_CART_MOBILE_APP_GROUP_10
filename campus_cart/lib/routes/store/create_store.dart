@@ -3,14 +3,14 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:campus_cart/routes/visuals/icons.dart';
 
-class SetUpStore extends StatefulWidget {
-  const SetUpStore({super.key});
+class CreateStore extends StatefulWidget {
+  const CreateStore({super.key});
 
   @override
   _SetUpStoreState createState() => _SetUpStoreState();
 }
 
-class _SetUpStoreState extends State<SetUpStore> {
+class _SetUpStoreState extends State<CreateStore> {
   final TextEditingController _storeNameController = TextEditingController();
   final TextEditingController _storeAddressController = TextEditingController();
   final TextEditingController _storeCityController = TextEditingController();

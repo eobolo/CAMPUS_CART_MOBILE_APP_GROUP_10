@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 
-class VendorSetupScreen extends StatelessWidget {
-  const VendorSetupScreen({super.key});
+class SplashStore extends StatelessWidget {
+  const SplashStore({super.key});
 
   @override
   Widget build(BuildContext context) {

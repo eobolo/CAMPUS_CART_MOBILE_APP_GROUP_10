@@ -5,10 +5,10 @@ import 'package:flutter_dash/flutter_dash.dart';
 import 'dart:io';
 import 'package:campus_cart/routes/visuals/product_card.dart';
 
-class Fullprofile extends StatelessWidget {
+class StoreProfile extends StatelessWidget {
   final XFile? storeLogo;
 
-  Fullprofile({super.key, this.storeLogo});
+  StoreProfile({super.key, this.storeLogo});
 
   @override
   Widget build(BuildContext context) {
