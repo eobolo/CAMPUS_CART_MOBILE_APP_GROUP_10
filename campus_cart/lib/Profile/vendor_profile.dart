@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
-// Main function that runs the app
 void main() {
   runApp(const MyApp());
 }
 
-// Define MyApp class
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -13,50 +11,50 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Profile Screen',
-      home: ProfileScreen(), // Set ProfileScreen as the home widget
+      home: ProfileScreen(),
     );
   }
 }
 
-// Your ProfileScreen widget code here
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFABD23), // Yellow background
+      backgroundColor: const Color(0xFFFABD23),
       body: SafeArea(
         child: Column(
           children: [
-            // Header with back button and title
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Row(
+              child: Stack(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () => Navigator.pop(context),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () => Navigator.pop(context),
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  const Text(
-                    'Profile',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
+                  const Center(
+                    child: Text(
+                      'Profile',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-
-            // Profile Image and Name
             Column(
               children: [
                 Container(
@@ -69,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   child: ClipOval(
                     child: Image.asset(
-                      'images/pics1.jpg', // Correct path to the local image asset
+                      'assets/images/pics1.jpg',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -85,49 +83,42 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 16),
               ],
             ),
-
-            // Store Status Box
             Container(
-              width: 290, // Define the width of the box
-              margin: const EdgeInsets.symmetric(
-                  horizontal: 16), // Add margin for spacing
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 16, vertical: 12), // Padding inside the box
+              width: 320, // Increase the width
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: Colors.white, // White background for the container
-                borderRadius: BorderRadius.circular(20), // Rounded corners
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30), // Rounded corners
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 10,
-                    offset: Offset(0, 4), // Shadow effect for the box
+                    offset: Offset(0, 4),
                   ),
                 ],
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align start to reduce space
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE3F5E1), // Greenish background
+                        color: const Color(0xFFE9FFB5),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: const Text(
-                        'Vendor Store Created',
+                        'Vendor store created',
                         style: TextStyle(
-                          color: Color(0xFF2E7D32), // Green text color
-                          fontSize: 10,
+                          color: Color.fromARGB(255, 16, 16, 16),
+                          fontSize: 12, // Increased font size
                         ),
-                        overflow: TextOverflow.ellipsis, // Prevent overflow
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 5), // Space between the two elements
+                  const SizedBox(width: 5),
                   Flexible(
                     child: TextButton(
                       onPressed: () {
@@ -139,13 +130,13 @@ class ProfileScreen extends StatelessWidget {
                             'Visit Store',
                             style: TextStyle(
                               color: Colors.black54,
-                              fontSize: 10,
+                              fontSize: 12, // Increased font size
                             ),
-                            overflow: TextOverflow.ellipsis, // Prevent overflow
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Icon(
                             Icons.arrow_forward,
-                            size: 20,
+                            size: 21,
                             color: Colors.black54,
                           ),
                         ],
@@ -155,53 +146,85 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-
-            const SizedBox(height: 24),
-
-            // Menu Items
             Expanded(
-              child: Container(
-                margin: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ListView(
-                  padding: const EdgeInsets.all(8),
-                  children: [
-                    _buildMenuItem(
-                      icon: Icons.person_outline,
-                      title: 'Edit Profile',
-                      onTap: () {},
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.zero,
+                      ),
                     ),
-                    _buildMenuItem(
-                      icon: Icons.lock_outline,
-                      title: 'Security',
-                      onTap: () {},
+                  ),
+                  Positioned(
+                    top: MediaQuery.of(context).size.height * 0.06,
+                    left: 16,
+                    right: 16,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.52,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF0F4F9),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          _buildMenuItem(
+                            icon: Icons.person_outline,
+                            title: 'Edit Profile',
+                            onTap: () {},
+                          ),
+                          const Divider(
+                            color: Color.fromRGBO(0, 0, 0, 0.1), // Thin line with 10% opacity
+                          ),
+                          _buildMenuItem(
+                            icon: Icons.lock_outline,
+                            title: 'Security',
+                            onTap: () {},
+                          ),
+                          const Divider(
+                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                          ),
+                          _buildMenuItem(
+                            icon: Icons.location_on_outlined,
+                            title: 'Addresses',
+                            onTap: () {},
+                          ),
+                          const Divider(
+                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                          ),
+                          _buildMenuItem(
+                            icon: Icons.phone_outlined,
+                            title: 'Contact Us',
+                            onTap: () {},
+                          ),
+                          const Divider(
+                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                          ),
+                          _buildMenuItem(
+                            icon: Icons.help_outline,
+                            title: 'FAQs',
+                            onTap: () {},
+                          ),
+                          const Divider(
+                            color: Color.fromRGBO(0, 0, 0, 0.1),
+                          ),
+                          _buildMenuItem(
+                            icon: Icons.logout,
+                            title: 'Log Out',
+                            onTap: () {},
+                            textColor: Colors.red,
+                          ),
+                        ],
+                      ),
                     ),
-                    _buildMenuItem(
-                      icon: Icons.location_on_outlined,
-                      title: 'Addresses',
-                      onTap: () {},
-                    ),
-                    _buildMenuItem(
-                      icon: Icons.phone_outlined,
-                      title: 'Contact Us',
-                      onTap: () {},
-                    ),
-                    _buildMenuItem(
-                      icon: Icons.help_outline,
-                      title: 'FAQs',
-                      onTap: () {},
-                    ),
-                    _buildMenuItem(
-                      icon: Icons.logout,
-                      title: 'Log Out',
-                      onTap: () {},
-                      textColor: Colors.red,
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -220,7 +243,7 @@ class ProfileScreen extends StatelessWidget {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.grey[100],
+          color: Color(0xFFFFFFFF),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(icon, color: textColor ?? Colors.black87),
