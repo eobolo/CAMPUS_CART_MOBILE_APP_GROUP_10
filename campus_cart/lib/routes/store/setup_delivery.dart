@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -71,7 +72,10 @@ class DeliverySetupScreen extends StatelessWidget {
                 const SizedBox(width: 8),
                 const Text(
                   'TO',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey),
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
