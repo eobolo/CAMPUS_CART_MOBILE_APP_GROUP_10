@@ -89,7 +89,7 @@ class ProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(30), // Rounded corners
+                borderRadius: BorderRadius.circular(30), 
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
@@ -112,7 +112,7 @@ class ProfileScreen extends StatelessWidget {
                         'Vendor store created',
                         style: TextStyle(
                           color: Color.fromARGB(255, 16, 16, 16),
-                          fontSize: 12, // Increased font size
+                          fontSize: 12, 
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -122,7 +122,7 @@ class ProfileScreen extends StatelessWidget {
                   Flexible(
                     child: TextButton(
                       onPressed: () {
-                        // Action when the button is clicked
+                       
                       },
                       child: const Row(
                         children: [
@@ -130,7 +130,7 @@ class ProfileScreen extends StatelessWidget {
                             'Visit Store',
                             style: TextStyle(
                               color: Colors.black54,
-                              fontSize: 12, // Increased font size
+                              fontSize: 12, 
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -180,7 +180,7 @@ class ProfileScreen extends StatelessWidget {
                             onTap: () {},
                           ),
                           const Divider(
-                            color: Color.fromRGBO(0, 0, 0, 0.1), // Thin line with 10% opacity
+                            color: Color.fromRGBO(0, 0, 0, 0.1), 
                           ),
                           _buildMenuItem(
                             icon: Icons.lock_outline,

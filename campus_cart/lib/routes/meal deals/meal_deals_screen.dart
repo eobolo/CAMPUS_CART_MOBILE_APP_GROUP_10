@@ -27,18 +27,18 @@ class MealDealsScreen extends StatelessWidget {
         backgroundColor: const Color(0xFFF5C147),
         elevation: 0,
         leading: Container(
-          width: 10, // Set width for the circular background of the arrow
-          height: 10, // Set height for the circular background of the arrow
+          width: 10, 
+          height: 10, 
           decoration: const BoxDecoration(
-            shape: BoxShape.circle, // Circular shape
-            color: Colors.white,    // White background
+            shape: BoxShape.circle, 
+            color: Colors.white,    
           ),
           child: IconButton(
-            iconSize: 18, // Adjust icon size
-            padding: const EdgeInsets.all(8), // Add padding inside the circle
+            iconSize: 30, 
+            padding: const EdgeInsets.all(10), 
             icon: const Icon(Icons.arrow_back, color: Colors.black),
             onPressed: () {
-              // Handle back action
+              
             },
           ),
         ),
@@ -49,18 +49,18 @@ class MealDealsScreen extends StatelessWidget {
         ),
         actions: [
           Container(
-            width: 65, // Set width for the circular background of the cart icon
-            height: 40, // Set height for the circular background of the cart icon
+            width: 65, 
+            height: 40, 
             decoration: const BoxDecoration(
-              shape: BoxShape.circle, // Circular shape for the white background
-              color: Colors.white,    // White background for the cart icon
+              shape: BoxShape.circle, 
+              color: Colors.white,  
             ),
             child: IconButton(
-              iconSize: 20, // Adjust icon size
-              padding: const EdgeInsets.all(10), // Add padding inside the circle
+              iconSize: 20, 
+              padding: const EdgeInsets.all(10), 
               icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
               onPressed: () {
-                // Handle cart action
+                
               },
             ),
           ),
@@ -68,16 +68,16 @@ class MealDealsScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Adding a white background to the search bar area
+         
           Container(
-            color: Colors.white, // Change this to the desired background color
+            color: Colors.white, 
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'What do you want to get?',
                   prefixIcon: const Icon(Icons.search),
-                  fillColor: const Color(0xFFEBEBEB), // Updated fill color
+                  fillColor: const Color(0xFFEBEBEB), 
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -157,11 +157,11 @@ class MealDealsScreen extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.all(
-              Radius.circular(20), // Consistent border radius for all images
+              Radius.circular(20),
             ),
             child: Image.asset(
               imagePath,
-              height: 120, // Adjusted the height to fit everything in screen
+              height: 120,
               width: double.infinity,
               fit: BoxFit.cover,
             ),

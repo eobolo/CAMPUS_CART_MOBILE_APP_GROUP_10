@@ -95,7 +95,7 @@ class ProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(30), // Rounded corners
+                borderRadius: BorderRadius.circular(30), 
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
