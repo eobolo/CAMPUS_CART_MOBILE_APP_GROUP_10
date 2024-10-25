@@ -22,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFABD23),
+      backgroundColor: const Color(0xFFF5C147),
       body: SafeArea(
         child: Column(
           children: [
