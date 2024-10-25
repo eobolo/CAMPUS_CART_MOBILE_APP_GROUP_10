@@ -13,6 +13,12 @@ import 'package:campus_cart/routes/auth/signup.dart';
 import 'package:campus_cart/routes/auth/signup_otp.dart';
 import 'package:campus_cart/routes/auth/forgot_password/reset_password_otp.dart';
 import 'package:campus_cart/routes/auth/forgot_password/reset_password.dart';
+import 'package:campus_cart/routes/store/create_store.dart';
+import 'package:campus_cart/routes/store/initial_store_profile.dart';
+import 'package:campus_cart/routes/store/second_store_profile.dart';
+import 'package:campus_cart/routes/store/setup_delivery.dart';
+import 'package:campus_cart/routes/store/splash_store.dart';
+import 'package:campus_cart/routes/store/store_profile.dart';
 
 void main() async {
   // Ensure that Flutter's bindings are initialized before Firebase
@@ -75,6 +81,12 @@ class _MyAppState extends State<MyApp> {
         '/reset_password_otp': (context) => const OtpResetPassword(),
         '/reset_password': (context) => const ResetPassword(),
         '/home': (context) => const Home(),
+        '/setup': (context) => const CreateStore(),
+        '/initial_store_profile': (context) => const InitialStoreProfile(),
+        '/second_store_profile': (context) => SecondStoreProfile(),
+        '/setup_delivery': (context) => const SetupDelivery(),
+        '/store_profile': (context) => StoreProfile(),
+        '/splash_store': (context) => const SplashStore(),
       },
     );
   }
