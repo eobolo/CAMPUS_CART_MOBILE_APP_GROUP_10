@@ -92,6 +92,10 @@ flutter:
     - assets/images/jollof_rice_1.png
     - assets/images/jollof_rice_2.png
     - assets/images/fried_rice.png
+    - assets/images/fried_rice2.png
+    - assets/images/Blur_Image.png
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
