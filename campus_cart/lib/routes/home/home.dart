@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
+import 'package:campus_cart/routes/store/create_store.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -79,11 +80,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
     //   body: Center(
     //     child: Text(userStateController.loggedInuser?.email),
-    //   ),
-    // );
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
