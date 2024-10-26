@@ -47,6 +47,8 @@ dependencies:
   flutter_dash: 1.0.0
   image_picker: ^1.1.2
   fluttericon: 2.0.0
+  carousel_slider: ^5.0.0
+
 
 
 dev_dependencies:
@@ -97,6 +99,9 @@ flutter:
     - family: Iconify
       fonts:
         - asset: assets/Iconify.ttf
+    - family: Iconify1
+      fonts:
+        - asset: assets/Iconify1.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
