@@ -47,6 +47,8 @@ dependencies:
   flutter_dash: 1.0.0
   image_picker: ^1.1.2
   fluttericon: 2.0.0
+  carousel_slider: ^5.0.0
+
 
 
 dev_dependencies:
@@ -74,7 +76,47 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/
+    - assets/images/bag-happy.png
+    - assets/images/bag_happy.png
+    - assets/images/bag_happy_1.png
+    - assets/images/bag_happy_2.png
+    - assets/images/image_10.png
+    - assets/images/image_18.png
+    - assets/images/image_19.png
+    - assets/images/image_14.png
+    - assets/images/image_16.png
+    - assets/images/image_9.png
+    - assets/images/image_1.png
+    - assets/images/image_0.png
+    - assets/images/image_22.png
+    - assets/images/image_5.png
+    - assets/images/black_bag_happy.png
+    - assets/images/mesh.png
+    - assets/images/bag-happy-bw.png
+    - assets/images/delivery_bike.png
+    - assets/images/Blur_Image.png
+    - assets/images/desert.png
+    - assets/images/drinks.png
+    - assets/images/fried_rice.png
+    - assets/images/fried_rice2.png
+    - assets/images/fruits.png
+    - assets/images/jollof_rice_1.png
+    - assets/images/jollof_rice_2.png
+    - assets/images/lepra.png
+    - assets/images/meal_cat.png
+    - assets/images/meal1.png
+    - assets/images/meal2.png
+    - assets/images/meal3.png
+    - assets/images/mesh.png
+    - assets/images/notepad.png
+    - assets/images/operations.png
+    - assets/images/payment.png
+    - assets/images/person.png
+    - assets/images/person1.png
+    - assets/images/pics1.jpg
+    - assets/images/salad.png
+    - assets/images/store.png
+    - assets/images/profile.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -97,6 +139,9 @@ flutter:
     - family: Iconify
       fonts:
         - asset: assets/Iconify.ttf
+    - family: Iconify1
+      fonts:
+        - asset: assets/Iconify1.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

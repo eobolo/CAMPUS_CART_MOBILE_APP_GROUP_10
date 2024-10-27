@@ -53,3 +53,17 @@ class Iconify {
   static const IconData bagHhappy =
       IconData(0xe810, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
+
+class Iconify1 {
+  Iconify1._();
+
+  static const _kFontFam = 'Iconify1';
+  static const String? _kFontPkg = null;
+
+  static const IconData shop =
+      IconData(0xe811, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData location =
+      IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData notification =
+      IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+}

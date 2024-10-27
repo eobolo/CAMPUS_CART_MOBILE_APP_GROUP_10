@@ -2,6 +2,7 @@ import 'package:campus_cart/controllers/user_controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// class for the forgot password page
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
 
@@ -10,6 +11,7 @@ class ForgotPasswordPage extends StatefulWidget {
   _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
 }
 
+// state class for the forgot password page
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final TextEditingController emailController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -17,6 +19,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       Get.find<UserStateController>();
   bool _isLoading = false;
 
+  // function to send password reset email
   void _sendPasswordResetEmail() async {
     if (!(_formKey.currentState!.validate())) {
       return;
@@ -25,30 +28,33 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         _isLoading = true;
       });
       try {
-        await userStateController.checkForgotPasswordEmail(
-          userStateController.email.value.trim(),
-        );
+        // await userStateController.checkForgotPasswordEmail(
+        //   userStateController.email.value.trim(),
+        // );
         // Show success message
+        // if (mounted) {
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(
+        //       backgroundColor: const Color.fromARGB(255, 116, 255, 121),
+        //       content: Text(
+        //         "Email ${userStateController.email.value} successfully verified.",
+        //         style: TextStyle(
+        //           color: Color(0xFF202020),
+        //           fontSize: 14,
+        //           fontFamily: "DM Sans",
+        //           fontWeight: FontWeight.bold,
+        //         ),
+        //       ),
+        //     ),
+        //   );
+        // }
+        // // call the userstatecontroller with the already gotten phone number
+        // if (mounted) {
+        //   userStateController.triggerUserForgotPasswordOtp(
+        //       userStateController.phoneNumber.value, context);
+        // }
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: const Color.fromARGB(255, 116, 255, 121),
-              content: Text(
-                "Email ${userStateController.email.value} successfully verified.",
-                style: TextStyle(
-                  color: Color(0xFF202020),
-                  fontSize: 14,
-                  fontFamily: "DM Sans",
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          );
-        }
-        // call the userstatecontroller with the already gotten phone number
-        if (mounted) {
-          userStateController.triggerUserForgotPasswordOtp(
-              userStateController.phoneNumber.value, context);
+          Navigator.pushNamed(context, '/reset_password_otp');
         }
       } catch (e) {
         setState(() {
@@ -78,6 +84,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     }
   }
 
+  // build method for the forgot password page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

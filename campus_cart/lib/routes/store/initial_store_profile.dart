@@ -10,6 +10,23 @@ class InitialStoreProfile extends StatelessWidget {
 
   const InitialStoreProfile({super.key, this.storeLogo});
 
+  void _navigateToPage(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/search');
+        break;
+      case 2:
+        // Navigator.pushNamed(context, '/orders');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/store_profile');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +45,7 @@ class InitialStoreProfile extends StatelessWidget {
           fontWeight: FontWeight.w400,
           color: Color(0xff606060),
         ),
+        onTap: (index) => _navigateToPage(index, context),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(MyFlutterApp.home, color: Color(0xff606060)),
@@ -147,7 +165,10 @@ class InitialStoreProfile extends StatelessWidget {
                               ),
                               const SizedBox(height: 5),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/setup_delivery');
+                                },
                                 child: const Text('Set Up',
                                     style: TextStyle(
                                       fontSize: 8,
@@ -255,7 +276,7 @@ class InitialStoreProfile extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Container(
+                SizedBox(
                   width: 300,
                   child: const Text(
                     'Your menu is waiting to be filled with your culinary creations! Add your items now and let your customers discover the tasty treats you have to offer.',

@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
+<<<<<<< HEAD
   const SearchScreen({super.key});
 
   @override
+=======
+  const SearchScreen({super.key, required String query});
+
+  @override
+  // ignore: library_private_types_in_public_api
+>>>>>>> 3b4c3c914189ca03ba5566265a1c990f65d308e8
   _SearchScreenState createState() => _SearchScreenState();
 }
 
@@ -82,7 +89,11 @@ class _SearchScreenState extends State<SearchScreen> {
                       height: 55,
                       decoration: BoxDecoration(
                         color: Colors.white,
+<<<<<<< HEAD
                         borderRadius: BorderRadius.circular(18),
+=======
+                        borderRadius: BorderRadius.circular(40),
+>>>>>>> 3b4c3c914189ca03ba5566265a1c990f65d308e8
                       ),
                       child: Center(
                         child: TextField(
@@ -208,7 +219,11 @@ class _SearchScreenState extends State<SearchScreen> {
         Padding(
           padding: const EdgeInsets.all(16),
           child: Text(
+<<<<<<< HEAD
             'Results found for $_searchQuery',
+=======
+            'Results found for "$_searchQuery"',
+>>>>>>> 3b4c3c914189ca03ba5566265a1c990f65d308e8
             style: TextStyle(
               color: Colors.grey[600],
               fontSize: 14,
@@ -218,8 +233,21 @@ class _SearchScreenState extends State<SearchScreen> {
         Expanded(
           child: ListView(
             children: [
+<<<<<<< HEAD
               ...kitchens.map((kitchen) => _buildKitchenCard(kitchen)),
               ...foodItems.map((food) => _buildFoodCard(food)),
+=======
+              ...kitchens
+                  .where((kitchen) => kitchen['name']!
+                      .toLowerCase()
+                      .contains(_searchQuery.toLowerCase()))
+                  .map((kitchen) => _buildKitchenCard(kitchen)),
+              ...foodItems
+                  .where((food) => food['name']!
+                      .toLowerCase()
+                      .contains(_searchQuery.toLowerCase()))
+                  .map((food) => _buildFoodCard(food)),
+>>>>>>> 3b4c3c914189ca03ba5566265a1c990f65d308e8
             ],
           ),
         ),
@@ -337,11 +365,16 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       const SizedBox(width: 4),
                       Text(
+<<<<<<< HEAD
                         'Delivery will be made in ${kitchen['deliveryTime']!}',
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 14,
                         ),
+=======
+                        kitchen['deliveryTime']!,
+                        style: TextStyle(color: Colors.grey[600]),
+>>>>>>> 3b4c3c914189ca03ba5566265a1c990f65d308e8
                       ),
                     ],
                   ),
@@ -349,6 +382,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ],
             ),
           ),
+<<<<<<< HEAD
           Positioned(
             top: 50,
             left: 16,
@@ -362,6 +396,8 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
           ),
+=======
+>>>>>>> 3b4c3c914189ca03ba5566265a1c990f65d308e8
         ],
       ),
     );
@@ -369,6 +405,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _buildFoodCard(Map<String, String> food) {
     return Container(
+<<<<<<< HEAD
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -429,12 +466,55 @@ class _SearchScreenState extends State<SearchScreen> {
                   children: [
                     Flexible(
                       child: Text(
+=======
+      margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: const Color(0xFFE4E4E4),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                  child: Image.asset(
+                    food['imageUrl']!,
+                    width: double.infinity,
+                    height: 120,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+>>>>>>> 3b4c3c914189ca03ba5566265a1c990f65d308e8
                         food['name']!,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
+<<<<<<< HEAD
                     ),
                     const SizedBox(width: 8),
                     Container(
@@ -502,6 +582,35 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ],
                 ),
+=======
+                      const SizedBox(height: 4),
+                      Text(
+                        food['description']!,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'RWF ${food['price']}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            food['cookTime']!,
+                            style: TextStyle(color: Colors.grey[600]),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+>>>>>>> 3b4c3c914189ca03ba5566265a1c990f65d308e8
               ],
             ),
           ),

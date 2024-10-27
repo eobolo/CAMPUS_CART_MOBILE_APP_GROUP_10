@@ -8,7 +8,24 @@ import 'package:campus_cart/routes/visuals/product_card.dart';
 class StoreProfile extends StatelessWidget {
   final XFile? storeLogo;
 
-  StoreProfile({super.key, this.storeLogo});
+  const StoreProfile({super.key, this.storeLogo});
+
+  void _navigateToPage(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/search');
+        break;
+      case 2:
+        // Navigator.pushNamed(context, '/orders');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/store_profile');
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +45,7 @@ class StoreProfile extends StatelessWidget {
           fontWeight: FontWeight.w400,
           color: Color(0xff606060),
         ),
+        onTap: (index) => _navigateToPage(index, context),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(MyFlutterApp.home, color: Color(0xff606060)),

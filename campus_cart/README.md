@@ -1,8 +1,9 @@
 # campus_cart
 
-**Satisfy Your Cravings - Campus Style**
+## Satisfy Your Cravings - Campus Style
 
 ## Collaborators
+
 - Adediwura Emmanuel Adedigba
 - God'sfavour Chidinma Chukwudi
 - Alhassan Alimamy Dumbuya
