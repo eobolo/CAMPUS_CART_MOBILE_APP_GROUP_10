@@ -38,41 +38,19 @@ void main() async {
   Get.put(
       UserStateController()); // or Get.lazyPut(() => UserStateController());
 
-  // run The App
+  // Run the app
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  List<Widget> loadPages = [const SplashScreen(), const Getstartedpage()];
-  int page = 0;
-
-  /*
-    Async delay for the SplashScreen,
-    before switching to homePage.
-  */
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 7), () {
-      setState(() {
-        page = 1;
-      });
-    });
-  }
+class MyApp extends StatelessWidget {
+  const MyApp({super.key}); //  Add key parameter
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Orders from Favourite Uni 😁",
       debugShowCheckedModeBanner: false,
-      home: loadPages[page],
+      home: const MainWidget(), // Start with MainWidget
       theme: ThemeData(
         useMaterial3: true,
       ),
@@ -93,5 +71,32 @@ class _MyAppState extends State<MyApp> {
         '/splash_store': (context) => const SplashStore(),
       },
     );
+  }
+}
+
+class MainWidget extends StatefulWidget {
+  const MainWidget({super.key}); //  Add key parameter
+
+  @override
+  State<MainWidget> createState() => _MainWidgetState();
+}
+
+class _MainWidgetState extends State<MainWidget> {
+  List<Widget> loadPages = [const SplashScreen(), const Getstartedpage()];
+  int page = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 7), () {
+      setState(() {
+        page = 1; // Switch to the next page after the delay
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return loadPages[page]; // Display the current page based on the index
   }
 }
