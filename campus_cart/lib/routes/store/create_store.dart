@@ -7,6 +7,7 @@ class CreateStore extends StatefulWidget {
   const CreateStore({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SetUpStoreState createState() => _SetUpStoreState();
 }
 
@@ -20,9 +21,9 @@ class _SetUpStoreState extends State<CreateStore> {
   XFile? _storeLogo;
 
   Future<void> _pickStoreLogo() async {
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
     final XFile? pickedLogo =
-        await _picker.pickImage(source: ImageSource.gallery);
+        await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       _storeLogo = pickedLogo;
     });
@@ -264,7 +265,7 @@ class _SetUpStoreState extends State<CreateStore> {
                 const SizedBox(height: 40),
                 ElevatedButton(
                   onPressed: () {
-                    // handle this part
+                    //
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff202020),

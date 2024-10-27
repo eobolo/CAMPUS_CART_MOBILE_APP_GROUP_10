@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({super.key, required String query});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SearchScreenState createState() => _SearchScreenState();
 }
 
@@ -82,7 +83,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       height: 55,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
+                        borderRadius: BorderRadius.circular(40),
                       ),
                       child: Center(
                         child: TextField(
@@ -208,7 +209,7 @@ class _SearchScreenState extends State<SearchScreen> {
         Padding(
           padding: const EdgeInsets.all(16),
           child: Text(
-            'Results found for $_searchQuery',
+            'Results found for "$_searchQuery"',
             style: TextStyle(
               color: Colors.grey[600],
               fontSize: 14,
@@ -218,8 +219,16 @@ class _SearchScreenState extends State<SearchScreen> {
         Expanded(
           child: ListView(
             children: [
-              ...kitchens.map((kitchen) => _buildKitchenCard(kitchen)),
-              ...foodItems.map((food) => _buildFoodCard(food)),
+              ...kitchens
+                  .where((kitchen) => kitchen['name']!
+                      .toLowerCase()
+                      .contains(_searchQuery.toLowerCase()))
+                  .map((kitchen) => _buildKitchenCard(kitchen)),
+              ...foodItems
+                  .where((food) => food['name']!
+                      .toLowerCase()
+                      .contains(_searchQuery.toLowerCase()))
+                  .map((food) => _buildFoodCard(food)),
             ],
           ),
         ),
@@ -337,29 +346,13 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'Delivery will be made in ${kitchen['deliveryTime']!}',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 14,
-                        ),
+                        kitchen['deliveryTime']!,
+                        style: TextStyle(color: Colors.grey[600]),
                       ),
                     ],
                   ),
                 ),
               ],
-            ),
-          ),
-          Positioned(
-            top: 50,
-            left: 16,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                kitchen['imageUrl']!,
-                width: 64,
-                height: 64,
-                fit: BoxFit.cover,
-              ),
             ),
           ),
         ],
@@ -369,138 +362,78 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _buildFoodCard(Map<String, String> food) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      child: Stack(
         children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.asset(
-                  food['imageUrl']!,
-                  height: 180,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: const Color(0xFFE4E4E4),
+                width: 1,
               ),
-              Positioned(
-                bottom: 8,
-                right: 8,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Text(
-                    'Add +',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
                 ),
-              ),
-            ],
-          ),
-          // Food Details
-          Padding(
-            padding: const EdgeInsets.all(12),
+              ],
+            ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                  child: Image.asset(
+                    food['imageUrl']!,
+                    width: double.infinity,
+                    height: 120,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
                         food['name']!,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        food['kitchen']!,
+                      const SizedBox(height: 4),
+                      Text(
+                        food['description']!,
                         style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[700],
+                          color: Colors.grey[600],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  food['description']!,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
+                      const SizedBox(height: 4),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'RWF ${food['price']}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            food['cookTime']!,
+                            style: TextStyle(color: Colors.grey[600]),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Text(
-                      'RWF ${food['price']}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const Spacer(),
-                    Icon(
-                      Icons.access_time,
-                      size: 16,
-                      color: Colors.grey[600],
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${food['cookTime']} mins',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Icon(
-                      Icons.delivery_dining,
-                      size: 16,
-                      color: Colors.grey[600],
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${food['deliveryCost']} RWF',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
