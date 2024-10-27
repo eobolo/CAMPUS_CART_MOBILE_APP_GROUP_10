@@ -83,7 +83,6 @@ class MyApp extends StatelessWidget {
         '/most_used_kitchens': (context) => const Getstartedpage(),
         '/create_menu': (context) => const CreateMenuScreen(),
         '/edit_menu': (context) => const EditMenuScreen(),
-        '/setup_delivery': (context) => const DeliverySetupScreen(),
         '/setup_operation': (context) => const SetupOperationsScreen(),
       },
     );
