@@ -8,6 +8,7 @@ import 'dart:async';
 // initialize your time in minutes
 int timeInMinutes = 3;
 
+// ignore: must_be_immutable
 class SignUpOtpVerification extends StatefulWidget {
   const SignUpOtpVerification({super.key});
 
@@ -16,6 +17,7 @@ class SignUpOtpVerification extends StatefulWidget {
   _SignUpOtpVerificationState createState() => _SignUpOtpVerificationState();
 }
 
+// class for the OTP verification screen
 class _SignUpOtpVerificationState extends State<SignUpOtpVerification> {
   final TextEditingController otpController = TextEditingController();
   final UserStateController userStateController =
@@ -25,6 +27,7 @@ class _SignUpOtpVerificationState extends State<SignUpOtpVerification> {
   String? _otpTimeMessage = "";
   Timer? _timer;
 
+// initialize the timer
   @override
   void initState() {
     super.initState();
@@ -32,6 +35,7 @@ class _SignUpOtpVerificationState extends State<SignUpOtpVerification> {
     otpController.addListener(_checkOtpInput);
   }
 
+// start timer function
   void startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       const int hourMilliSeconds = 3600000;
@@ -49,6 +53,7 @@ class _SignUpOtpVerificationState extends State<SignUpOtpVerification> {
         int getHourInValue = (getHourInSeconds ~/ hourSeconds);
         int getRemainingSeconds;
 
+        // check if the remaining seconds is greater than the hour seconds
         if (hourSeconds > getHourInSeconds) {
           getRemainingSeconds = getHourInSeconds;
         } else {
@@ -56,6 +61,7 @@ class _SignUpOtpVerificationState extends State<SignUpOtpVerification> {
               getHourInSeconds - (hourSeconds * getHourInValue);
         }
 
+        // get the minute and second values
         int getMinuteInValue = (getRemainingSeconds ~/ minuteSeconds);
         int getSecondInValue = getRemainingSeconds - (getMinuteInValue * 60);
 
@@ -68,6 +74,7 @@ class _SignUpOtpVerificationState extends State<SignUpOtpVerification> {
     });
   }
 
+  // check if the OTP input is complete
   void _checkOtpInput() {
     if (otpController.text.length == 6) {
       setState(() {
@@ -80,6 +87,7 @@ class _SignUpOtpVerificationState extends State<SignUpOtpVerification> {
     }
   }
 
+  // dispose the timer
   @override
   void dispose() {
     otpController.dispose();
@@ -87,17 +95,20 @@ class _SignUpOtpVerificationState extends State<SignUpOtpVerification> {
     super.dispose();
   }
 
+  // submit OTP function
   void _submitOtp() {
     // Implement OTP verification logic here
     // userStateController.handleOTPVerification(otpController.text, context);
     Navigator.pushNamed(context, '/login');
   }
 
+  // resend OTP function
   void _onResendOtp() {
     userStateController.resendOTP(
         userStateController.phoneNumber.value, context);
   }
 
+  // build the OTP verification screen
   @override
   Widget build(BuildContext context) {
     return Scaffold(

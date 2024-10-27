@@ -1,12 +1,11 @@
 import 'package:campus_cart/controllers/user_controllers.dart';
-import 'package:campus_cart/routes/store/splash_store.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
-import 'package:campus_cart/routes/store/create_store.dart';
 import 'package:campus_cart/routes/home/search_screen.dart';
 
+// class hone for the home page
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -14,6 +13,7 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+// Home state
 class _HomeState extends State<Home> {
   UserStateController userStateController = Get.find<UserStateController>();
 
@@ -25,14 +25,17 @@ class _HomeState extends State<Home> {
     });
   }
 
+  // text controller for the search bar
   final TextEditingController _searchController = TextEditingController();
 
+  // list of specially reserved images
   final List<String> speciallyReservedImages = [
     'assets/images/meal1.png',
     'assets/images/meal3.png',
     'assets/images/meal2.png',
   ];
 
+  // list of categories images
   final List<String> categoriesImages = [
     'assets/images/meal_cat.png',
     'assets/images/desert.png',
@@ -41,6 +44,7 @@ class _HomeState extends State<Home> {
     'assets/images/salad.png',
   ];
 
+  // list of categories names
   final List<String> categoriesNames = [
     'Meals',
     'Deserts',
@@ -68,6 +72,7 @@ class _HomeState extends State<Home> {
   //   }
   // }
 
+  // navigating to pages
   void _navigateToPage(int index, BuildContext context) {
     switch (index) {
       case 0:
@@ -85,6 +90,7 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // build method
   @override
   Widget build(BuildContext context) {
     //   body: Center(
