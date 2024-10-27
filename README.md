@@ -4,7 +4,8 @@
 
 ## Description
 
-**Campus Cart** is a mobile application designed to simplify the process of finding and ordering food and products on campus. By providing a structured platform for vendors to list their offerings, students and faculty can easily browse, order, and connect with them, reducing the clutter associated with traditional WhatsApp group promotions.
+**Campus Cart** is a mobile application designed to simplify the process of finding and ordering food and products on campus. By providing a structured platform for vendors to list their offerings, students and faculty can easily browse, order, and connect with them, reducing the clutter associated with traditional WhatsApp group promotions. The main goal of Campus Cart is to provide a streamlined platform for both buyers and vendors at ALU. By enhancing the way vendors and buyers communicate and transact, the app aims to eliminate the chaos of WhatsApp group promotions. This organization will not only increase sales for campus vendors but also offer greater convenience and accessibility for students and faculty, fostering a more vibrant campus marketplace.
+
 
     -- Sample image reference --
 
