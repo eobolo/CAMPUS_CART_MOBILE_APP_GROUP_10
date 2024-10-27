@@ -4,7 +4,7 @@ import 'package:campus_cart/routes/auth/terms_and_conditions.dart';
 import 'package:campus_cart/routes/home/getstartedpage.dart';
 import 'package:campus_cart/routes/home/home.dart';
 import 'package:campus_cart/routes/home/search_screen.dart';
-// import 'package:campus_cart/routes/home/splashpage.dart';
+import 'package:campus_cart/routes/home/splashpage.dart';
 import 'package:campus_cart/routes/meal_deals/meal_deals.dart';
 import 'package:campus_cart/routes/profile/user_profile.dart';
 import 'package:campus_cart/routes/store/create_menu.dart';
@@ -55,8 +55,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Orders from Favourite Uni 😁",
       debugShowCheckedModeBanner: false,
-      // home: const MainWidget(), // Start with MainWidget
-      home: const Home(),
+      home: const MainWidget(), // Start with MainWidget
+      // home: const Home(),
       theme: ThemeData(
         useMaterial3: true,
       ),
@@ -89,29 +89,29 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// class MainWidget extends StatefulWidget {
-//   const MainWidget({super.key}); //  Add key parameter
+class MainWidget extends StatefulWidget {
+  const MainWidget({super.key}); //  Add key parameter
 
-//   @override
-//   State<MainWidget> createState() => _MainWidgetState();
-// }
+  @override
+  State<MainWidget> createState() => _MainWidgetState();
+}
 
-// class _MainWidgetState extends State<MainWidget> {
-  // List<Widget> loadPages = [const SplashScreen(), const Getstartedpage()];
-  // int page = 0;
+class _MainWidgetState extends State<MainWidget> {
+  List<Widget> loadPages = [const SplashScreen(), const Getstartedpage()];
+  int page = 0;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   Future.delayed(const Duration(seconds: 7), () {
-  //     setState(() {
-  //       page = 1; // Switch to the next page after the delay
-  //     });
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 7), () {
+      setState(() {
+        page = 1; // Switch to the next page after the delay
+      });
+    });
+  }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return loadPages[page]; // Display the current page based on the index
-  // }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return loadPages[page]; // Display the current page based on the index
+  }
+}
