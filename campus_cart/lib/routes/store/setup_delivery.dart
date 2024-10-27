@@ -16,12 +16,6 @@ class _DeliverySetupScreenState extends State<DeliverySetupScreen> {
       appBar: AppBar(
         backgroundColor: Colors.amber,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         title: const Text(
           'Set Up Delivery',
           style: TextStyle(color: Colors.black),
@@ -277,8 +271,7 @@ class _DeliverySetupScreenState extends State<DeliverySetupScreen> {
                   // Continue Button
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
-                      // Handle further actions with the selected location
+                      Navigator.pushNamed(context, '/second_store_profile');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,

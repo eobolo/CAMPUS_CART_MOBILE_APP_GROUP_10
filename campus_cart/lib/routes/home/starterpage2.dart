@@ -1,4 +1,4 @@
-import 'package:campus_cart/routes/home/stackposition_2.dart';
+import 'package:campus_cart/routes/visuals/stackposition_2.dart';
 import 'package:campus_cart/routes/state/splash_screen_state.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_cart/routes/visuals/splashvisuals.dart';

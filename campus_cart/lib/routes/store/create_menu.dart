@@ -135,7 +135,9 @@ class CreateMenuScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40.0),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/store_profile');
+                },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   backgroundColor: Colors.black,
