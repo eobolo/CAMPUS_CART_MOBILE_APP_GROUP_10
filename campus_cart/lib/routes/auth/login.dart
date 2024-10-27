@@ -41,7 +41,6 @@ class _SignInState extends State<SignIn> {
         //   userStateController.email.value.trim(),
         //   userStateController.password.value.trim(),
         // );
-        // Navigator.pushReplacementNamed(context, '/home');
 
         setState(() {
           isLoading =

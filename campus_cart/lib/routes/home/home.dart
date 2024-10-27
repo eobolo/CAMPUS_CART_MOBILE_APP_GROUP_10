@@ -17,11 +17,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   UserStateController userStateController = Get.find<UserStateController>();
 
-  int _count = 0;
+  int count = 0;
 
   void _incrementCounter() {
     setState(() {
-      _count++;
+      count++;
     });
   }
 
@@ -1069,7 +1069,7 @@ class _HomeState extends State<Home> {
                               ),
                               const SizedBox(height: 20),
                               SizedBox(
-                                height: 218,
+                                height: 270,
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
@@ -1079,6 +1079,7 @@ class _HomeState extends State<Home> {
                                             horizontal: 8),
                                         child: Container(
                                           width: 235,
+                                          height: 270,
                                           decoration: BoxDecoration(
                                             color: const Color(0xffffffff),
                                             borderRadius:
@@ -1104,17 +1105,29 @@ class _HomeState extends State<Home> {
                                                 child: Stack(
                                                   children: [
                                                     Image.asset(
-                                                      'assets/images/store1.png',
-                                                      height: 116,
+                                                      'assets/images/store.png',
+                                                      height: 116.0,
                                                       fit: BoxFit.cover,
                                                     ),
+                                                    // Positioned(
+                                                    //     top: 90,
+                                                    //     left: 15.0,
+                                                    //     height: 52.0,
+                                                    //     width: 52.0,
+                                                    //     child:
+                                                    //         Transform.translate(
+                                                    //       offset:
+                                                    //           Offset(10, -10),
+                                                    //       child: Image.asset(
+                                                    //           'assets/images/person.png'),
+                                                    //     )),
                                                   ],
                                                 ),
                                               ),
                                               Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          left: 15, top: 45),
+                                                          left: 15, top: 50),
                                                   child: Column(
                                                     children: [
                                                       Row(
@@ -1226,7 +1239,7 @@ class _HomeState extends State<Home> {
                                                 child: Stack(
                                                   children: [
                                                     Image.asset(
-                                                      'assets/images/store1.png',
+                                                      'assets/images/store.png',
                                                       height: 116,
                                                       fit: BoxFit.cover,
                                                     ),

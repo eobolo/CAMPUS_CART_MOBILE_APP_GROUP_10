@@ -104,8 +104,8 @@ class _SignUpOtpVerificationState extends State<SignUpOtpVerification> {
 
   // resend OTP function
   void _onResendOtp() {
-    userStateController.resendOTP(
-        userStateController.phoneNumber.value, context);
+    // userStateController.resendOTP(
+    //     userStateController.phoneNumber.value, context);
   }
 
   // build the OTP verification screen

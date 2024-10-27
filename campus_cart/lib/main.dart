@@ -1,11 +1,12 @@
+// import 'package:campus_cart/firebase_options.dart';
 import 'package:campus_cart/routes/auth/forgot_password/forgot_password_page.dart';
 import 'package:campus_cart/routes/auth/login.dart';
 import 'package:campus_cart/routes/auth/terms_and_conditions.dart';
 import 'package:campus_cart/routes/home/getstartedpage.dart';
 import 'package:campus_cart/routes/home/home.dart';
 import 'package:campus_cart/routes/home/search_screen.dart';
-import 'package:campus_cart/routes/home/splashpage.dart';
-import 'package:campus_cart/routes/meal%20deals/meal_deals.dart';
+// import 'package:campus_cart/routes/home/splashpage.dart';
+import 'package:campus_cart/routes/meal_deals/meal_deals.dart';
 import 'package:campus_cart/routes/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_core/firebase_core.dart';

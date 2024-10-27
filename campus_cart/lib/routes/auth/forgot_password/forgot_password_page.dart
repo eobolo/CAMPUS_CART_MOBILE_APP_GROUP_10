@@ -48,10 +48,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         //     ),
         //   );
         // }
-        // call the userstatecontroller with the already gotten phone number
+        // // call the userstatecontroller with the already gotten phone number
+        // if (mounted) {
+        //   userStateController.triggerUserForgotPasswordOtp(
+        //       userStateController.phoneNumber.value, context);
+        // }
         if (mounted) {
-          // userStateController.triggerUserForgotPasswordOtp(
-          //     userStateController.phoneNumber.value, context);
           Navigator.pushNamed(context, '/reset_password_otp');
         }
       } catch (e) {

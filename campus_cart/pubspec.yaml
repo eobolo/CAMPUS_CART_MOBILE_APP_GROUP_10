@@ -93,6 +93,30 @@ flutter:
     - assets/images/black_bag_happy.png
     - assets/images/mesh.png
     - assets/images/bag-happy-bw.png
+    - assets/images/delivery_bike.png
+    - assets/images/Blur_Image.png
+    - assets/images/desert.png
+    - assets/images/drinks.png
+    - assets/images/fried_rice.png
+    - assets/images/fried_rice2.png
+    - assets/images/fruits.png
+    - assets/images/jollof_rice_1.png
+    - assets/images/jollof_rice_2.png
+    - assets/images/lepra.png
+    - assets/images/meal_cat.png
+    - assets/images/meal1.png
+    - assets/images/meal2.png
+    - assets/images/meal3.png
+    - assets/images/mesh.png
+    - assets/images/notepad.png
+    - assets/images/operations.png
+    - assets/images/payment.png
+    - assets/images/person.png
+    - assets/images/person1.png
+    - assets/images/pics1.jpg
+    - assets/images/salad.png
+    - assets/images/store.png
+    - assets/images/profile.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -66,7 +66,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     try {
       // String result = await userStateController
       //     .sendPasswordReset(); // Call the controller method
-      // Show success message
+      // // Show success message
       // if (mounted) {
       //   ScaffoldMessenger.of(context).showSnackBar(
       //     SnackBar(content: Text(result), backgroundColor: Colors.green),
