@@ -1,4 +1,4 @@
-import 'package:campus_cart/controllers/user_controllers.dart';
+import 'package:campus_cart/controllers/user_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,12 +23,10 @@ class _HomeState extends State<Home> {
       // Navigate to login if not authenticated
       Future.delayed(Duration.zero, () {
         if (mounted) {
+          // send user to splash store for now, will change to home later
           Navigator.pushReplacementNamed(context, '/login');
         }
       });
-    } else {
-      // Optionally, update the reactive loggedInuser from FirebaseAuth
-      userStateController.loggedInuser = FirebaseAuth.instance.currentUser;
     }
   }
 
@@ -36,7 +34,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(userStateController.loggedInuser?.email),
+        child: Text(
+            "${userStateController.campusCartUser["email"]}, ${userStateController.campusCartUser["PhoneNumber"]}, ${userStateController.campusCartUser["isBuyer"]}"),
       ),
     );
   }

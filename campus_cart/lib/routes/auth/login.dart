@@ -1,4 +1,5 @@
-import 'package:campus_cart/controllers/user_controllers.dart';
+import 'package:campus_cart/controllers/store_logo_controller.dart';
+import 'package:campus_cart/controllers/user_controller.dart';
 import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,8 @@ class _SignInState extends State<SignIn> {
   final TextEditingController passwordController = TextEditingController();
   final UserStateController userStateController =
       Get.find<UserStateController>();
+  final StoreLogoStateController storeLogoStateController =
+      Get.find<StoreLogoStateController>();
   final _formSignInKey = GlobalKey<FormState>();
   bool isLoading = false;
 
@@ -43,9 +46,16 @@ class _SignInState extends State<SignIn> {
           isLoading =
               false; // remove circular loading action incase user navigates there again
         });
-
-        if (mounted) {
-          Navigator.pushReplacementNamed(context, '/home');
+        try {
+          await storeLogoStateController
+              .retrieveImage(userStateController.loggedInuser.uid);
+        } catch (e) {
+          // do nothing
+        } finally {
+          if (mounted) {
+            // send user to splash store for now, will change to home later
+            Navigator.pushReplacementNamed(context, '/splash_store');
+          }
         }
       } catch (e) {
         setState(() {

@@ -1,3 +1,4 @@
+import 'package:campus_cart/controllers/setup_delivery_controller.dart';
 import 'package:campus_cart/custom_exceptions/otp_different.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,8 +15,8 @@ class UserStateController extends GetxController {
   RxString email = "".obs;
   RxString password = "".obs;
   RxString phoneNumber = "".obs;
-  bool isBuyer = true;
   RxBool iSTermsAndConditionRead = false.obs;
+  bool isBuyer = true;
 
   // messages for Auth Pages
   RxString createAccountMessage = "".obs;
@@ -26,6 +27,7 @@ class UserStateController extends GetxController {
   // this is a perfect way to create reactive variables for databases classes
   dynamic loggedInuser = null.obs;
   dynamic userDetailInsecure = null.obs;
+  RxMap<dynamic, dynamic> campusCartUser = {}.obs;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
   PhoneAuthCredential? credential;
@@ -140,11 +142,15 @@ class UserStateController extends GetxController {
             "isBuyer": true,
           };
           await _dbRef.child("campusCartUsers").child(user.uid).set(newUser);
+          // add new campus cart user to a reactive variable
+          campusCartUser.value = newUser;
+          // update sign in otp message
           signUpOtpMessage.value =
               "Campus user created successfully with additional info!";
           await Future.delayed(const Duration(seconds: 2));
           if (context.mounted) {
-            Navigator.pushReplacementNamed(context, '/home');
+            // send user to splash store for now, will change to home later
+            Navigator.pushReplacementNamed(context, '/splash_store');
           }
         }
       } catch (e) {
@@ -185,6 +191,8 @@ class UserStateController extends GetxController {
   }
 
   Future<void> loginUser(String email, String password) async {
+    final SetupDeliveryController setupDeliveryController =
+        Get.find<SetupDeliveryController>();
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -192,6 +200,17 @@ class UserStateController extends GetxController {
     } catch (e) {
       throw Exception("Login failed: $e");
     }
+    try {
+      final event = await _dbRef
+          .child("campusCartUsers/${loggedInuser.uid}")
+          .once(DatabaseEventType.value);
+      campusCartUser.value = event.snapshot.value as Map<dynamic, dynamic>;
+    } catch (e) {
+      throw Exception(
+          "Extracting user info during login failed, please try again");
+    }
+    // call setupdelivery, oprations and payment
+    await setupDeliveryController.getSetupDeliveryFromDb();
   }
 
   Future<dynamic> checkForgotPasswordEmail(String email) async {
@@ -342,7 +361,8 @@ class UserStateController extends GetxController {
     final UserStateController userStateController =
         Get.find<UserStateController>();
     try {
-      await _auth.sendPasswordResetEmail(email: userStateController.email.value.trim()); 
+      await _auth.sendPasswordResetEmail(
+          email: userStateController.email.value.trim());
       return "Password reset email sent successfully. redirect to login";
     } on FirebaseAuthException catch (e) {
       // Handle specific Firebase Auth exceptions
@@ -356,6 +376,37 @@ class UserStateController extends GetxController {
     } catch (e) {
       // Handle any other exceptions
       throw Exception("An unexpected error occurred: $e");
+    }
+  }
+
+  Future<void> updateCampusUserData(String vendorName, String address,
+      String city, String storeDetails, String uuid) async {
+    final dbRef = _dbRef.child("campusCartUsers").child(uuid);
+    final Map<String, Object> addedUserData = {
+      "isVendor": true,
+      "vendorName": vendorName,
+      "address": address,
+      "city": city,
+      "storeDetails": storeDetails,
+    };
+
+    try {
+      await dbRef.update(addedUserData);
+    } on FirebaseException catch (e) {
+      // Handle Firebase Database errors
+      switch (e.code) {
+        case 'permission-denied':
+          throw Exception('Permission denied: ${e.message}');
+        case 'disconnected':
+          throw Exception('Disconnected from the database: ${e.message}');
+        case 'invalid-argument':
+          throw Exception('Invalid argument: ${e.message}');
+        default:
+          throw Exception('Database error: ${e.message}');
+      }
+    } catch (e) {
+      // Handle general errors
+      throw Exception('An error occurred: $e');
     }
   }
 }
