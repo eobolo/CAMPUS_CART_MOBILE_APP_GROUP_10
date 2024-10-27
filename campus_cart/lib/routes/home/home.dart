@@ -1,9 +1,10 @@
 import 'package:campus_cart/controllers/user_controllers.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
 import 'package:campus_cart/routes/store/create_store.dart';
+import 'package:campus_cart/routes/home/search_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -59,23 +60,38 @@ class _HomeState extends State<Home> {
     'Vegan',
   ];
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    // Check if the user is logged in
-    if (FirebaseAuth.instance.currentUser == null ||
-        userStateController.loggedInuser == null) {
-      // Navigate to login if not authenticated
-      Future.delayed(Duration.zero, () {
-        if (mounted) {
-          Navigator.pushReplacementNamed(context, '/login');
-        }
-      });
-    } else {
-      // Optionally, update the reactive loggedInuser from FirebaseAuth
-      userStateController.loggedInuser = FirebaseAuth.instance.currentUser;
-    }
+  //   // Check if the user is logged in
+  //   if (FirebaseAuth.instance.currentUser == null ||
+  //       userStateController.loggedInuser == null) {
+  //     // Navigate to login if not authenticated
+  //     Future.delayed(Duration.zero, () {
+  //       if (mounted) {
+  //         Navigator.pushReplacementNamed(context, '/login');
+  //       }
+  //     });
+  //   } else {
+  //     // Optionally, update the reactive loggedInuser from FirebaseAuth
+  //     // userStateController.loggedInuser = FirebaseAuth.instance.currentUser;
+  //   }
+  // }
+
+  int _currentIndex = 0;
+
+  final List<Widget> _children = [
+    Home(),
+    SearchScreen(),
+    // OrdersScreen(),
+    CreateStore(),
+  ];
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   @override
@@ -84,7 +100,7 @@ class _HomeState extends State<Home> {
     //     child: Text(userStateController.loggedInuser?.email),
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
+        currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         selectedLabelStyle: const TextStyle(
           fontSize: 14,
@@ -116,6 +132,7 @@ class _HomeState extends State<Home> {
             label: 'Your Store',
           ),
         ],
+        onTap: onTabTapped,
       ),
       backgroundColor: const Color(0xffF5C147),
       body: SafeArea(
@@ -1305,6 +1322,9 @@ class _HomeState extends State<Home> {
                     ),
                   )),
             ),
+            Expanded(
+              child: _children[_currentIndex],
+            )
           ],
         ),
       ),

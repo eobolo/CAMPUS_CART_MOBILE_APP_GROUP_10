@@ -89,13 +89,14 @@ class _OtpResetPasswordState extends State<OtpResetPassword> {
 
   void _submitOtp() {
     // Implement OTP verification logic here
-    userStateController.handleForgotPasswordOTPVerification(
-        otpController.text, context);
+    // userStateController.handleForgotPasswordOTPVerification(
+    //     otpController.text, context);
+    Navigator.pushNamed(context, '/reset_password');
   }
 
   void _onResendOtp() {
-    userStateController.resendForgotPasswordOTP(
-        userStateController.phoneNumber.value, context);
+    // userStateController.resendForgotPasswordOTP(
+    //     userStateController.phoneNumber.value, context);
   }
 
   @override

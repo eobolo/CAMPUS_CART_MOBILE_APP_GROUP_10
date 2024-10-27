@@ -89,7 +89,8 @@ class _SignUpOtpVerificationState extends State<SignUpOtpVerification> {
 
   void _submitOtp() {
     // Implement OTP verification logic here
-    userStateController.handleOTPVerification(otpController.text, context);
+    // userStateController.handleOTPVerification(otpController.text, context);
+    Navigator.pushNamed(context, '/login');
   }
 
   void _onResendOtp() {

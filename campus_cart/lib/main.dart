@@ -5,10 +5,10 @@ import 'package:campus_cart/routes/home/getstartedpage.dart';
 import 'package:campus_cart/routes/home/home.dart';
 import 'package:campus_cart/routes/home/splashpage.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:get/get.dart';
-import 'package:campus_cart/controllers/user_controllers.dart';
-import 'firebase_options.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:get/get.dart';
+// import 'package:campus_cart/controllers/user_controllers.dart';
+// import 'firebase_options.dart';
 import 'package:campus_cart/routes/auth/signup.dart';
 import 'package:campus_cart/routes/auth/signup_otp.dart';
 import 'package:campus_cart/routes/auth/forgot_password/reset_password_otp.dart';
@@ -19,20 +19,24 @@ import 'package:campus_cart/routes/store/second_store_profile.dart';
 import 'package:campus_cart/routes/store/setup_delivery.dart';
 import 'package:campus_cart/routes/store/splash_store.dart';
 import 'package:campus_cart/routes/store/store_profile.dart';
+import 'package:campus_cart/controllers/user_controllers.dart';
+import 'package:get/get.dart';
 
 void main() async {
   // Ensure that Flutter's bindings are initialized before Firebase
   WidgetsFlutterBinding.ensureInitialized();
 
-  // register firebase app
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // // register firebase app
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   /*
     register your controllers
     - UserStateContoller
   */
-  Get.put(UserStateController());
+  // Get.put(UserStateController());
+  Get.put(
+      UserStateController()); // or Get.lazyPut(() => UserStateController());
 
   // run The App
   runApp(const MyApp());

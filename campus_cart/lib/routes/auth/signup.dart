@@ -30,8 +30,9 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
       userStateController.createAccountMessage.value =
           "Please Go and Read Terms and Conditions";
     } else {
-      userStateController.registerUser(
-          userStateController.phoneNumber.value, context);
+      // userStateController.registerUser(
+      // userStateController.phoneNumber.value, context);
+      Navigator.pushNamed(context, '/signup_otp');
     }
   }
 

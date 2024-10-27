@@ -58,15 +58,15 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   void _updateUserPassword() async {
     try {
-      String result = await userStateController
-          .sendPasswordReset(); // Call the controller method
+      // String result = await userStateController
+      //     .sendPasswordReset(); // Call the controller method
       // Show success message
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(result), backgroundColor: Colors.green),
-        );
-      }
-      await Future.delayed(const Duration(seconds: 2));
+      // if (mounted) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(content: Text(result), backgroundColor: Colors.green),
+      //   );
+      // }
+      // await Future.delayed(const Duration(seconds: 2));
       if (mounted) {
         Navigator.pushReplacementNamed(context, '/login');
       }
