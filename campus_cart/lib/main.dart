@@ -4,7 +4,7 @@ import 'package:campus_cart/routes/auth/terms_and_conditions.dart';
 import 'package:campus_cart/routes/home/getstartedpage.dart';
 import 'package:campus_cart/routes/home/home.dart';
 import 'package:campus_cart/routes/home/search_screen.dart';
-import 'package:campus_cart/routes/home/splashpage.dart';
+// import 'package:campus_cart/routes/home/splashpage.dart';
 import 'package:campus_cart/routes/meal_deals/meal_deals.dart';
 import 'package:campus_cart/routes/profile/user_profile.dart';
 import 'package:campus_cart/routes/store/create_menu.dart';
