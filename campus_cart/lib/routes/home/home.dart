@@ -84,6 +84,7 @@ class _HomeState extends State<Home> {
     //     child: Text(userStateController.loggedInuser?.email),
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        onTap: _changeScreen,
         currentIndex: 0,
         type: BottomNavigationBarType.fixed,
         selectedLabelStyle: const TextStyle(
@@ -1045,7 +1046,7 @@ class _HomeState extends State<Home> {
                               ),
                               const SizedBox(height: 20),
                               SizedBox(
-                                height: 218,
+                                height: 270,
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
@@ -1055,6 +1056,7 @@ class _HomeState extends State<Home> {
                                             horizontal: 8),
                                         child: Container(
                                           width: 235,
+                                          height: 270,
                                           decoration: BoxDecoration(
                                             color: const Color(0xffffffff),
                                             borderRadius:
@@ -1080,17 +1082,29 @@ class _HomeState extends State<Home> {
                                                 child: Stack(
                                                   children: [
                                                     Image.asset(
-                                                      'assets/images/store1.png',
-                                                      height: 116,
+                                                      'assets/images/store.png',
+                                                      height: 116.0,
                                                       fit: BoxFit.cover,
                                                     ),
+                                                    // Positioned(
+                                                    //     top: 90,
+                                                    //     left: 15.0,
+                                                    //     height: 52.0,
+                                                    //     width: 52.0,
+                                                    //     child:
+                                                    //         Transform.translate(
+                                                    //       offset:
+                                                    //           Offset(10, -10),
+                                                    //       child: Image.asset(
+                                                    //           'assets/images/person.png'),
+                                                    //     )),
                                                   ],
                                                 ),
                                               ),
                                               Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          left: 15, top: 45),
+                                                          left: 15, top: 50),
                                                   child: Column(
                                                     children: [
                                                       Row(
@@ -1202,7 +1216,7 @@ class _HomeState extends State<Home> {
                                                 child: Stack(
                                                   children: [
                                                     Image.asset(
-                                                      'assets/images/store1.png',
+                                                      'assets/images/store.png',
                                                       height: 116,
                                                       fit: BoxFit.cover,
                                                     ),
