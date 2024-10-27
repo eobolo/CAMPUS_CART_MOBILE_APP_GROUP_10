@@ -512,7 +512,7 @@ class SecondStoreProfile extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    // handle this part
+                    Navigator.pushNamed(context, '/create_menu');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff202020),

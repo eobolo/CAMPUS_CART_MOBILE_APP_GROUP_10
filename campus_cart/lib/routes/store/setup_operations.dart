@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class SetupOperationsScreen extends StatelessWidget {
   const SetupOperationsScreen({super.key});
 
@@ -76,8 +74,10 @@ class SetupOperationsScreen extends StatelessWidget {
                   const SizedBox(width: 8),
                   const Text(
                     'TO',
-                    style:
-                    TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey),
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -117,18 +117,20 @@ class SetupOperationsScreen extends StatelessWidget {
               ),
               const Spacer(),
               ElevatedButton(
-                onPressed: () {},
-                style:
-                ElevatedButton.styleFrom(backgroundColor:
-                Colors.black, minimumSize:
-                const Size(double.infinity, 50), shape:
-                RoundedRectangleBorder(borderRadius:
-                BorderRadius.circular(20),),),
-                child:
-                const Text('Set Up Operations', style:
-                TextStyle(fontSize:
-                18, color:
-                Colors.white),),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/second_store_profile');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: const Text(
+                  'Set Up Operations',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
               ),
             ],
           ),
