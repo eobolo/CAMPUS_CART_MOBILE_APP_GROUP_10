@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class DeliverySetupScreen extends StatefulWidget {
   const DeliverySetupScreen({super.key});
 
@@ -272,8 +271,7 @@ class _DeliverySetupScreenState extends State<DeliverySetupScreen> {
                   // Continue Button
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
-                      // Handle further actions with the selected location
+                      Navigator.pushNamed(context, '/second_store_profile');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,

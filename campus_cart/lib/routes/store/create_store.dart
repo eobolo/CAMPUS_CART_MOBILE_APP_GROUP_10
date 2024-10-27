@@ -265,7 +265,7 @@ class _SetUpStoreState extends State<CreateStore> {
                 const SizedBox(height: 40),
                 ElevatedButton(
                   onPressed: () {
-                    //
+                    Navigator.pushNamed(context, '/initial_store_profile');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff202020),

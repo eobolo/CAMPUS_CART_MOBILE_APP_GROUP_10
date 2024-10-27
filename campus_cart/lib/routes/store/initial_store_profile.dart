@@ -204,7 +204,10 @@ class InitialStoreProfile extends StatelessWidget {
                               ),
                               const SizedBox(height: 5),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/setup_operations');
+                                },
                                 child: const Text('Set Up',
                                     style: TextStyle(
                                       fontSize: 8,
@@ -292,7 +295,7 @@ class InitialStoreProfile extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    // handle this part
+                    Navigator.pushNamed(context, '/create_menu');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff202020),

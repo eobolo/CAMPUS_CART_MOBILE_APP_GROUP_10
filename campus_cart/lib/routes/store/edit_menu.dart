@@ -1,19 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: CreateMenuScreen(),
-    );
-  }
-}
-
-class CreateMenuScreen extends StatelessWidget {
-  const CreateMenuScreen({super.key});
+class EditMenuScreen extends StatelessWidget {
+  const EditMenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +108,8 @@ class CreateMenuScreen extends StatelessWidget {
                 width: 120,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.grey.shade200, // Lighter grey (shade 200) for the image placeholder
+                  color: Colors.grey
+                      .shade200, // Lighter grey (shade 200) for the image placeholder
                 ),
                 child: Center(
                   child: Column(
@@ -128,14 +117,15 @@ class CreateMenuScreen extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.add_a_photo_outlined, size: 40),
-                        onPressed: () {
-                          // Add image upload functionality here
-                        },
+                        onPressed: () {},
                       ),
                       const SizedBox(height: 8),
                       const Text(
                         'Add meal image',
-                        style: TextStyle(fontSize: 14, color: Colors.black45 , fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black45,
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -143,7 +133,9 @@ class CreateMenuScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40.0),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/create_menu');
+                },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   backgroundColor: Colors.black,
