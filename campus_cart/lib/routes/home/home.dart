@@ -1,9 +1,9 @@
 import 'package:campus_cart/controllers/user_controllers.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
-import 'package:campus_cart/routes/store/create_store.dart';
+// import 'package:campus_cart/routes/store/create_store.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -64,18 +64,18 @@ class _HomeState extends State<Home> {
     super.initState();
 
     // Check if the user is logged in
-    if (FirebaseAuth.instance.currentUser == null ||
-        userStateController.loggedInuser == null) {
-      // Navigate to login if not authenticated
-      Future.delayed(Duration.zero, () {
-        if (mounted) {
-          Navigator.pushReplacementNamed(context, '/login');
-        }
-      });
-    } else {
-      // Optionally, update the reactive loggedInuser from FirebaseAuth
-      userStateController.loggedInuser = FirebaseAuth.instance.currentUser;
-    }
+    // if (FirebaseAuth.instance.currentUser == null ||
+    //     userStateController.loggedInuser == null) {
+    //   // Navigate to login if not authenticated
+    //   Future.delayed(Duration.zero, () {
+    //     if (mounted) {
+    //       Navigator.pushReplacementNamed(context, '/login');
+    //     }
+    //   });
+    // } else {
+    //   // Optionally, update the reactive loggedInuser from FirebaseAuth
+    //   userStateController.loggedInuser = FirebaseAuth.instance.currentUser;
+    // }
   }
 
   @override

@@ -34,10 +34,10 @@ class _SignInState extends State<SignIn> {
       });
       try {
         // call firebase Aith method to login
-        await userStateController.loginUser(
-          userStateController.email.value.trim(),
-          userStateController.password.value.trim(),
-        );
+        // await userStateController.loginUser(
+        //   userStateController.email.value.trim(),
+        //   userStateController.password.value.trim(),
+        // );
 
         setState(() {
           isLoading =
