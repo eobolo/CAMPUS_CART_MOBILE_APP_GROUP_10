@@ -1,18 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: CreateMenuScreen(),
-    );
-  }
-}
-
 class CreateMenuScreen extends StatelessWidget {
   const CreateMenuScreen({super.key});
 
@@ -121,7 +108,8 @@ class CreateMenuScreen extends StatelessWidget {
                 width: 120,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.grey.shade200, // Lighter grey (shade 200) for the image placeholder
+                  color: Colors.grey
+                      .shade200, // Lighter grey (shade 200) for the image placeholder
                 ),
                 child: Center(
                   child: Column(
@@ -136,7 +124,10 @@ class CreateMenuScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       const Text(
                         'Add meal image',
-                        style: TextStyle(fontSize: 14, color: Colors.black45 , fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black45,
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

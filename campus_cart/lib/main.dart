@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
         '/setup': (context) => const CreateStore(),
         '/initial_store_profile': (context) => const InitialStoreProfile(),
         '/second_store_profile': (context) => SecondStoreProfile(),
-        '/setup_delivery': (context) => const SetupDelivery(),
+        '/setup_delivery': (context) => const DeliverySetupScreen(),
         '/store_profile': (context) => StoreProfile(),
         '/splash_store': (context) => const SplashStore(),
         '/user_profile': (context) => const ProfileScreen(),

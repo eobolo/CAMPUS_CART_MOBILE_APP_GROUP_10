@@ -28,16 +28,16 @@ class _DeliverySetupScreenState extends State<DeliverySetupScreen> {
       appBar: AppBar(
         backgroundColor: Colors.amber,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text(
-          'Set Up Delivery',
-          style: TextStyle(color: Colors.black),
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back, color: Colors.black),
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
+        // title: const Text(
+        //   'Set Up Delivery',
+        //   style: TextStyle(color: Colors.black),
+        // ),
         leading: Padding(
           padding: const EdgeInsets.only(left: 16.0), // Space from the edge
           child: Container(
