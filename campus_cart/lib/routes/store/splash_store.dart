@@ -98,8 +98,8 @@ class SplashStore extends StatelessWidget {
                         child: Column(
                           children: [
                             Image.asset(
-                              'assets/images/store.png',
-                              fit: BoxFit.contain,
+                              'assets/images/store1.png',
+                              fit: BoxFit.cover,
                             ),
                             const SizedBox(height: 20),
                             Image.asset(

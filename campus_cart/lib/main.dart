@@ -1,4 +1,3 @@
-// import 'package:campus_cart/firebase_options.dart';
 import 'package:campus_cart/routes/auth/forgot_password/forgot_password_page.dart';
 import 'package:campus_cart/routes/auth/login.dart';
 import 'package:campus_cart/routes/auth/terms_and_conditions.dart';
@@ -9,10 +8,10 @@ import 'package:campus_cart/routes/home/search_screen.dart';
 import 'package:campus_cart/routes/meal_deals/meal_deals.dart';
 import 'package:campus_cart/routes/profile/user_profile.dart';
 import 'package:flutter/material.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:get/get.dart';
-// import 'package:campus_cart/controllers/user_controllers.dart';
-// import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
+import 'package:campus_cart/controllers/user_controllers.dart';
+import 'firebase_options.dart';
 import 'package:campus_cart/routes/auth/signup.dart';
 import 'package:campus_cart/routes/auth/signup_otp.dart';
 import 'package:campus_cart/routes/auth/forgot_password/reset_password_otp.dart';
@@ -23,17 +22,16 @@ import 'package:campus_cart/routes/store/second_store_profile.dart';
 import 'package:campus_cart/routes/store/setup_delivery.dart';
 import 'package:campus_cart/routes/store/splash_store.dart';
 import 'package:campus_cart/routes/store/store_profile.dart';
-import 'package:campus_cart/controllers/user_controllers.dart';
-import 'package:get/get.dart';
+
 
 void main() async {
   // Ensure that Flutter's bindings are initialized before Firebase
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
-  // // register firebase app
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  // register firebase app
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   /*
     register your controllers
     - UserStateContoller

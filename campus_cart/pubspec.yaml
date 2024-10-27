@@ -116,6 +116,7 @@ flutter:
     - assets/images/pics1.jpg
     - assets/images/salad.png
     - assets/images/store.png
+    - assets/images/store1.png
     - assets/images/profile.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

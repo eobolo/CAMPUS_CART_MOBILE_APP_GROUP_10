@@ -85,7 +85,7 @@ class _HomeState extends State<Home> {
         // Navigator.pushNamed(context, '/orders');
         break;
       case 3:
-        Navigator.pushNamed(context, '/store_profile');
+        Navigator.pushNamed(context, '/splash_store');
         break;
     }
   }
