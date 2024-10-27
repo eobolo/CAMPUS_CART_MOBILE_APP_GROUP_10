@@ -1,23 +1,7 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Meal Deal Checkout',
-      home: MealDealCheckoutScreen(),
-    );
-  }
-}
-
-class MealDealCheckoutScreen extends StatelessWidget {
-  const MealDealCheckoutScreen({super.key});
+class AllKitchen extends StatelessWidget {
+  const AllKitchen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +10,7 @@ class MealDealCheckoutScreen extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/Blur_Image.png', 
+              'assets/images/Blur_Image.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -52,46 +36,41 @@ class MealDealCheckoutScreen extends StatelessWidget {
                 ],
               ),
               child: Stack(
-                clipBehavior: Clip.none, 
+                clipBehavior: Clip.none,
                 children: [
-                 
                   ClipRRect(
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
                     ),
-                    child: Container(
+                    child: SizedBox(
                       height: 270,
                       width: double.infinity,
                       child: Image.asset(
-                        'assets/images/fried_rice2.png', 
+                        'assets/images/fried_rice2.png',
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  
                   Positioned(
-                    top: -50,  
+                    top: -50,
                     right: 2,
                     child: CircleAvatar(
                       radius: 20,
                       backgroundColor: Colors.white,
                       child: IconButton(
                         icon: const Icon(Icons.close, color: Colors.black),
-                        onPressed: () {
-                          
-                        },
+                        onPressed: () {},
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 270), 
+                    padding: const EdgeInsets.only(top: 270),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -104,10 +83,11 @@ class MealDealCheckoutScreen extends StatelessWidget {
                               ),
                               const SizedBox(width: 8),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[200], 
-                                  borderRadius: BorderRadius.circular(10), 
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: const Text(
                                   'Lore’s Kitchen',
@@ -120,13 +100,12 @@ class MealDealCheckoutScreen extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 8),
-                          
                           const Text(
                             'A plate of jollof rice, chicken, beef and plantain',
-                            style: TextStyle(fontSize: 14, color: Color(0xFF606060)),
+                            style: TextStyle(
+                                fontSize: 14, color: Color(0xFF606060)),
                           ),
                           const SizedBox(height: 8),
-                         
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -171,66 +150,63 @@ class MealDealCheckoutScreen extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 20),
-                          
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              
                               Container(
-                                height : 40,
-                                width: 100, 
+                                height: 40,
+                                width: 100,
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.yellow, width: 1), 
-                                  borderRadius: BorderRadius.circular(20), 
+                                  border: Border.all(
+                                      color: Colors.yellow, width: 1),
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Row(
                                   children: [
                                     GestureDetector(
-                                      onTap: () {
-                                     
-                                      },
+                                      onTap: () {},
                                       child: const Padding(
-                                        padding: EdgeInsets.all(9.0), 
+                                        padding: EdgeInsets.all(9.0),
                                         child: Icon(Icons.remove, size: 16),
                                       ),
                                     ),
                                     const Text(
                                       '1',
-                                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     GestureDetector(
-                                      onTap: () {
-                                       
-                                      },
+                                      onTap: () {},
                                       child: const Padding(
-                                        padding: EdgeInsets.all(8.0), 
+                                        padding: EdgeInsets.all(8.0),
                                         child: Icon(Icons.add, size: 16),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.black,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 12),
                                 ),
-                                onPressed: () {
-                                  
-                                },
+                                onPressed: () {},
                                 child: Row(
                                   children: const [
                                     Text(
-                                      'Checkout for 4300 ', 
-                                      style: TextStyle(color: Colors.white, fontSize: 14),
+                                      'Checkout for 4300 ',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 14),
                                     ),
                                     Text(
-                                      'RWF', 
-                                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                                      'RWF',
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 14),
                                     ),
                                   ],
                                 ),

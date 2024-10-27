@@ -1,23 +1,7 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Meal Deals',
-      home: MealDealsScreen(),
-    );
-  }
-}
-
-class MealDealsScreen extends StatelessWidget {
-  const MealDealsScreen({super.key});
+class MealDeals extends StatelessWidget {
+  const MealDeals({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +11,17 @@ class MealDealsScreen extends StatelessWidget {
         backgroundColor: const Color(0xFFF5C147),
         elevation: 0,
         leading: Container(
-          width: 10, 
-          height: 10, 
+          width: 10,
+          height: 10,
           decoration: const BoxDecoration(
-            shape: BoxShape.circle, 
-            color: Colors.white,    
+            shape: BoxShape.circle,
+            color: Colors.white,
           ),
           child: IconButton(
-            iconSize: 30, 
-            padding: const EdgeInsets.all(10), 
+            iconSize: 30,
+            padding: const EdgeInsets.all(10),
             icon: const Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () {
-              
-            },
+            onPressed: () {},
           ),
         ),
         centerTitle: true,
@@ -49,35 +31,33 @@ class MealDealsScreen extends StatelessWidget {
         ),
         actions: [
           Container(
-            width: 65, 
-            height: 40, 
+            width: 65,
+            height: 40,
             decoration: const BoxDecoration(
-              shape: BoxShape.circle, 
-              color: Colors.white,  
+              shape: BoxShape.circle,
+              color: Colors.white,
             ),
             child: IconButton(
-              iconSize: 20, 
-              padding: const EdgeInsets.all(10), 
-              icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
-              onPressed: () {
-                
-              },
+              iconSize: 20,
+              padding: const EdgeInsets.all(10),
+              icon:
+                  const Icon(Icons.shopping_cart_outlined, color: Colors.black),
+              onPressed: () {},
             ),
           ),
         ],
       ),
       body: Column(
         children: [
-         
           Container(
-            color: Colors.white, 
+            color: Colors.white,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'What do you want to get?',
                   prefixIcon: const Icon(Icons.search),
-                  fillColor: const Color(0xFFEBEBEB), 
+                  fillColor: const Color(0xFFEBEBEB),
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -117,15 +97,14 @@ class MealDealsScreen extends StatelessWidget {
                           'assets/images/jollof_rice_2.png',
                         ),
                         buildMealCard(
-                          context,
-                          'Int. Fried Rice',             
-                          'Lore’s Kitchen',              
-                          '',                            
-                          '',                            
-                          '300 RWF',                     
-                          '20 mins',                    
-                          'assets/images/fried_rice.png' 
-                        ),
+                            context,
+                            'Int. Fried Rice',
+                            'Lore’s Kitchen',
+                            '',
+                            '',
+                            '300 RWF',
+                            '20 mins',
+                            'assets/images/fried_rice.png'),
                       ],
                     ),
                   ),
@@ -182,7 +161,8 @@ class MealDealsScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(10),

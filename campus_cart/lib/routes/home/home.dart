@@ -3,8 +3,9 @@ import 'package:campus_cart/controllers/user_controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
-// import 'package:campus_cart/routes/store/create_store.dart';
+import 'package:campus_cart/routes/home/search_screen.dart';
 
+// class hone for the home page
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -12,37 +13,29 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+// Home state
 class _HomeState extends State<Home> {
   UserStateController userStateController = Get.find<UserStateController>();
 
-  Map<String, int> itemQuantity = {
-    'item1': 0,
-    'item2': 0,
-    'item3': 0,
-  };
+  int count = 0;
 
-  void incrementItemQuantity(String item) {
+  void _incrementCounter() {
     setState(() {
-      itemQuantity[item] = (itemQuantity[item] ?? 0) + 1;
+      count++;
     });
   }
 
-  void decrementItemQuantity(String item) {
-    setState(() {
-      if (itemQuantity[item] != null && itemQuantity[item]! > 0) {
-        itemQuantity[item] = itemQuantity[item]! - 1;
-      }
-    });
-  }
-
+  // text controller for the search bar
   final TextEditingController _searchController = TextEditingController();
 
+  // list of specially reserved images
   final List<String> speciallyReservedImages = [
     'assets/images/meal1.png',
     'assets/images/meal3.png',
     'assets/images/meal2.png',
   ];
 
+  // list of categories images
   final List<String> categoriesImages = [
     'assets/images/meal_cat.png',
     'assets/images/desert.png',
@@ -51,6 +44,7 @@ class _HomeState extends State<Home> {
     'assets/images/salad.png',
   ];
 
+  // list of categories names
   final List<String> categoriesNames = [
     'Meals',
     'Deserts',
@@ -59,32 +53,50 @@ class _HomeState extends State<Home> {
     'Vegan',
   ];
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    // Check if the user is logged in
-    // if (FirebaseAuth.instance.currentUser == null ||
-    //     userStateController.loggedInuser == null) {
-    //   // Navigate to login if not authenticated
-    //   Future.delayed(Duration.zero, () {
-    //     if (mounted) {
-    //       Navigator.pushReplacementNamed(context, '/login');
-    //     }
-    //   });
-    // } else {
-    //   // Optionally, update the reactive loggedInuser from FirebaseAuth
-    //   userStateController.loggedInuser = FirebaseAuth.instance.currentUser;
-    // }
+  //   // Check if the user is logged in
+  //   if (FirebaseAuth.instance.currentUser == null ||
+  //       userStateController.loggedInuser == null) {
+  //     // Navigate to login if not authenticated
+  //     Future.delayed(Duration.zero, () {
+  //       if (mounted) {
+  //         Navigator.pushReplacementNamed(context, '/login');
+  //       }
+  //     });
+  //   } else {
+  //     // Optionally, update the reactive loggedInuser from FirebaseAuth
+  //     // userStateController.loggedInuser = FirebaseAuth.instance.currentUser;
+  //   }
+  // }
+
+  // navigating to pages
+  void _navigateToPage(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/search');
+        break;
+      case 2:
+        // Navigator.pushNamed(context, '/orders');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/store_profile');
+        break;
+    }
   }
 
+  // build method
   @override
   Widget build(BuildContext context) {
     //   body: Center(
     //     child: Text(userStateController.loggedInuser?.email),
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        onTap: _changeScreen,
         currentIndex: 0,
         type: BottomNavigationBarType.fixed,
         selectedLabelStyle: const TextStyle(
@@ -99,6 +111,9 @@ class _HomeState extends State<Home> {
           fontWeight: FontWeight.w400,
           color: Color(0xff606060),
         ),
+        onTap: (index) {
+          _navigateToPage(index, context);
+        },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(MyFlutterApp.home_bold),
@@ -129,7 +144,7 @@ class _HomeState extends State<Home> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // handle click
+                      Navigator.pushNamed(context, '/user_profile');
                     },
                     child: Container(
                       width: 44,
@@ -305,7 +320,13 @@ class _HomeState extends State<Home> {
                   fillColor: Color(0xffFFFFFF),
                 ),
                 onSubmitted: (String value) {
-                  // handle search
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchScreen(query: value),
+                    ),
+                  );
+                  _searchController.clear();
                 },
               ),
             ),
@@ -377,7 +398,8 @@ class _HomeState extends State<Home> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      // handle click
+                                      Navigator.pushNamed(
+                                          context, '/meal_deals');
                                     },
                                     child: const Stack(
                                       alignment: Alignment.center,
@@ -459,7 +481,7 @@ class _HomeState extends State<Home> {
                                                       left: 8,
                                                       child: GestureDetector(
                                                         onTap: () {
-                                                          // handle click
+                                                          _incrementCounter();
                                                         },
                                                         child: Container(
                                                           width: 60,
@@ -500,7 +522,7 @@ class _HomeState extends State<Home> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      "Mimi’s Jollof Rice",
+                                                      "Mimi's Jollof Rice",
                                                       style: TextStyle(
                                                         color:
                                                             Color(0xff202020),
@@ -647,7 +669,7 @@ class _HomeState extends State<Home> {
                                                       left: 8,
                                                       child: GestureDetector(
                                                         onTap: () {
-                                                          // handle click
+                                                          _incrementCounter();
                                                         },
                                                         child: Container(
                                                           width: 60,
@@ -835,7 +857,7 @@ class _HomeState extends State<Home> {
                                                       left: 8,
                                                       child: GestureDetector(
                                                         onTap: () {
-                                                          // handle click
+                                                          _incrementCounter();
                                                         },
                                                         child: Container(
                                                           width: 60,
@@ -1010,7 +1032,8 @@ class _HomeState extends State<Home> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      // handle click
+                                      Navigator.pushNamed(
+                                          context, '/most_used_kitchens');
                                     },
                                     child: const Stack(
                                       alignment: Alignment.center,

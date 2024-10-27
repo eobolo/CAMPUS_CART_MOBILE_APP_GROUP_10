@@ -8,6 +8,7 @@ import 'dart:async';
 // initialize your time in minutes
 int timeInMinutes = 3;
 
+// class for the OTP reset password page
 class OtpResetPassword extends StatefulWidget {
   const OtpResetPassword({super.key});
 
@@ -16,6 +17,7 @@ class OtpResetPassword extends StatefulWidget {
   _OtpResetPasswordState createState() => _OtpResetPasswordState();
 }
 
+// state class for the OTP reset password page
 class _OtpResetPasswordState extends State<OtpResetPassword> {
   final TextEditingController otpController = TextEditingController();
   final UserStateController userStateController =
@@ -25,6 +27,7 @@ class _OtpResetPasswordState extends State<OtpResetPassword> {
   String? _otpTimeMessage = "";
   Timer? _timer;
 
+  // function to start the timer
   @override
   void initState() {
     super.initState();
@@ -32,12 +35,14 @@ class _OtpResetPasswordState extends State<OtpResetPassword> {
     otpController.addListener(_checkOtpInput);
   }
 
+  // function to start the timer
   void startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       const int hourMilliSeconds = 3600000;
       const int hourSeconds = 3600;
       const int minuteSeconds = 60;
 
+      // check if the counter is 0
       if (_counter == 0) {
         setState(() {
           _timer?.cancel();
@@ -49,6 +54,7 @@ class _OtpResetPasswordState extends State<OtpResetPassword> {
         int getHourInValue = (getHourInSeconds ~/ hourSeconds);
         int getRemainingSeconds;
 
+        // check if the remaining seconds is greater than the hour seconds
         if (hourSeconds > getHourInSeconds) {
           getRemainingSeconds = getHourInSeconds;
         } else {
@@ -56,9 +62,11 @@ class _OtpResetPasswordState extends State<OtpResetPassword> {
               getHourInSeconds - (hourSeconds * getHourInValue);
         }
 
+        // get the minute and second values
         int getMinuteInValue = (getRemainingSeconds ~/ minuteSeconds);
         int getSecondInValue = getRemainingSeconds - (getMinuteInValue * 60);
 
+        // set the state of the counter
         setState(() {
           _counter -= 1000;
           _otpTimeMessage =
@@ -68,6 +76,7 @@ class _OtpResetPasswordState extends State<OtpResetPassword> {
     });
   }
 
+  // function to check the OTP input
   void _checkOtpInput() {
     if (otpController.text.length == 6) {
       setState(() {
@@ -80,6 +89,7 @@ class _OtpResetPasswordState extends State<OtpResetPassword> {
     }
   }
 
+  // function to dispose the controller
   @override
   void dispose() {
     otpController.dispose();
@@ -87,6 +97,7 @@ class _OtpResetPasswordState extends State<OtpResetPassword> {
     super.dispose();
   }
 
+  // function to submit the OTP
   void _submitOtp() {
     // Implement OTP verification logic here
     // userStateController.handleForgotPasswordOTPVerification(
@@ -94,11 +105,13 @@ class _OtpResetPasswordState extends State<OtpResetPassword> {
     Navigator.pushNamed(context, '/reset_password');
   }
 
+  // function to resend the OTP
   void _onResendOtp() {
     // userStateController.resendForgotPasswordOTP(
     //     userStateController.phoneNumber.value, context);
   }
 
+  // build the widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(

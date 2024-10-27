@@ -5,6 +5,23 @@ import 'package:flutter_dash/flutter_dash.dart';
 class SplashStore extends StatelessWidget {
   const SplashStore({super.key});
 
+  void _navigateToPage(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/search');
+        break;
+      case 2:
+        // Navigator.pushNamed(context, '/orders');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/store_profile');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +40,7 @@ class SplashStore extends StatelessWidget {
             fontWeight: FontWeight.w400,
             color: Color(0xff606060),
           ),
+          onTap: (index) => _navigateToPage(index, context),
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(MyFlutterApp.home, color: Color(0xff606060)),
@@ -119,7 +137,9 @@ class SplashStore extends StatelessWidget {
                             ),
                             const SizedBox(height: 30),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/create_store');
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xff202020),
                                 padding: const EdgeInsets.symmetric(
