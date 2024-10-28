@@ -1,4 +1,6 @@
+import 'package:campus_cart/controllers/meal_image_controller.dart';
 import 'package:campus_cart/controllers/setup_delivery_controller.dart';
+import 'package:campus_cart/controllers/setup_operation_controller.dart';
 import 'package:campus_cart/controllers/store_logo_controller.dart';
 import 'package:campus_cart/routes/auth/forgot_password/forgot_password_page.dart';
 import 'package:campus_cart/routes/auth/login.dart';
@@ -6,7 +8,10 @@ import 'package:campus_cart/routes/auth/terms_and_conditions.dart';
 import 'package:campus_cart/routes/home/getstartedpage.dart';
 import 'package:campus_cart/routes/home/home.dart';
 import 'package:campus_cart/routes/home/splashpage.dart';
+import 'package:campus_cart/routes/stores/create_menu.dart';
+import 'package:campus_cart/routes/stores/edit_menu_details.dart';
 import 'package:campus_cart/routes/stores/setup_delivery_pop.dart';
+import 'package:campus_cart/routes/stores/setup_operations.dart';
 import 'package:campus_cart/routes/stores/setup_store.dart';
 import 'package:campus_cart/routes/stores/splash_store.dart';
 import 'package:campus_cart/routes/stores/storeprofile.dart';
@@ -33,10 +38,14 @@ void main() async {
     - UserStateContoller
     - StoreLogoStateController
     - SetupDeliveryController
+    - SetupOperationController
+    - MealImageController
   */
   Get.put(UserStateController());
   Get.put(StoreLogoStateController());
   Get.put(SetupDeliveryController());
+  Get.put(SetupOperationController());
+  Get.put(MealImageController());
   // run The App
   runApp(const MyApp());
 }
@@ -88,6 +97,9 @@ class _MyAppState extends State<MyApp> {
         '/setup_store': (context) => const SetUpStore(),
         '/store_profile': (context) => StoreProfile(),
         '/setup_delivery': (context) => DeliverySetupScreen(),
+        '/setup_operation': (context) => SetupOperationsScreen(),
+        '/create_menu': (context) => CreateMenuScreen(),
+        '/edit_menu': (context) => EditMenuDetailsScreen(),
       },
     );
   }

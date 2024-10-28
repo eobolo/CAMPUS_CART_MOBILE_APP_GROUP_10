@@ -18,6 +18,7 @@ class StoreLogoStateController extends GetxController {
           storageRef.child("store_logos/$userId/store_logo.png");
       try {
         await logoImageRef.putFile(logoFile);
+        await retrieveImage(userId);
         fileObject = logoFile;
       } catch (e) {
         throw Exception("Error uploading image: $e");

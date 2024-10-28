@@ -1,4 +1,3 @@
-import 'package:campus_cart/controllers/setup_delivery_controller.dart';
 import 'package:campus_cart/custom_exceptions/otp_different.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -191,8 +190,6 @@ class UserStateController extends GetxController {
   }
 
   Future<void> loginUser(String email, String password) async {
-    final SetupDeliveryController setupDeliveryController =
-        Get.find<SetupDeliveryController>();
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -209,8 +206,6 @@ class UserStateController extends GetxController {
       throw Exception(
           "Extracting user info during login failed, please try again");
     }
-    // call setupdelivery, oprations and payment
-    await setupDeliveryController.getSetupDeliveryFromDb();
   }
 
   Future<dynamic> checkForgotPasswordEmail(String email) async {

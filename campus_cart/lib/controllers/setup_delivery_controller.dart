@@ -75,7 +75,6 @@ class SetupDeliveryController extends GetxController {
       // process data for null or list<null and object with key 1
       processFirstElement(userSetupDeliveryInfo);
       // save in controller
-
       setupDeliveryController.minFee.value = userSetupDeliveryInfo["minFee"];
       setupDeliveryController.maxFee.value = userSetupDeliveryInfo["maxFee"];
       setupDeliveryController.storeAddress.value =

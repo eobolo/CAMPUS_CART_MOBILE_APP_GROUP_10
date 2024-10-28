@@ -1,3 +1,5 @@
+import 'package:campus_cart/controllers/setup_delivery_controller.dart';
+import 'package:campus_cart/controllers/setup_operation_controller.dart';
 import 'package:campus_cart/controllers/store_logo_controller.dart';
 import 'package:campus_cart/controllers/user_controller.dart';
 import 'package:campus_cart/routes/visuals/splashvisuals.dart';
@@ -18,6 +20,10 @@ class _SignInState extends State<SignIn> {
       Get.find<UserStateController>();
   final StoreLogoStateController storeLogoStateController =
       Get.find<StoreLogoStateController>();
+  final SetupOperationController setupOperationController =
+      Get.find<SetupOperationController>();
+  final SetupDeliveryController setupDeliveryController =
+      Get.find<SetupDeliveryController>();
   final _formSignInKey = GlobalKey<FormState>();
   bool isLoading = false;
 
@@ -49,6 +55,9 @@ class _SignInState extends State<SignIn> {
         try {
           await storeLogoStateController
               .retrieveImage(userStateController.loggedInuser.uid);
+          // call setupdelivery, operations and payment infos.
+          await setupDeliveryController.getSetupDeliveryFromDb();
+          await setupOperationController.getSetupOperationFromDb();
         } catch (e) {
           // do nothing
         } finally {

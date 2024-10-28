@@ -1,6 +1,9 @@
+import 'package:campus_cart/controllers/meal_image_controller.dart';
 import 'package:campus_cart/controllers/setup_delivery_controller.dart';
+import 'package:campus_cart/controllers/setup_operation_controller.dart';
 import 'package:campus_cart/controllers/store_logo_controller.dart';
 import 'package:campus_cart/controllers/user_controller.dart';
+import 'package:campus_cart/routes/visuals/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
 import 'package:flutter_dash/flutter_dash.dart';
@@ -15,9 +18,21 @@ class StoreProfile extends StatelessWidget {
       Get.find<UserStateController>();
   final SetupDeliveryController setupDeliveryController =
       Get.find<SetupDeliveryController>();
+  final SetupOperationController setupOperationController =
+      Get.find<SetupOperationController>();
+  final MealImageController mealImageController =
+      Get.find<MealImageController>();
 
   void _setUpDelivery(BuildContext context) {
     Navigator.pushNamed(context, '/setup_delivery');
+  }
+
+  void _setUpOperations(BuildContext context) {
+    Navigator.pushNamed(context, '/setup_operation');
+  }
+
+  void _createMenu(BuildContext context) {
+    Navigator.pushNamed(context, '/create_menu');
   }
 
   @override
@@ -75,44 +90,48 @@ class StoreProfile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const SizedBox(height: 100),
-                Center(
-                  child: Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(24),
+                Obx(() {
+                  return Center(
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: storeLogoStateController.imageUrl.value == ""
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(24),
+                              child: Image.asset(
+                                'assets/images/person.png',
+                                width: 120,
+                                height: 120,
+                              ),
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(24),
+                              child: Image.network(
+                                storeLogoStateController.imageUrl.value,
+                                width: 120,
+                                height: 120,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                     ),
-                    child: storeLogoStateController.imageUrl.value == ""
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(24),
-                            child: Image.asset(
-                              'assets/images/person.png',
-                              width: 120,
-                              height: 120,
-                            ),
-                          )
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(24),
-                            child: Image.network(
-                              storeLogoStateController.imageUrl.value,
-                              width: 120,
-                              height: 120,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                  ),
-                ),
+                  );
+                }),
                 const SizedBox(height: 20),
-                Text(
-                  userStateController.campusCartUser["vendorName"],
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'DM Sans',
-                    color: Color(0xff202020),
-                  ),
-                ),
+                Obx(() {
+                  return Text(
+                    userStateController.campusCartUser["vendorName"],
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'DM Sans',
+                      color: Color(0xff202020),
+                    ),
+                  );
+                }),
                 const SizedBox(height: 10),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -312,41 +331,181 @@ class StoreProfile extends StatelessWidget {
                                 );
                         }),
                         const SizedBox(width: 5),
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 2),
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: const Color(0xffFDEACB),
-                            ),
-                            child: Column(children: [
-                              const Image(
-                                image:
-                                    AssetImage('assets/images/operations.png'),
-                              ),
-                              const SizedBox(height: 10),
-                              const Text(
-                                'Operations',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff202020),
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              ElevatedButton(
-                                onPressed: () {},
-                                child: const Text('Set Up',
-                                    style: TextStyle(
-                                      fontSize: 8,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xff202020),
-                                    )),
-                              ),
-                            ]),
-                          ),
-                        ),
+                        Obx(() {
+                          return setupOperationController.fromHour.value !=
+                                      24 &&
+                                  setupOperationController.toHour.value != 24
+                              ? Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xffFDEACB),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10),
+                                                  child: ElevatedButton(
+                                                    onPressed: () =>
+                                                        _setUpOperations(
+                                                            context),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          const Color(
+                                                              0xffFFFFFF),
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 5),
+                                                      minimumSize:
+                                                          const Size(20, 30),
+                                                      elevation: 0,
+                                                      shadowColor:
+                                                          Colors.transparent,
+                                                    ),
+                                                    child: const Text(
+                                                      'See More',
+                                                      style: TextStyle(
+                                                        fontSize: 8,
+                                                        color:
+                                                            Color(0xff202020),
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontFamily: 'DM Sans',
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ]),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment
+                                                        .start, // width: 50,
+                                                children: [
+                                                  const Image(
+                                                    image: AssetImage(
+                                                      'assets/images/operations.png',
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  Row(
+                                                    children: [
+                                                      const Text(
+                                                        'Operations',
+                                                        style: TextStyle(
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          color:
+                                                              Color(0xff202020),
+                                                          fontFamily: 'DM Sans',
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 2),
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal: 8,
+                                                                vertical: 5),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: const Color(
+                                                              0xffFFD48E),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(40),
+                                                        ),
+                                                        height: 20,
+                                                        child: const Text(
+                                                          'Hours',
+                                                          style: TextStyle(
+                                                            fontSize: 8,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Color(
+                                                                0xff644411),
+                                                            fontFamily:
+                                                                'DM Sans',
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  Text(
+                                                    'Today: ${setupOperationController.fromHour.value}-${setupOperationController.toHour.value}${setupOperationController.toSymbol.value}',
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xff202020),
+                                                      fontFamily: 'DM Sans',
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                ]),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16),
+                                      color: const Color(0xffFDEACB),
+                                    ),
+                                    child: Column(children: [
+                                      const Image(
+                                        image: AssetImage(
+                                            'assets/images/operations.png'),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      const Text(
+                                        'Operations',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(0xff202020),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      ElevatedButton(
+                                        onPressed: () =>
+                                            _setUpOperations(context),
+                                        child: const Text('Set Up',
+                                            style: TextStyle(
+                                              fontSize: 8,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xff202020),
+                                            )),
+                                      ),
+                                    ]),
+                                  ),
+                                );
+                        }),
                         const SizedBox(width: 5),
                         Expanded(
                           child: Container(
@@ -392,58 +551,118 @@ class StoreProfile extends StatelessWidget {
                   dashColor: Color(0xffABABAB),
                 ),
                 const SizedBox(height: 20),
-                const Image(
-                  image: AssetImage('assets/images/notepad.png'),
-                  width: 124,
-                  height: 124,
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'Empty Menu',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff202020),
-                    fontFamily: 'DM Sans',
-                  ),
-                ),
-                const SizedBox(height: 8),
-                SizedBox(
-                  width: 300,
-                  child: const Text(
-                    'Your menu is waiting to be filled with your culinary creations! Add your items now and let your customers discover the tasty treats you have to offer.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xff606060),
-                      fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // handle this part
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff202020),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 100, vertical: 18),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(80),
-                    ),
-                  ),
-                  child: const Text(
-                    'Create Menu',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xffffffff),
-                    ),
-                  ),
-                ),
+                Obx(() {
+                  return mealImageController.mapOfDishes.isEmpty
+                      ? Column(
+                          children: [
+                            const Image(
+                              image: AssetImage('assets/images/notepad.png'),
+                              width: 124,
+                              height: 124,
+                            ),
+                            const SizedBox(height: 10),
+                            const Text(
+                              'Empty Menu',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff202020),
+                                fontFamily: 'DM Sans',
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            SizedBox(
+                              width: 300,
+                              child: const Text(
+                                'Your menu is waiting to be filled with your culinary creations! Add your items now and let your customers discover the tasty treats you have to offer.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xff606060),
+                                  fontFamily: 'DM Sans',
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: () => _createMenu(context),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xff202020),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 100, vertical: 18),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(80),
+                                ),
+                              ),
+                              child: const Text(
+                                'Create Menu',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'DM Sans',
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xffffffff),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Your Menu Items',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff202020),
+                                  fontFamily: 'DM Sans',
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                  childAspectRatio: 0.75, // Adjust if needed
+                                ),
+                                itemCount:
+                                    mealImageController.mapOfDishes.length +
+                                        1, // +1 for the "Create New Menu" card
+                                itemBuilder: (context, index) {
+                                  if (index == 0) {
+                                    // First item as "Create New Menu"
+                                    return ProductCard(
+                                      mealName: 'Create New Menu',
+                                      isCreateNew: true,
+                                    );
+                                  }
+
+                                  // Get the actual item from the list for other cards
+                                  final item = mealImageController
+                                      .mapOfDishes[index - 1];
+                                  return ProductCard(
+                                    editMealId: item["mealId"],
+                                    mealName: item['mealName'] as String,
+                                    mealDescription: item["mealDesccription"],
+                                    preparationTime: item["preparationTime"],
+                                    cuisine: item["cuisine"],
+                                    type: item["type"],
+                                    dietary: item["dietary"],
+                                    price: '${item['price']}',
+                                    imageUrl: item["mealImageUrl"],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                }),
               ],
             ),
           ),
