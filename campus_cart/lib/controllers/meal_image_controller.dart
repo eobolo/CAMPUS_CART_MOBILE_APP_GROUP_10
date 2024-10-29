@@ -245,6 +245,8 @@ class MealImageController extends GetxController {
       XFile? imageFile, String userId, int mealId) async {
     final MealImageController mealImageController =
         Get.find<MealImageController>();
+    final UserStateController userStateController =
+        Get.find<UserStateController>();
     // create storage instance
     final storageRef = FirebaseStorage.instance.ref();
 
@@ -282,6 +284,15 @@ class MealImageController extends GetxController {
       if (index != -1) {
         (mealImageController.mapOfDishes[index] as Map)['mealImageUrl'] =
             mealImageController.imageUrl.value;
+      }
+      try {
+        await _dbRef
+            .child("dishes")
+            .child(userStateController.loggedInuser.uid)
+            .child("$mealId")
+            .update({"mealImageUrl": mealImageController.imageUrl.value});
+      } catch (e) {
+        // do nothing
       }
       mealImageController.mapOfDishes.refresh();
     }
