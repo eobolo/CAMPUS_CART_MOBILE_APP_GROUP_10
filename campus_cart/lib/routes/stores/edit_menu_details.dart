@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+final MealImageController mealImageController = Get.find<MealImageController>();
+
 class EditMenuDetailsScreen extends StatefulWidget {
   const EditMenuDetailsScreen({super.key});
 
@@ -16,16 +18,17 @@ class EditMenuDetailsScreen extends StatefulWidget {
 }
 
 class _EditMenuDetailsScreen extends State<EditMenuDetailsScreen> {
-  final TextEditingController _mealNameController = TextEditingController();
+  final TextEditingController _mealNameController =
+      TextEditingController(text: mealImageController.mealName.value);
   final TextEditingController _mealDescriptionController =
-      TextEditingController();
+      TextEditingController(text: mealImageController.mealDescription.value);
   final TextEditingController _preparationTimeController =
-      TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
+      TextEditingController(
+          text: '${mealImageController.preparationTime.value}');
+  final TextEditingController _priceController =
+      TextEditingController(text: '${mealImageController.price.value}');
   final UserStateController userStateController =
       Get.find<UserStateController>();
-  final MealImageController mealImageController =
-      Get.find<MealImageController>();
 
   XFile? _mealImage;
   String? downloadedImageUrl;
@@ -91,14 +94,16 @@ class _EditMenuDetailsScreen extends State<EditMenuDetailsScreen> {
 
     try {
       await mealImageController.editMenuToDb();
-      await mealImageController.uploadImage(
-          _mealImage, userStateController.loggedInuser.uid);
+      await mealImageController.editUploadImage(
+          _mealImage,
+          userStateController.loggedInuser.uid,
+          mealImageController.editMealId.value);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: const Color.fromARGB(255, 116, 255, 121),
           content: Center(
             child: Text(
-              "new menu creation successful",
+              "menu edited successfully",
               style: TextStyle(
                 color: Color(0xFF202020),
                 fontSize: 14,
@@ -114,7 +119,7 @@ class _EditMenuDetailsScreen extends State<EditMenuDetailsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: const Color.fromARGB(255, 255, 63, 49),
           content: Text(
-            "menu creation failed: $e",
+            "menu edition failed: $e",
             style: TextStyle(
               color: Color(0xFF202020),
               fontSize: 14,
@@ -150,6 +155,12 @@ class _EditMenuDetailsScreen extends State<EditMenuDetailsScreen> {
   void initState() {
     super.initState();
     _getAllUserDishes();
+    setState(() {
+      _selectedCuisine = mealImageController.cuisine.value;
+      _selectedType = mealImageController.type.value;
+      _selectedDietary = mealImageController.dietary.value;
+      downloadedImageUrl = mealImageController.imageUrl.value;
+    });
   }
 
   @override
@@ -160,7 +171,7 @@ class _EditMenuDetailsScreen extends State<EditMenuDetailsScreen> {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          'Create New Menu',
+          'Edit Meal Details',
           style: TextStyle(color: Colors.black),
         ),
         leading: Padding(
@@ -191,7 +202,7 @@ class _EditMenuDetailsScreen extends State<EditMenuDetailsScreen> {
               ),
               const SizedBox(height: 24),
               const Text(
-                'Enter Meal Name',
+                'Meal Name',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -210,7 +221,7 @@ class _EditMenuDetailsScreen extends State<EditMenuDetailsScreen> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Enter Meal Description',
+                'Meal Description',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -230,7 +241,7 @@ class _EditMenuDetailsScreen extends State<EditMenuDetailsScreen> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Enter Preparation Time (in minutes)',
+                'Preparation Time (in minutes)',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -359,7 +370,7 @@ class _EditMenuDetailsScreen extends State<EditMenuDetailsScreen> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Choose Meal Image',
+                'Meal Image',
                 style: TextStyle(
                   fontSize: 13,
                   color: Color(0xff606060),
@@ -384,28 +395,28 @@ class _EditMenuDetailsScreen extends State<EditMenuDetailsScreen> {
                         CircleAvatar(
                           radius: 30,
                           backgroundColor: const Color(0xffffffff),
-                          child: _mealImage == null &&
-                                  downloadedImageUrl == null
-                              ? const Icon(
-                                  Icon2.gallery,
-                                  color: Color(0xff606060),
-                                  size: 30,
-                                )
-                              : ClipOval(
-                                  child: _mealImage != null
-                                      ? Image.file(
-                                          File(_mealImage!.path),
-                                          width: 70,
-                                          height: 70,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.network(
-                                          mealImageController.imageUrl.value,
-                                          width: 70,
-                                          height: 70,
-                                          fit: BoxFit.cover,
-                                        ),
-                                ),
+                          child:
+                              _mealImage == null && downloadedImageUrl == null
+                                  ? const Icon(
+                                      Icon2.gallery,
+                                      color: Color(0xff606060),
+                                      size: 30,
+                                    )
+                                  : ClipOval(
+                                      child: _mealImage != null
+                                          ? Image.file(
+                                              File(_mealImage!.path),
+                                              width: 70,
+                                              height: 70,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Image.network(
+                                              downloadedImageUrl!,
+                                              width: 70,
+                                              height: 70,
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -436,7 +447,7 @@ class _EditMenuDetailsScreen extends State<EditMenuDetailsScreen> {
                   minimumSize: const Size(double.infinity, 50.0),
                 ),
                 child: const Text(
-                  'Create Menu',
+                  'Edit Menu',
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,

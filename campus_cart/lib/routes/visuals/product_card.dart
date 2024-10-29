@@ -8,7 +8,7 @@ class ProductCard extends StatelessWidget {
       Get.find<MealImageController>();
   final String mealName;
   final String mealDescription;
-  final String preparationTime;
+  final int preparationTime;
   final String cuisine;
   final String type;
   final String dietary;
@@ -21,7 +21,7 @@ class ProductCard extends StatelessWidget {
     super.key,
     required this.mealName,
     this.mealDescription = "",
-    this.preparationTime = "",
+    this.preparationTime = 0,
     this.cuisine = "",
     this.type = "",
     this.dietary = "",
@@ -36,15 +36,16 @@ class ProductCard extends StatelessWidget {
   }
 
   void _editMenu(BuildContext context) {
-    // get necessary details
+    // get necessary details for editing
     mealImageController.mealName.value = mealName;
     mealImageController.mealDescription.value = mealDescription;
     mealImageController.cuisine.value = cuisine;
     mealImageController.type.value = type;
     mealImageController.dietary.value = dietary;
+    mealImageController.preparationTime.value = preparationTime;
     mealImageController.editMealId.value = editMealId;
     mealImageController.price.value = int.tryParse(price!) ?? 0;
-    mealImageController.imageUrl.value = imageUrl!;
+    mealImageController.imageUrl.value = imageUrl ?? "";
 
     Navigator.pushNamed(context, '/edit_menu');
   }
@@ -154,8 +155,8 @@ class ProductCard extends StatelessWidget {
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
                 ),
-                child: Image.asset(
-                  imageUrl ?? '',
+                child: Image.network(
+                  imageUrl ?? mealImageController.imageUrl.value,
                   fit: BoxFit.cover,
                   height: 120,
                   width: double.infinity,
@@ -250,7 +251,7 @@ class ProductCard extends StatelessWidget {
                       topLeft: Radius.circular(40),
                       topRight: Radius.circular(40),
                     ),
-                    child: Image.asset(
+                    child: Image.network(
                       imageUrl ?? '',
                       fit: BoxFit.fill,
                       height: 248,

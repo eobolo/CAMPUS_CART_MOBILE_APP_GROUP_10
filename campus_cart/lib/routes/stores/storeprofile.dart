@@ -552,7 +552,7 @@ class StoreProfile extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Obx(() {
-                  return mealImageController.mapOfDishes.isEmpty
+                  return mealImageController.mapOfDishes.length == 0
                       ? Column(
                           children: [
                             const Image(
@@ -624,12 +624,13 @@ class StoreProfile extends StatelessWidget {
                               ),
                               const SizedBox(height: 10),
                               GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   mainAxisSpacing: 10,
                                   crossAxisSpacing: 10,
-                                  childAspectRatio: 0.75, // Adjust if needed
                                 ),
                                 itemCount:
                                     mealImageController.mapOfDishes.length +
@@ -649,7 +650,7 @@ class StoreProfile extends StatelessWidget {
                                   return ProductCard(
                                     editMealId: item["mealId"],
                                     mealName: item['mealName'] as String,
-                                    mealDescription: item["mealDesccription"],
+                                    mealDescription: item["mealDescription"],
                                     preparationTime: item["preparationTime"],
                                     cuisine: item["cuisine"],
                                     type: item["type"],

@@ -15,6 +15,7 @@ import 'package:campus_cart/routes/stores/setup_operations.dart';
 import 'package:campus_cart/routes/stores/setup_store.dart';
 import 'package:campus_cart/routes/stores/splash_store.dart';
 import 'package:campus_cart/routes/stores/storeprofile.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -32,6 +33,10 @@ void main() async {
   // register firebase app
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.debug,
   );
   /*
     register your controllers
