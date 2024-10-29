@@ -56,6 +56,8 @@ class _SignInState extends State<SignIn> {
               false; // remove circular loading action incase user navigates there again
         });
         try {
+          // do a try and catch for each call so the others doesn't affect the rest.
+          // in the future
           // call retrieve logo.
           await storeLogoStateController
               .retrieveImage(userStateController.loggedInuser.uid);
@@ -77,6 +79,11 @@ class _SignInState extends State<SignIn> {
               false; // remove circular loading action since error occured
         });
         // Handle and show errors
+        if (e.toString() == "Exception: campus user deleted") {
+          if (mounted) {
+            Navigator.pushReplacementNamed(context, '/splash_store');
+          }
+        }
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(e.toString()),

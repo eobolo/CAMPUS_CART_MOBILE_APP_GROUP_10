@@ -203,8 +203,7 @@ class UserStateController extends GetxController {
           .once(DatabaseEventType.value);
       campusCartUser.value = event.snapshot.value as Map<dynamic, dynamic>;
     } catch (e) {
-      throw Exception(
-          "Extracting user info during login failed, please try again");
+      throw Exception("campus user deleted");
     }
   }
 
