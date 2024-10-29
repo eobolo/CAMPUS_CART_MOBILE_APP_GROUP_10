@@ -31,6 +31,29 @@ class SetupOperationController extends GetxController {
           .child("setupOperation")
           .child(userStateController.loggedInuser.uid)
           .set(operation);
+
+      // add set opearations to the campus user db
+      await _dbRef
+          .child("campusCartUsers")
+          .child(userStateController.loggedInuser.uid)
+          .update({
+        "from": setupOperationController.fromHour.value,
+        "to": setupOperationController.toHour.value,
+        "fromSymbol": setupOperationController.fromSymbol.value,
+        "toSymbol": setupOperationController.toSymbol.value,
+        "storePolicies": setupOperationController.storePolicies.value,
+      });
+
+      // now add this to the campuscart reactive variable
+      userStateController.campusCartUser.value = {
+        ...userStateController.campusCartUser,
+        "from": setupOperationController.fromHour.value,
+        "to": setupOperationController.toHour.value,
+        "fromSymbol": setupOperationController.fromSymbol.value,
+        "toSymbol": setupOperationController.toSymbol.value,
+        "storePolicies": setupOperationController.storePolicies.value,
+      };
+      userStateController.campusCartUser.refresh();
     } on FirebaseException catch (e) {
       // Handle Firebase Database errors
       switch (e.code) {

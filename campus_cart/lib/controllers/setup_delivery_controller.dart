@@ -100,6 +100,26 @@ class SetupDeliveryController extends GetxController {
           .child("setupDelivery")
           .child(userStateController.loggedInuser.uid)
           .set(delivery);
+
+      // add set delivery info to that campuscart user db
+      await _dbRef
+          .child("campusCartUsers")
+          .child(userStateController.loggedInuser.uid)
+          .update({
+        "minFee": setupDeliveryController.minFee.value,
+        "maxFee": setupDeliveryController.maxFee.value,
+        "storeAddress": setupDeliveryController.storeAddress.value,
+        "allAddressStored": setupDeliveryController.allAddressStored,
+      });
+      // now add this to the campuscartuser reactive variable
+      userStateController.campusCartUser.value = {
+        ...userStateController.campusCartUser,
+        "minFee": setupDeliveryController.minFee.value,
+        "maxFee": setupDeliveryController.maxFee.value,
+        "storeAddress": setupDeliveryController.storeAddress.value,
+        "allAddressStored": setupDeliveryController.allAddressStored,
+      };
+      userStateController.campusCartUser.refresh();
     } on FirebaseException catch (e) {
       // Handle Firebase Database errors
       switch (e.code) {

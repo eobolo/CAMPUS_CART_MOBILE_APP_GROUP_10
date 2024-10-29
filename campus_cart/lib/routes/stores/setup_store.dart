@@ -73,6 +73,7 @@ class _SetUpStoreState extends State<SetUpStore> {
       userStateController.campusCartUser["city"] = _storeCityController.text;
       userStateController.campusCartUser["storeDetails"] =
           _storeDescriptionController.text;
+      userStateController.campusCartUser.refresh();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("New vendor '${_storeNameController.text}' created."),

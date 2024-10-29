@@ -1,3 +1,4 @@
+import 'package:campus_cart/controllers/meal_image_controller.dart';
 import 'package:campus_cart/controllers/setup_delivery_controller.dart';
 import 'package:campus_cart/controllers/setup_operation_controller.dart';
 import 'package:campus_cart/controllers/store_logo_controller.dart';
@@ -24,6 +25,8 @@ class _SignInState extends State<SignIn> {
       Get.find<SetupOperationController>();
   final SetupDeliveryController setupDeliveryController =
       Get.find<SetupDeliveryController>();
+  final MealImageController mealImageController =
+      Get.find<MealImageController>();
   final _formSignInKey = GlobalKey<FormState>();
   bool isLoading = false;
 
@@ -53,11 +56,13 @@ class _SignInState extends State<SignIn> {
               false; // remove circular loading action incase user navigates there again
         });
         try {
+          // call retrieve logo.
           await storeLogoStateController
               .retrieveImage(userStateController.loggedInuser.uid);
-          // call setupdelivery, operations and payment infos.
+          // call setupdelivery, operations, payment infos, user dishes.
           await setupDeliveryController.getSetupDeliveryFromDb();
           await setupOperationController.getSetupOperationFromDb();
+          await mealImageController.getAllUserDishes();
         } catch (e) {
           // do nothing
         } finally {
