@@ -10,10 +10,31 @@ class VendorSetupScreen extends StatelessWidget {
   final UserStateController userStateController =
       Get.find<UserStateController>();
 
+  // navigating to pages
+  void _navigateToPage(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/search');
+        break;
+      case 2:
+        // Navigator.pushNamed(context, '/orders');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/splash_store');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
+          onTap: (index) {
+            _navigateToPage(index, context);
+          },
           currentIndex: 3,
           type: BottomNavigationBarType.fixed,
           selectedLabelStyle: const TextStyle(

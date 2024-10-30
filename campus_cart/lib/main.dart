@@ -1,3 +1,5 @@
+import 'package:campus_cart/controllers/all_dishes_controller.dart';
+import 'package:campus_cart/controllers/all_users_controller.dart';
 import 'package:campus_cart/controllers/meal_image_controller.dart';
 import 'package:campus_cart/controllers/setup_delivery_controller.dart';
 import 'package:campus_cart/controllers/setup_operation_controller.dart';
@@ -45,12 +47,15 @@ void main() async {
     - SetupDeliveryController
     - SetupOperationController
     - MealImageController
+    - 
   */
   Get.put(UserStateController());
   Get.put(StoreLogoStateController());
   Get.put(SetupDeliveryController());
   Get.put(SetupOperationController());
   Get.put(MealImageController());
+  Get.put(AllDishesController());
+  Get.put(AllUsersController());
   // run The App
   runApp(const MyApp());
 }

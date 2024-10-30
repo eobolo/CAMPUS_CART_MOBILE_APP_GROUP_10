@@ -76,6 +76,7 @@ class MealImageController extends GetxController {
       };
     }
     try {
+      // save menu to dishes table.
       await _dbRef
           .child("dishes")
           .child(userStateController.loggedInuser.uid)
@@ -83,6 +84,23 @@ class MealImageController extends GetxController {
       // store latest mealid and store new menu to mapofdishes
       mealImageController.latestMealId.value = newId;
       mealImageController.mapOfDishes.add({
+        "mealName": mealImageController.mealName.value,
+        "mealDescription": mealImageController.mealDescription.value,
+        "cuisine": mealImageController.cuisine.value,
+        "type": mealImageController.type.value,
+        "dietary": mealImageController.dietary.value,
+        "preparationTime": mealImageController.preparationTime.value,
+        "price": mealImageController.price.value,
+        "mealId": newId,
+        "kitchen": userStateController.campusCartUser["vendorName"],
+        "vendorId": userStateController.loggedInuser.uid,
+      });
+
+      // store this dish into Alldishes table.
+      await _dbRef
+          .child("allDishes")
+          .child("${userStateController.loggedInuser.uid}-$newId")
+          .update({
         "mealName": mealImageController.mealName.value,
         "mealDescription": mealImageController.mealDescription.value,
         "cuisine": mealImageController.cuisine.value,
@@ -161,11 +179,29 @@ class MealImageController extends GetxController {
       }
     };
     try {
+      // save edited value to dishes table
       await _dbRef
           .child("dishes")
           .child(userStateController.loggedInuser.uid)
           .update(newMenu);
+      // save edited value to alldishes table
+      await _dbRef
+          .child("allDishes")
+          .child("${userStateController.loggedInuser.uid}-$mealId")
+          .update({
+        "mealName": mealImageController.mealName.value,
+        "mealDescription": mealImageController.mealDescription.value,
+        "cuisine": mealImageController.cuisine.value,
+        "type": mealImageController.type.value,
+        "dietary": mealImageController.dietary.value,
+        "preparationTime": mealImageController.preparationTime.value,
+        "price": mealImageController.price.value,
+        "mealId": mealId,
+        "kitchen": userStateController.campusCartUser["vendorName"],
+        "vendorId": userStateController.loggedInuser.uid,
+      });
 
+      // save to getx controller
       int index = mealImageController.mapOfDishes
           .indexWhere((dish) => (dish as Map)['mealId'] == mealId);
 
@@ -218,11 +254,19 @@ class MealImageController extends GetxController {
       try {
         await mealImageRef.putFile(mealImageFile);
         dynamic downloadUrl = await mealImageRef.getDownloadURL();
+        // add image to the database of user dishes
         await _dbRef
             .child("dishes")
             .child(userStateController.loggedInuser.uid)
             .child("${mealImageController.latestMealId.value}")
             .update({"mealImageUrl": downloadUrl});
+        // add image to the database all dishes
+        await _dbRef
+            .child("allDishes")
+            .child(
+                "${userStateController.loggedInuser.uid}-${mealImageController.latestMealId.value}")
+            .update({"mealImageUrl": downloadUrl});
+        // add to the controller state.
         int index = mealImageController.mapOfDishes.indexWhere((dish) =>
             (dish as Map)['mealId'] ==
             mealImageController
@@ -258,10 +302,16 @@ class MealImageController extends GetxController {
       try {
         await mealImageRef.putFile(mealImageFile);
         dynamic downloadUrl = await mealImageRef.getDownloadURL();
+        // add to the dishes database
         await _dbRef
             .child("dishes")
             .child(userId)
             .child("$mealId")
+            .update({"mealImageUrl": downloadUrl});
+        // add to the alldishes database
+        await _dbRef
+            .child("allDishes")
+            .child("${userStateController.loggedInuser.uid}-$mealId")
             .update({"mealImageUrl": downloadUrl});
         int index = mealImageController.mapOfDishes.indexWhere((dish) =>
             (dish as Map)['mealId'] == mealId); // Assuming each dish is a Map
@@ -286,10 +336,16 @@ class MealImageController extends GetxController {
             mealImageController.imageUrl.value;
       }
       try {
+        // add to the dishes database
         await _dbRef
             .child("dishes")
             .child(userStateController.loggedInuser.uid)
             .child("$mealId")
+            .update({"mealImageUrl": mealImageController.imageUrl.value});
+        // add to the alldishes database
+        await _dbRef
+            .child("allDishes")
+            .child("${userStateController.loggedInuser.uid}-$mealId")
             .update({"mealImageUrl": mealImageController.imageUrl.value});
       } catch (e) {
         // do nothing

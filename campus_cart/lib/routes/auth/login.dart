@@ -62,15 +62,27 @@ class _SignInState extends State<SignIn> {
           await storeLogoStateController
               .retrieveImage(userStateController.loggedInuser.uid);
           // call setupdelivery, operations, payment infos, user dishes.
-          await setupDeliveryController.getSetupDeliveryFromDb();
-          await setupOperationController.getSetupOperationFromDb();
-          await mealImageController.getAllUserDishes();
+          try {
+            await mealImageController.getAllUserDishes();
+          } catch (e) {
+            // do nothing
+          }
+          try {
+            await setupDeliveryController.getSetupDeliveryFromDb();
+          } catch (e) {
+            // do nothing
+          }
+          try {
+            await setupOperationController.getSetupOperationFromDb();
+          } catch (e) {
+            //do nothing
+          }
         } catch (e) {
           // do nothing
         } finally {
           if (mounted) {
             // send user to splash store for now, will change to home later
-            Navigator.pushReplacementNamed(context, '/splash_store');
+            Navigator.pushReplacementNamed(context, '/home');
           }
         }
       } catch (e) {
@@ -81,7 +93,7 @@ class _SignInState extends State<SignIn> {
         // Handle and show errors
         if (e.toString() == "Exception: campus user deleted") {
           if (mounted) {
-            Navigator.pushReplacementNamed(context, '/splash_store');
+            Navigator.pushReplacementNamed(context, '/home');
           }
         }
         if (mounted) {

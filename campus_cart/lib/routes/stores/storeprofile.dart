@@ -35,43 +35,64 @@ class StoreProfile extends StatelessWidget {
     Navigator.pushNamed(context, '/create_menu');
   }
 
+  // navigating to pages
+  void _navigateToPage(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/search');
+        break;
+      case 2:
+        // Navigator.pushNamed(context, '/orders');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/store_profile');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // bottomNavigationBar: BottomNavigationBar(
-      //   currentIndex: 3,
-      //   type: BottomNavigationBarType.fixed,
-      //   selectedLabelStyle: const TextStyle(
-      //     fontSize: 14,
-      //     fontWeight: FontWeight.w400,
-      //     color: Color(0xff202020),
-      //   ),
-      //   selectedItemColor: const Color(0xff202020),
-      //   unselectedItemColor: const Color(0xff606060),
-      //   unselectedLabelStyle: const TextStyle(
-      //     fontSize: 14,
-      //     fontWeight: FontWeight.w400,
-      //     color: Color(0xff606060),
-      //   ),
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(MyFlutterApp.home, color: Color(0xff606060)),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(MyFlutterApp.searchNormal),
-      //       label: 'Search',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(MyFlutterApp.bag_2),
-      //       label: 'Orders',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(MyFlutterApp.shop),
-      //       label: 'Your Store',
-      //     ),
-      //   ],
-      // ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) {
+          _navigateToPage(index, context);
+        },
+        currentIndex: 3,
+        type: BottomNavigationBarType.fixed,
+        selectedLabelStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: Color(0xff202020),
+        ),
+        selectedItemColor: const Color(0xff202020),
+        unselectedItemColor: const Color(0xff606060),
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: Color(0xff606060),
+        ),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(MyFlutterApp.home, color: Color(0xff606060)),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(MyFlutterApp.searchNormal),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(MyFlutterApp.bag_2),
+            label: 'Orders',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(MyFlutterApp.shop),
+            label: 'Your Store',
+          ),
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           Container(

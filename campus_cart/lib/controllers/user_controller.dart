@@ -139,6 +139,7 @@ class UserStateController extends GetxController {
             "email": email.value,
             "PhoneNumber": phoneNumber.value,
             "isBuyer": true,
+            "buyerId": user.uid,
           };
           await _dbRef.child("campusCartUsers").child(user.uid).set(newUser);
           // add new campus cart user to a reactive variable
@@ -149,7 +150,7 @@ class UserStateController extends GetxController {
           await Future.delayed(const Duration(seconds: 2));
           if (context.mounted) {
             // send user to splash store for now, will change to home later
-            Navigator.pushReplacementNamed(context, '/splash_store');
+            Navigator.pushReplacementNamed(context, '/home');
           }
         }
       } catch (e) {
