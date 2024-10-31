@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
 import 'package:get/get.dart';
 
-class MealDealProductCard extends StatelessWidget {
+class MealDealProductSearchCard extends StatelessWidget {
   // instance variables
   final String mealImage;
   final String mealName;
@@ -22,7 +22,7 @@ class MealDealProductCard extends StatelessWidget {
   // controller variable
   final CartController cartController = Get.find<CartController>();
 
-  MealDealProductCard({
+  MealDealProductSearchCard({
     super.key,
     this.mealImage = "",
     this.mealName = "",
@@ -63,7 +63,7 @@ class MealDealProductCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Container(
-        width: 250,
+        width: 300,
         decoration: BoxDecoration(
           color: const Color(0xffffffff),
           borderRadius: BorderRadius.circular(16),

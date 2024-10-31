@@ -1,5 +1,9 @@
 import 'package:campus_cart/controllers/all_dishes_controller.dart';
+import 'package:campus_cart/controllers/all_users_controller.dart';
+import 'package:campus_cart/controllers/cart_controller.dart';
+import 'package:campus_cart/controllers/search_controller.dart';
 import 'package:campus_cart/controllers/user_controller.dart';
+import 'package:campus_cart/routes/home/meal_deal_product_card.dart';
 import 'package:campus_cart/routes/home/search_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +20,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   UserStateController userStateController = Get.find<UserStateController>();
   AllDishesController allDishesController = Get.find<AllDishesController>();
+  AllUsersController allUsersController = Get.find<AllUsersController>();
+  CartController cartController = Get.find<CartController>();
+  AllSearchController allSearchController = Get.find<AllSearchController>();
 
   // text controller for the search bar
   final TextEditingController _searchController = TextEditingController();
@@ -261,17 +268,17 @@ class _HomeState extends State<Home> {
                             color: Color(0xffFF5A5A),
                             shape: BoxShape.circle,
                           ),
-                          child: const Center(
-                            child: Text(
-                              '2',
+                          child: Center(child: Obx(() {
+                            return Text(
+                              '${cartController.itemsInCart.value}',
                               style: TextStyle(
                                 color: Color(0xff202020),
                                 fontSize: 10,
                                 fontWeight: FontWeight.w600,
                                 fontFamily: 'DM Sans',
                               ),
-                            ),
-                          ),
+                            );
+                          })),
                         ),
                       ),
                     ],
@@ -304,7 +311,10 @@ class _HomeState extends State<Home> {
                   fillColor: Color(0xffFFFFFF),
                 ),
                 onSubmitted: (String value) {
-                  Navigator.push(
+                  // save search query in controller, and dont refresh
+                  // anyhow because it triggers crazy rebuild.
+                  allSearchController.query.value = value;
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SearchScreen(query: value),
@@ -422,13 +432,47 @@ class _HomeState extends State<Home> {
                               SizedBox(
                                 height: 218,
                                 child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      // solving the meals and increment
-                                    ],
-                                  ),
-                                ),
+                                    scrollDirection: Axis.horizontal,
+                                    child: Obx(() {
+                                      return Row(
+                                        children: List.generate(
+                                          allDishesController.processedAllDishes
+                                                      .length >=
+                                                  10
+                                              ? 10
+                                              : allDishesController
+                                                  .processedAllDishes.length,
+                                          (index) {
+                                            dynamic userDetails =
+                                                allUsersController
+                                                    .allUsersInfo
+                                                    .firstWhere((eachUser) =>
+                                                        eachUser["buyerId"] ==
+                                                        userStateController
+                                                            .loggedInuser.uid);
+                                            dynamic dish = allDishesController
+                                                .processedAllDishes[index];
+                                            return MealDealProductCard(
+                                              mealImage: dish["mealImageUrl"],
+                                              mealName: dish["mealName"],
+                                              phoneNumber:
+                                                  userDetails["PhoneNumber"],
+                                              email: userDetails["email"],
+                                              vendorId: dish["vendorId"],
+                                              buyerId: userDetails["buyerId"],
+                                              preparationTime:
+                                                  dish["preparationTime"],
+                                              price: dish["price"],
+                                              mealId: dish["mealId"],
+                                              indexId: index,
+                                              deliveryPrice:
+                                                  userDetails["maxFee"] ?? 1500,
+                                            );
+                                          },
+                                          growable: true,
+                                        ),
+                                      );
+                                    })),
                               ),
                             ],
                           ),

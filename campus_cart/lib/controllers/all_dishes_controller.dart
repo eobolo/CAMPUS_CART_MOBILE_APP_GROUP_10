@@ -26,6 +26,7 @@ class AllDishesController extends GetxController {
       } else {
         // do nothing
       }
+      allDishesController.processedAllDishes.shuffle();
       allDishesController.processedAllDishes.refresh();
     });
 
@@ -41,6 +42,7 @@ class AllDishesController extends GetxController {
       } else {
         // do nothing
       }
+      allDishesController.processedAllDishes.shuffle();
       allDishesController.processedAllDishes.refresh();
     });
   }
