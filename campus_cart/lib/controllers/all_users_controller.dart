@@ -26,6 +26,7 @@ class AllUsersController extends GetxController {
       } else {
         // do nothing
       }
+      allUsersController.allUsersInfo.shuffle();
       allUsersController.allUsersInfo.refresh();
     });
 
@@ -40,6 +41,7 @@ class AllUsersController extends GetxController {
       } else {
         // do nothing
       }
+      allUsersController.allUsersInfo.shuffle();
       allUsersController.allUsersInfo.refresh();
     });
   }

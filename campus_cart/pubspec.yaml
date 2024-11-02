@@ -50,6 +50,8 @@ dependencies:
   geocoding: ^3.0.0
   geolocator: ^13.0.1
   firebase_app_check: ^0.3.1+4
+  fluttericon: 2.0.0
+  carousel_slider: ^5.0.0
 
 
 dev_dependencies:
@@ -110,6 +112,8 @@ flutter:
     - assets/images/person1.png
     - assets/images/salad.png
     - assets/images/store.png
+    - assets/images/store1.png
+    - assets/images/search_normal.png
     - assets/images/profile.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -127,6 +131,15 @@ flutter:
     - family: MyFlutterApp
       fonts:
         - asset: assets/MyFlutterApp.ttf
+    - family: Icon2
+      fonts:
+        - asset: assets/Icon2.ttf
+    - family: Iconify
+      fonts:
+        - asset: assets/Iconify.ttf
+    - family: Iconify1
+      fonts:
+        - asset: assets/Iconify1.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

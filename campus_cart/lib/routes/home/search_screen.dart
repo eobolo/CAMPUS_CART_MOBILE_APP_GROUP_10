@@ -3,7 +3,7 @@ import 'package:campus_cart/controllers/all_users_controller.dart';
 import 'package:campus_cart/controllers/cart_controller.dart';
 import 'package:campus_cart/controllers/search_controller.dart';
 import 'package:campus_cart/controllers/user_controller.dart';
-import 'package:campus_cart/routes/home/meal_deal_product_card.dart';
+import 'package:campus_cart/routes/stores/meal_deal_product_card.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -377,15 +377,17 @@ class _SearchScreenState extends State<SearchScreen> {
                         GestureDetector(
                           onTap: () => _pickRecentSearchToSearch(index),
                           child: Container(
+                            width: 28.0,
+                            height: 28.0,
                             padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
-                              color: customYellow.withOpacity(0.3),
+                              color: Color(0XFFFFF1DA),
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
-                              Icons.search,
-                              size: 18,
-                              color: Colors.black54,
+                            child: Image.asset(
+                              "assets/images/search_normal.png",
+                              width: 16.0,
+                              height: 16.0,
                             ),
                           ),
                         ),
@@ -401,7 +403,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       onTap: () => _removeRecentSearch(index),
                       child: const Icon(
                         Icons.close,
-                        size: 18,
+                        size: 16,
                         color: Colors.black54,
                       ),
                     ),
@@ -527,12 +529,19 @@ class _SearchScreenState extends State<SearchScreen> {
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
               ),
-              child: Image.network(
-                "${kitchen["storeLogo"]}",
-                width: 250,
-                height: 116, // Adjust the height as needed
-                fit: BoxFit.cover,
-              ),
+              child: kitchen["storeLogo"] != null
+                  ? Image.network(
+                      "${kitchen["storeLogo"]}",
+                      width: 250,
+                      height: 116.0,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      "assets/images/store.png",
+                      width: 250,
+                      height: 116.0,
+                      fit: BoxFit.cover,
+                    ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 7.5, top: 10, right: 7.5),
@@ -540,7 +549,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${kitchen["vendorName"]}",
+                    "${kitchen["vendorName"] ?? "N/A"}",
                     style: const TextStyle(
                       color: Color(0xff202020),
                       fontSize: 14,
@@ -568,18 +577,21 @@ class _SearchScreenState extends State<SearchScreen> {
                       color: Colors.green.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Text(
-                      _isKitchenOpen("${kitchen["from"]}", "${kitchen["to"]}")
-                          ? 'Open'
-                          : 'Closed',
-                      style: TextStyle(
-                        color: _isKitchenOpen(
-                                "${kitchen["from"]}", "${kitchen["to"]}")
-                            ? Colors.green
-                            : Colors.red,
-                        fontSize: 12,
-                      ),
-                    ),
+                    child: kitchen["from"] != null && kitchen["to"] != null
+                        ? Text(
+                            _isKitchenOpen(
+                                    "${kitchen["from"]}", "${kitchen["to"]}")
+                                ? 'Open'
+                                : 'Closed',
+                            style: TextStyle(
+                              color: _isKitchenOpen(
+                                      "${kitchen["from"]}", "${kitchen["to"]}")
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontSize: 12,
+                            ),
+                          )
+                        : Text("N/A"),
                   ),
                 ],
               ),

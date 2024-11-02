@@ -3,7 +3,8 @@ import 'package:campus_cart/controllers/all_users_controller.dart';
 import 'package:campus_cart/controllers/cart_controller.dart';
 import 'package:campus_cart/controllers/search_controller.dart';
 import 'package:campus_cart/controllers/user_controller.dart';
-import 'package:campus_cart/routes/home/meal_deal_product_card.dart';
+import 'package:campus_cart/routes/stores/meal_deal_product_card.dart';
+import 'package:campus_cart/routes/visuals/most_kitchen_used_card.dart';
 import 'package:campus_cart/routes/home/search_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -470,6 +471,90 @@ class _HomeState extends State<Home> {
                                         ),
                                       );
                                     })),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'Most Used Kitchens',
+                                    style: TextStyle(
+                                      color: Color(0xff202020),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'DM Sans',
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, '/most_used_kitchens');
+                                    },
+                                    child: const Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 0),
+                                          child: Text(
+                                            'See All',
+                                            style: TextStyle(
+                                              color: Color(0xffD49400),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              fontFamily: 'DM Sans',
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: -2,
+                                          child: Text(
+                                            '_________',
+                                            style: TextStyle(
+                                              color: Color(0xffD49400),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              fontFamily: 'DM Sans',
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 218,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Obx(() {
+                                    return Row(
+                                        children: List.generate(
+                                      allUsersController.allUsersInfo.length >=
+                                              10
+                                          ? 10
+                                          : allUsersController
+                                              .allUsersInfo.length,
+                                      (index) {
+                                        dynamic kitchen = allUsersController
+                                            .allUsersInfo[index];
+                                        return MostKitchenUsedCard(
+                                          kitchen: kitchen,
+                                        );
+                                      },
+                                      growable: true,
+                                    ));
+                                  }),
+                                ),
                               ),
                             ],
                           ),
