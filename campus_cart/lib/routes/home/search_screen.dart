@@ -20,9 +20,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final TextEditingController _searchController = TextEditingController(
-    text: allSearchController.query.value,
-  );
+  late TextEditingController _searchController;
   CartController cartController = Get.find<CartController>();
   AllDishesController allDishesController = Get.find<AllDishesController>();
   AllUsersController allUsersController = Get.find<AllUsersController>();
@@ -34,6 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   // navigating to pages
   void _navigateToPage(int index, BuildContext context) {
+    _saveAsRecentSearch();
     switch (index) {
       case 0:
         Navigator.pushNamed(context, '/home');
@@ -57,9 +56,8 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
+    _searchController = TextEditingController(text: widget.query);
     _searchController.addListener(_onSearchChanged);
-    // Manually call the listener function to handle the initial value
-    _onSearchChanged();
   }
 
   bool _isKitchenOpen(String fromTime, String toTime) {
@@ -125,9 +123,28 @@ class _SearchScreenState extends State<SearchScreen> {
         .toList();
     allSearchController.searchResults
         .addAll([...filteredList1, ...filteredList2]);
-    // allSearchController.recentSearches.add(_searchQuery);
     allSearchController.searchResults.refresh();
-    // allSearchController.recentSearches.refresh();
+  }
+
+  void _saveAsRecentSearch({String? searchquery}) {
+    if ((searchquery != null || _searchQuery.isNotEmpty) &&
+        (searchquery != "")) {
+      if (allSearchController.recentSearches.length > 5) {
+        allSearchController.recentSearches.removeAt(0);
+      }
+      allSearchController.recentSearches.add(searchquery ?? _searchQuery);
+      allSearchController.recentSearches.refresh();
+    }
+  }
+
+  void _pickRecentSearchToSearch(int index) {
+    _searchController.text = allSearchController.recentSearches[index];
+    _onSearchChanged();
+  }
+
+  void _removeRecentSearch(int index) {
+    allSearchController.recentSearches.removeAt(index);
+    allSearchController.recentSearches.refresh();
   }
 
   void _onSearchChanged() {
@@ -204,10 +221,13 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: SizedBox(
                         width: 320.0,
                         child: TextField(
+                          onSubmitted: (searchquery) =>
+                              _saveAsRecentSearch(searchquery: searchquery),
                           controller: _searchController,
                           cursorHeight: 14,
                           decoration: const InputDecoration(
-                            hintText: 'search anything ...',
+                            hintText:
+                                'search anything ..., press enter to save.',
                             hintStyle: TextStyle(
                               color: Color(0xff9B9B9B),
                               fontSize: 14,
@@ -355,7 +375,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     Row(
                       children: [
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () => _pickRecentSearchToSearch(index),
                           child: Container(
                             padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
@@ -378,9 +398,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ],
                     ),
                     GestureDetector(
-                      onTap: () {
-                        // Add functionality for close icon tap
-                      },
+                      onTap: () => _removeRecentSearch(index),
                       child: const Icon(
                         Icons.close,
                         size: 18,

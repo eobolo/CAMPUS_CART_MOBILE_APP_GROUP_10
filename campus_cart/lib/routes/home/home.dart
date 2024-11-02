@@ -311,9 +311,6 @@ class _HomeState extends State<Home> {
                   fillColor: Color(0xffFFFFFF),
                 ),
                 onSubmitted: (String value) {
-                  // save search query in controller, and dont refresh
-                  // anyhow because it triggers crazy rebuild.
-                  allSearchController.query.value = value;
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
