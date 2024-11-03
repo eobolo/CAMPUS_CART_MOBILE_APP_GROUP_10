@@ -148,10 +148,16 @@ class _HomeState extends State<Home> {
                           width: 2,
                         ),
                       ),
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
                         radius: 30,
                         backgroundImage:
-                            AssetImage('assets/images/profile.png'),
+                            userStateController.loggedInuser.photoURL == null
+                                ? AssetImage(
+                                    'assets/images/profile.png',
+                                  )
+                                : NetworkImage(
+                                    userStateController.loggedInuser.photoURL,
+                                  ),
                         backgroundColor: Colors.transparent,
                       ),
                     ),

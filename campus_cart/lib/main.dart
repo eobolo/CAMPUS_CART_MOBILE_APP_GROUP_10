@@ -2,6 +2,7 @@ import 'package:campus_cart/controllers/all_dishes_controller.dart';
 import 'package:campus_cart/controllers/all_users_controller.dart';
 import 'package:campus_cart/controllers/cart_controller.dart';
 import 'package:campus_cart/controllers/meal_image_controller.dart';
+import 'package:campus_cart/controllers/profile_image_controller.dart';
 import 'package:campus_cart/controllers/search_controller.dart';
 import 'package:campus_cart/controllers/setup_delivery_controller.dart';
 import 'package:campus_cart/controllers/setup_operation_controller.dart';
@@ -13,6 +14,7 @@ import 'package:campus_cart/routes/home/getstartedpage.dart';
 import 'package:campus_cart/routes/home/home.dart';
 import 'package:campus_cart/routes/home/search_screen.dart';
 import 'package:campus_cart/routes/home/splashpage.dart';
+import 'package:campus_cart/routes/profile/user_profile.dart';
 import 'package:campus_cart/routes/stores/create_menu.dart';
 import 'package:campus_cart/routes/stores/edit_menu_details.dart';
 import 'package:campus_cart/routes/stores/setup_delivery_pop.dart';
@@ -50,7 +52,11 @@ void main() async {
     - SetupDeliveryController
     - SetupOperationController
     - MealImageController
-    - 
+    - AllDishesController
+    - AllUsersController
+    - CartController
+    - AllSearchController
+    - ProfileImageController
   */
   Get.put(UserStateController());
   Get.put(StoreLogoStateController());
@@ -61,6 +67,7 @@ void main() async {
   Get.put(AllUsersController());
   Get.put(CartController());
   Get.put(AllSearchController());
+  Get.put(ProfileImageController());
   // run The App
   runApp(const MyApp());
 }
@@ -118,6 +125,7 @@ class _MyAppState extends State<MyApp> {
         '/search': (context) => const SearchScreen(
               query: '',
             ),
+        '/user_profile': (context) => ProfileScreen(),
       },
     );
   }

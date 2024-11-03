@@ -115,6 +115,13 @@ flutter:
     - assets/images/store1.png
     - assets/images/search_normal.png
     - assets/images/profile.png
+    - assets/images/profile_picker.png
+    - assets/images/location.png
+    - assets/images/lock.png
+    - assets/images/message_question.png
+    - assets/images/call.png
+    - assets/images/export.png
+    - assets/images/user_edit.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
