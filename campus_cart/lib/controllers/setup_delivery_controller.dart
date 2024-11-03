@@ -38,6 +38,33 @@ class SetupDeliveryController extends GetxController {
 
   // FUNCTIONS
 
+  void reset() {
+    minFee.value = 0;
+    maxFee.value = 0;
+    storeAddress.value = "";
+    selectedLocationIndex.value = "0";
+    allAddressStored.value = [
+      {
+        1: {
+          "name": "African Leadership University",
+          "address": "123 Kigali Innovation Boulevard, Kigali, Rwanda",
+        }
+      },
+      {
+        2: {
+          "name": "Kigali Tech Hub",
+          "address": "456 Tech Valley Drive, Kigali, Rwanda",
+        }
+      },
+      {
+        3: {
+          "name": "Nyamata Hills Resort",
+          "address": "789 Nyamata Road, Kigali, Rwanda",
+        }
+      }
+    ];
+  }
+
   void processFirstElement(Map<dynamic, dynamic> setupDelivery) {
     if (setupDelivery.containsKey('allAddressStored')) {
       List<dynamic> allAddressStored = setupDelivery['allAddressStored'];

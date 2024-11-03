@@ -1,9 +1,16 @@
 import 'dart:io';
+import 'package:campus_cart/controllers/cart_controller.dart';
+import 'package:campus_cart/controllers/meal_image_controller.dart';
 import 'package:campus_cart/controllers/profile_image_controller.dart';
+import 'package:campus_cart/controllers/search_controller.dart';
+import 'package:campus_cart/controllers/setup_delivery_controller.dart';
+import 'package:campus_cart/controllers/setup_operation_controller.dart';
+import 'package:campus_cart/controllers/store_logo_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_cart/controllers/user_controller.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -32,7 +39,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
       await profileImageController.uploadImage(
           _profileImage, userStateController.loggedInuser.uid);
     } catch (e) {
-      print("error occurred $e");
+      //
+    }
+  }
+
+  void _goToStoreProfile() {
+    Navigator.pushNamed(context, '/store_profile');
+  }
+
+  void _goToSplashStore() {
+    Navigator.pushNamed(context, '/splash_store');
+  }
+
+  void _goToSetupStore() {
+    Navigator.pushNamed(context, '/setup_store');
+  }
+
+  void _goToEditProfile() {
+    Navigator.pushNamed(context, '/edit_profile');
+  }
+
+  void _goToSecurity() {
+    Navigator.pushNamed(context, '/security');
+  }
+
+  void resetAllControllers() {
+    // CartController
+    Get.find<CartController>().reset();
+
+    // MealImageController
+    Get.find<MealImageController>().reset();
+
+    // AllSearchController
+    Get.find<AllSearchController>().reset();
+
+    // SetupDeliveryController
+    Get.find<SetupDeliveryController>().reset();
+
+    // SetupOperationController
+    Get.find<SetupOperationController>().reset();
+
+    // StoreLogoStateController
+    Get.find<StoreLogoStateController>().reset();
+
+    // UserStateController
+    Get.find<UserStateController>().reset();
+  }
+
+  void _signOutUser() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      resetAllControllers();
+      if (mounted) {
+        Navigator.pushNamed(context, '/login');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Center(child: Text("logging out failed. $e")),
+              backgroundColor: Colors.red),
+        );
+      }
     }
   }
 
@@ -200,7 +268,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     const SizedBox(width: 5),
                                     TextButton(
-                                      onPressed: () {},
+                                      onPressed: _goToStoreProfile,
                                       child: const Row(
                                         children: [
                                           Text(
@@ -252,7 +320,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     const SizedBox(width: 5),
                                     TextButton(
-                                      onPressed: () {},
+                                      onPressed: _goToSplashStore,
                                       child: const Row(
                                         children: [
                                           Text(
@@ -330,7 +398,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             _buildMenuItem(
                               imagePath: "assets/images/user_edit.png",
                               title: 'Edit Store',
-                              onTap: () {},
+                              onTap: _goToSetupStore,
                             ),
                             const Divider(
                               color: Color.fromRGBO(0, 0, 0, 0.6),
@@ -339,7 +407,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             _buildMenuItem(
                               imagePath: "assets/images/user_edit.png",
                               title: 'Edit Profile',
-                              onTap: () {},
+                              onTap: _goToEditProfile,
                             ),
                             const Divider(
                               color: Color.fromRGBO(0, 0, 0, 0.6),
@@ -348,7 +416,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             _buildMenuItem(
                               imagePath: "assets/images/lock.png",
                               title: 'Security',
-                              onTap: () {},
+                              onTap: _goToSecurity,
                             ),
                             const Divider(
                               color: Color.fromRGBO(0, 0, 0, 0.6),
@@ -384,7 +452,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             _buildMenuItem(
                               imagePath: "assets/images/export.png",
                               title: 'Logout',
-                              onTap: () {},
+                              onTap: _signOutUser,
                               textColor: Colors.red,
                             ),
                           ],

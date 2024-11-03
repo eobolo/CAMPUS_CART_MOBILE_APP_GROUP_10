@@ -21,6 +21,22 @@ class MealImageController extends GetxController {
 
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
 
+  void reset() {
+    imageUrl.value = "";
+    mealName.value = "";
+    mealDescription.value = "";
+    cuisine.value = "";
+    type.value = "";
+    dietary.value = "";
+    preparationTime.value = 0;
+    price.value = 0;
+    latestMealId.value = 0;
+    editMealId.value = 0;
+    fileObject = null;
+    mapOfDishes = [];
+    mapOfDishes.refresh();
+  }
+
   void processFirstElement(List<Object?> dishes) {
     var firstItem = dishes[0];
     if (firstItem == null) {

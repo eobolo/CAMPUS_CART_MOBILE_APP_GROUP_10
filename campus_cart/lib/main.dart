@@ -14,6 +14,8 @@ import 'package:campus_cart/routes/home/getstartedpage.dart';
 import 'package:campus_cart/routes/home/home.dart';
 import 'package:campus_cart/routes/home/search_screen.dart';
 import 'package:campus_cart/routes/home/splashpage.dart';
+import 'package:campus_cart/routes/profile/security.dart';
+import 'package:campus_cart/routes/profile/user_edit.dart';
 import 'package:campus_cart/routes/profile/user_profile.dart';
 import 'package:campus_cart/routes/stores/create_menu.dart';
 import 'package:campus_cart/routes/stores/edit_menu_details.dart';
@@ -126,6 +128,8 @@ class _MyAppState extends State<MyApp> {
               query: '',
             ),
         '/user_profile': (context) => ProfileScreen(),
+        '/edit_profile': (context) => UserProfileEdit(),
+        '/security': (context) => Security(),
       },
     );
   }

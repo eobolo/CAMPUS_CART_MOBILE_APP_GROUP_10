@@ -14,6 +14,14 @@ class SetupOperationController extends GetxController {
 
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
 
+  void reset() {
+    fromHour.value = 24;
+    toHour.value = 24;
+    fromSymbol.value = "";
+    toSymbol.value = "";
+    storePolicies.value = "";
+  }
+
   Future<void> postSetupOperationToDb() async {
     final SetupOperationController setupOperationController =
         Get.find<SetupOperationController>();

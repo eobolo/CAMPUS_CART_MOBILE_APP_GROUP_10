@@ -4,6 +4,12 @@ class CartController extends GetxController {
   RxInt itemsInCart = 0.obs;
   dynamic mapOfItemsCount = {}.obs;
 
+  void reset() {
+    itemsInCart.value = 0;
+    mapOfItemsCount = {};
+    mapOfItemsCount.refresh();
+  }
+
   void updateMapOfItemsCount(Map<String, dynamic> addToCart) {
     // controller variable
     final CartController cartController = Get.find<CartController>();

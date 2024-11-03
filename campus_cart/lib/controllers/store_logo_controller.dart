@@ -10,6 +10,11 @@ class StoreLogoStateController extends GetxController {
   dynamic fileObject = null.obs;
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
 
+  void reset() {
+    imageUrl.value = "";
+    fileObject = null;
+  }
+
   Future<void> uploadImage(XFile? imageFile, String userId) async {
     // create storage instance
     final storageRef = FirebaseStorage.instance.ref();

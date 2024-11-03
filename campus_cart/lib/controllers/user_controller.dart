@@ -40,6 +40,21 @@ class UserStateController extends GetxController {
   // Flag to indicate if in testing mode
   bool isTestingMode = true; // Change this to false to send actual SMS
 
+  void reset() {
+    email.value = "";
+    password.value = "";
+    phoneNumber.value = "";
+    iSTermsAndConditionRead.value = false;
+    isBuyer = true;
+    createAccountMessage.value = "";
+    signUpOtpMessage.value = "";
+    loggedInuser = null;
+    userDetailInsecure = null;
+    campusCartUser.value = {};
+    verificationId.value = "";
+    otpSent.value = false;
+  }
+
   // Function to send OTP to the user's phone number
   Future<void> sendOTP(String phoneNumber, BuildContext context) async {
     try {
@@ -148,6 +163,7 @@ class UserStateController extends GetxController {
           signUpOtpMessage.value =
               "Campus user created successfully with additional info!";
           await Future.delayed(const Duration(seconds: 2));
+          await loginUser(email.value, password.value);
           if (context.mounted) {
             // send user to splash store for now, will change to home later
             Navigator.pushReplacementNamed(context, '/home');
