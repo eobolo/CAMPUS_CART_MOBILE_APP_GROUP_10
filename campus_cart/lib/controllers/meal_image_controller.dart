@@ -34,7 +34,6 @@ class MealImageController extends GetxController {
     editMealId.value = 0;
     fileObject = null;
     mapOfDishes = [];
-    mapOfDishes.refresh();
   }
 
   void processFirstElement(List<Object?> dishes) {

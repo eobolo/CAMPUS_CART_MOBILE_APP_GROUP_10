@@ -7,7 +7,6 @@ class CartController extends GetxController {
   void reset() {
     itemsInCart.value = 0;
     mapOfItemsCount = {};
-    mapOfItemsCount.refresh();
   }
 
   void updateMapOfItemsCount(Map<String, dynamic> addToCart) {
