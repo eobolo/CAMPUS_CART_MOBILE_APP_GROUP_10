@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
-import 'package:campus_cart/routes/store/create_store.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

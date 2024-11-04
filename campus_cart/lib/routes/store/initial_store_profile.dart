@@ -255,7 +255,7 @@ class InitialStoreProfile extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Container(
+                SizedBox(
                   width: 300,
                   child: const Text(
                     'Your menu is waiting to be filled with your culinary creations! Add your items now and let your customers discover the tasty treats you have to offer.',

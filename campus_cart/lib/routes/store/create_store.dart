@@ -20,9 +20,9 @@ class _SetUpStoreState extends State<CreateStore> {
   XFile? _storeLogo;
 
   Future<void> _pickStoreLogo() async {
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
     final XFile? pickedLogo =
-        await _picker.pickImage(source: ImageSource.gallery);
+        await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       _storeLogo = pickedLogo;
     });

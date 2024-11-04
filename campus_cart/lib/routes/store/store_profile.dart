@@ -8,7 +8,7 @@ import 'package:campus_cart/routes/visuals/product_card.dart';
 class StoreProfile extends StatelessWidget {
   final XFile? storeLogo;
 
-  StoreProfile({super.key, this.storeLogo});
+  const StoreProfile({super.key, this.storeLogo});
 
   @override
   Widget build(BuildContext context) {
