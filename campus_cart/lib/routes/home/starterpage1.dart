@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:campus_cart/routes/home/stackposition_1.dart';
+import 'package:campus_cart/routes/visuals/stackposition_1.dart';
 import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 
 class Starterpage1 extends StatelessWidget {

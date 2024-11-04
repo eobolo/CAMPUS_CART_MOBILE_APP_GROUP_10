@@ -3,6 +3,7 @@ import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// Terms and Conditions screen
 class TermsAndConditions extends StatefulWidget {
   const TermsAndConditions({super.key});
 
@@ -10,6 +11,7 @@ class TermsAndConditions extends StatefulWidget {
   State<TermsAndConditions> createState() => _TermsAndConditionsState();
 }
 
+// State class for the TermsAndConditions widget
 class _TermsAndConditionsState extends State<TermsAndConditions> {
   final UserStateController userStateController =
       Get.find<UserStateController>();
@@ -18,6 +20,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
     Navigator.pop(context);
   }
 
+  // Build method for the TermsAndConditions widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(

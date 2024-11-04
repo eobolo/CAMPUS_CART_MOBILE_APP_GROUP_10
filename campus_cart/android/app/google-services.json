@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "899317925609",
+    "firebase_url": "https://campuscrt-default-rtdb.firebaseio.com",
     "project_id": "campuscrt",
     "storage_bucket": "campuscrt.appspot.com"
   },

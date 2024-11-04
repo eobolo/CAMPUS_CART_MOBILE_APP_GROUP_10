@@ -1,21 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Profile Screen',
-      home: ProfileScreen(),
-    );
-  }
-}
-
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -44,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                 
+
                   const Center(
                     child: Text(
                       'Profile',
@@ -57,8 +41,6 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-
-            
             Column(
               children: [
                 Container(
@@ -87,15 +69,13 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 16),
               ],
             ),
-
-            
             Container(
               width: 260,
               margin: const EdgeInsets.symmetric(horizontal: 16),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(30), 
+                borderRadius: BorderRadius.circular(30),
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
@@ -109,7 +89,8 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFDEACB),
                         borderRadius: BorderRadius.circular(20),
@@ -127,9 +108,7 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(width: 5),
                   Flexible(
                     child: TextButton(
-                      onPressed: () {
-                        
-                      },
+                      onPressed: () {},
                       child: const Row(
                         children: [
                           Text(
@@ -152,7 +131,6 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-
             Expanded(
               child: Stack(
                 alignment: Alignment.topCenter,
@@ -168,7 +146,6 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   Positioned(
                     top: MediaQuery.of(context).size.height * 0.06,
                     left: 16,
@@ -230,7 +207,9 @@ class ProfileScreen extends StatelessWidget {
                           _buildMenuItem(
                             icon: Icons.logout,
                             title: 'Log Out',
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(context, '/login');
+                            },
                             textColor: Colors.red,
                           ),
                         ],

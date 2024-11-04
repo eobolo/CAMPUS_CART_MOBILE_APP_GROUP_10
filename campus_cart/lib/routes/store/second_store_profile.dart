@@ -8,6 +8,26 @@ class SecondStoreProfile extends StatelessWidget {
   final XFile? storeLogo;
 
   const SecondStoreProfile({super.key, this.storeLogo});
+<<<<<<< HEAD
+=======
+
+  void _navigateToPage(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/search');
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/orders');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/store_profile');
+        break;
+    }
+  }
+>>>>>>> 059f4f1bd41701401e4a9642ef60ac811013edae
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +47,7 @@ class SecondStoreProfile extends StatelessWidget {
           fontWeight: FontWeight.w400,
           color: Color(0xff606060),
         ),
+        onTap: (index) => _navigateToPage(index, context),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(MyFlutterApp.home, color: Color(0xff606060)),
@@ -494,7 +515,7 @@ class SecondStoreProfile extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    // handle this part
+                    Navigator.pushNamed(context, '/create_menu');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff202020),

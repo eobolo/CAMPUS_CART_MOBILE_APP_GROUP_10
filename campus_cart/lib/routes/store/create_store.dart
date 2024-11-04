@@ -7,6 +7,7 @@ class CreateStore extends StatefulWidget {
   const CreateStore({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SetUpStoreState createState() => _SetUpStoreState();
 }
 
@@ -264,7 +265,7 @@ class _SetUpStoreState extends State<CreateStore> {
                 const SizedBox(height: 40),
                 ElevatedButton(
                   onPressed: () {
-                    // handle this part
+                    Navigator.pushNamed(context, '/initial_store_profile');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff202020),

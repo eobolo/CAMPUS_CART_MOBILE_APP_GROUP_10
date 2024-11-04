@@ -4,6 +4,7 @@ import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+// class for the sign up page
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -12,6 +13,7 @@ class SignUpPage extends StatefulWidget {
   _SignUpPageState createState() => _SignUpPageState();
 }
 
+// state class for the sign up page
 class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -21,6 +23,7 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _agreedToTerms = false;
 
+  // function to validate the form and create an account
   void _onSignUp() {
     if (!(_formKey.currentState!.validate())) {
       return;
@@ -30,19 +33,23 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
       userStateController.createAccountMessage.value =
           "Please Go and Read Terms and Conditions";
     } else {
-      userStateController.registerUser(
-          userStateController.phoneNumber.value, context);
+      // userStateController.registerUser(
+      //     userStateController.phoneNumber.value, context);
+      Navigator.pushNamed(context, '/signup_otp');
     }
   }
 
+  // function to navigate to the login page
   void _onLogin() {
     Navigator.pushNamed(context, '/login');
   }
 
+  // function to navigate to the terms and conditions page
   void _onTermsAndCondition() {
     Navigator.pushNamed(context, '/terms_and_conditions');
   }
 
+  // build method for the sign up page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

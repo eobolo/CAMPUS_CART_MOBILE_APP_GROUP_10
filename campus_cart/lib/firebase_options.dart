@@ -46,6 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '899317925609',
     projectId: 'campuscrt',
     authDomain: 'campuscrt.firebaseapp.com',
+    databaseURL: 'https://campuscrt-default-rtdb.firebaseio.com',
     storageBucket: 'campuscrt.appspot.com',
     measurementId: 'G-Q7NN31HE73',
   );
@@ -55,6 +56,7 @@ class DefaultFirebaseOptions {
     appId: '1:899317925609:android:346035a8c592fd24119278',
     messagingSenderId: '899317925609',
     projectId: 'campuscrt',
+    databaseURL: 'https://campuscrt-default-rtdb.firebaseio.com',
     storageBucket: 'campuscrt.appspot.com',
   );
 
@@ -63,6 +65,7 @@ class DefaultFirebaseOptions {
     appId: '1:899317925609:ios:88a2004d62545fb9119278',
     messagingSenderId: '899317925609',
     projectId: 'campuscrt',
+    databaseURL: 'https://campuscrt-default-rtdb.firebaseio.com',
     storageBucket: 'campuscrt.appspot.com',
     iosBundleId: 'com.example.campusCart',
   );
@@ -72,6 +75,7 @@ class DefaultFirebaseOptions {
     appId: '1:899317925609:ios:88a2004d62545fb9119278',
     messagingSenderId: '899317925609',
     projectId: 'campuscrt',
+    databaseURL: 'https://campuscrt-default-rtdb.firebaseio.com',
     storageBucket: 'campuscrt.appspot.com',
     iosBundleId: 'com.example.campusCart',
   );
@@ -82,6 +86,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '899317925609',
     projectId: 'campuscrt',
     authDomain: 'campuscrt.firebaseapp.com',
+    databaseURL: 'https://campuscrt-default-rtdb.firebaseio.com',
     storageBucket: 'campuscrt.appspot.com',
     measurementId: 'G-SFF9TJZJ8V',
   );

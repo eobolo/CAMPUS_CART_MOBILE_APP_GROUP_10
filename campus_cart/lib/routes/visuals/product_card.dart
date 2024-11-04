@@ -284,7 +284,7 @@ class ProductCard extends StatelessWidget {
                         const EdgeInsets.only(left: 16, right: 16, bottom: 20),
                     child: ElevatedButton(
                       onPressed: () {
-                        // Handle Edit Meal Details action
+                        Navigator.pushNamed(context, '/edit_menu');
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 60),
