@@ -31,7 +31,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-
     // Check if the user is logged in
     if (FirebaseAuth.instance.currentUser == null ||
         userStateController.loggedInuser == null) {

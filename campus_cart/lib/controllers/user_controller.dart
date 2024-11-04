@@ -55,6 +55,7 @@ class UserStateController extends GetxController {
     otpSent.value = false;
   }
 
+
   // Function to send OTP to the user's phone number
   Future<void> sendOTP(String phoneNumber, BuildContext context) async {
     try {

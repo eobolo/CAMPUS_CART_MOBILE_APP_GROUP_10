@@ -63,26 +63,23 @@ class _SignInState extends State<SignIn> {
             await storeLogoStateController
                 .retrieveImage(userStateController.loggedInuser.uid);
           } catch (e) {
-            print("error occurred 1");
+            // do nothing
           }
           // call setupdelivery, operations, payment infos, user dishes.
           try {
             await mealImageController.getAllUserDishes();
           } catch (e) {
             // do nothing
-            print("error occurred 2");
           }
           try {
             await setupDeliveryController.getSetupDeliveryFromDb();
           } catch (e) {
             // do nothing
-            print("error occurred 3");
           }
           try {
             await setupOperationController.getSetupOperationFromDb();
           } catch (e) {
             //do nothing
-            print("error occurred 4");
           }
         } catch (e) {
           // do nothing

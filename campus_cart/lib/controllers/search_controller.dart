@@ -5,7 +5,7 @@ class AllSearchController extends GetxController {
   var searchResults = <Map<Object?, Object?>>[].obs;
 
   void reset() {
-    recentSearches.value = [];
-    searchResults.value = [];
+    recentSearches.clear();
+    searchResults.clear();
   }
 }
