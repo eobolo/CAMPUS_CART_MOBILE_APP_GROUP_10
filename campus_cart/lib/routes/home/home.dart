@@ -82,7 +82,7 @@ class _HomeState extends State<Home> {
         Navigator.pushNamed(context, '/search');
         break;
       case 2:
-        // Navigator.pushNamed(context, '/orders');
+        Navigator.pushNamed(context, '/orders');
         break;
       case 3:
         Navigator.pushNamed(context, '/store_profile');
@@ -258,7 +258,7 @@ class _HomeState extends State<Home> {
                         child: Center(
                           child: GestureDetector(
                             onTap: () {
-                              // handle click
+                              Navigator.pushNamed(context, '/orders');
                             },
                             child: const Icon(
                               Iconify.bagHhappy,

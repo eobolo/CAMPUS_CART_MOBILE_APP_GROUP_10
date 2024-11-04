@@ -207,7 +207,9 @@ class ProfileScreen extends StatelessWidget {
                           _buildMenuItem(
                             icon: Icons.logout,
                             title: 'Log Out',
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(context, '/login');
+                            },
                             textColor: Colors.red,
                           ),
                         ],
