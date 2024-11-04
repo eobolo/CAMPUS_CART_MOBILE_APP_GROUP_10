@@ -93,7 +93,20 @@ flutter:
     - assets/images/black_bag_happy.png
     - assets/images/mesh.png
     - assets/images/bag-happy-bw.png
-
+    - assets/images/jollof_rice_1.png
+    - assets/images/jollof_rice_2.png
+    - assets/images/fried_rice.png
+    - assets/images/search-normal.png
+    - assets/images/bag-happy1.png
+    - assets/images/arrow-left.png
+    - assets/images/Frame 24.png
+    - assets/images/Frame 23.png
+    - assets/images/Frame 36.png
+    - assets/images/Frame 41.png
+    - assets/images/Frame 42.png
+    - assets/images/newfried rice.png
+    - assets/images/new jollof.png
+    - assets/images/new beans.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
