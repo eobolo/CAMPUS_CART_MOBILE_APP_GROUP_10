@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
 
-class MealDeals extends StatelessWidget {
-  const MealDeals({super.key});
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      title: 'Meal Deals',
+      home: MealDealsScreen(),
+    );
+  }
+}
+
+class MealDealsScreen extends StatelessWidget {
+  const MealDealsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,10 +27,11 @@ class MealDeals extends StatelessWidget {
         backgroundColor: const Color(0xFFF5C147),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          iconSize: 30,
+          padding: const EdgeInsets.all(0),
+          icon: Image.asset('assets/images/Frame 24.png'), 
           onPressed: () {
-            // Implement back navigation if necessary
-            Navigator.pop(context);
+           
           },
         ),
         centerTitle: true,
@@ -23,15 +40,26 @@ class MealDeals extends StatelessWidget {
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
+            fontSize: 16,
             fontFamily: 'DM Sans',
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
-            onPressed: () {
-              // Implement shopping cart navigation if necessary
-            },
+          Container(
+            width: 65,
+            height: 40,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+            ),
+            child: IconButton(
+              iconSize: 20,
+              padding: const EdgeInsets.all(0),
+              icon: Image.asset('assets/images/Frame 23.png'), 
+              onPressed: () {
+                
+              },
+            ),
           ),
         ],
       ),
@@ -40,56 +68,86 @@ class MealDeals extends StatelessWidget {
           Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'What do you want to get?',
-                  prefixIcon: const Icon(Icons.search, color: Color(0xFF909090)),
-                  fillColor: const Color(0xFFEBEBEB),
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: SizedBox(
+                width: double.infinity, 
+                height: 48,
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'What do you want to get?',
+                    hintStyle: const TextStyle(
+                      color: Color(0xFF909090), 
+                      fontSize: 15,
+                      fontFamily: 'DM Sans', 
+                      fontWeight: FontWeight.w500, 
+                    ),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.all(8.0), 
+                      child: Image.asset(
+                        'assets/images/search-normal.png', 
+                        height: 20, 
+                        width: 20, 
+                      ),
+                    ),
+                    fillColor: const Color(0xFFEBEBEB),
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30), 
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  style: const TextStyle(
+                    fontSize: 16, 
+                    color: Colors.black, 
                   ),
                 ),
               ),
             ),
           ),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                buildMealCard(
-                  context,
-                  'Mimi’s Jollof Rice',
-                  'Mimi’s Kitchen',
-                  'A plate of jollof rice, chicken, beef and plantain',
-                  '2400 RWF',
-                  '300 RWF',
-                  '15 mins',
-                  'assets/images/jollof_rice_1.png',
-                ),
-                buildMealCard(
-                  context,
-                  'Mimi’s Jollof Rice',
-                  'Mimi’s Kitchen',
-                  'A plate of jollof rice, chicken, beef and plantain',
-                  '5200 RWF',
-                  '300 RWF',
-                  '15 mins',
-                  'assets/images/jollof_rice_2.png',
-                ),
-                buildMealCard(
-                  context,
-                  'Int. Fried Rice',
-                  'Lore’s Kitchen',
-                  '',
-                  '',
-                  '300 RWF',
-                  '20 mins',
-                  'assets/images/fried_rice.png',
-                ),
-              ],
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      children: [
+                        buildMealCard(
+                          context,
+                          'Mimi’s Jollof Rice',
+                          'Mimi’s Kitchen',
+                          'A plate of jollof rice, chicken, beef and plantain',
+                          '2400', 
+                          '300 RWF',
+                          '15 mins',
+                          'assets/images/jollof_rice_1.png',
+                        ),
+                        buildMealCard(
+                          context,
+                          'Mimi’s Jollof Rice',
+                          'Mimi’s Kitchen',
+                          'A plate of jollof rice, chicken, beef and plantain',
+                          '5200', 
+                          '300 RWF',
+                          '15 mins',
+                          'assets/images/jollof_rice_2.png',
+                        ),
+                        buildMealCard(
+                          context,
+                          'Int. Fried Rice',
+                          'Lore’s Kitchen',
+                          '',
+                          '',
+                          '300 RWF',
+                          '20 mins',
+                          'assets/images/fried_rice.png',
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -97,139 +155,144 @@ class MealDeals extends StatelessWidget {
     );
   }
 
-  Widget buildMealCard(
-    BuildContext context,
-    String mealTitle,
-    String kitchen,
-    String description,
-    String price,
-    String deliveryFee,
-    String time,
-    String imagePath,
-  ) {
-    return Card(
-      color: Colors.white,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+Widget buildMealCard(
+  BuildContext context,
+  String mealTitle,
+  String kitchen,
+  String description,
+  String price,
+  String deliveryFee,
+  String time,
+  String imagePath,
+) {
+  return Card(
+    margin: const EdgeInsets.symmetric(vertical: 8),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    elevation: 2,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          child: Image.asset(
+            imagePath,
+            height: 120,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      elevation: 2,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            child: Image.asset(
-              imagePath,
-              height: 120,
-              width: double.infinity,
-              fit: BoxFit.cover,
+        Container(
+          decoration: const BoxDecoration(
+            color: Colors.white, 
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      mealTitle,
-                      style: const TextStyle(
-                        fontFamily: 'DM Sans',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        height: 1.4,
-                        letterSpacing: -0.01,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 240, 244, 249),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        kitchen,
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 96, 96, 96),
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                if (description.isNotEmpty)
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
                   Text(
-                    description,
+                    mealTitle,
                     style: const TextStyle(
-                      fontSize: 12,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
                       fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF606060),
                     ),
                   ),
-                const SizedBox(height: 8),
-                if (price.isNotEmpty)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+                  const SizedBox(width: 6),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF0F4F9),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      kitchen,
+                      style: const TextStyle(
+                        color: Color(0xFF606060),
+                        fontSize: 12,
+                        fontFamily: 'DM Sans',
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (description.isNotEmpty)
+                Text(
+                  description,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Color(0xFF606060),
+                    fontFamily: 'DM Sans',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              const SizedBox(height: 8),
+              if (price.isNotEmpty)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RichText(
+                      text: TextSpan(
                         children: [
-                          Text(
-                            price.split(' ')[0],
+                          TextSpan(
+                            text: price,
                             style: const TextStyle(
                               fontSize: 15,
-                              fontFamily: 'DM Sans',
                               fontWeight: FontWeight.w700,
-                              color: Colors.black,
+                              fontFamily: 'DM Sans',
+                              color: Color(0xFF202020),
                             ),
                           ),
-                          const SizedBox(width: 4),
-                          const Text(
-                            'RWF',
+                          const TextSpan(
+                            text: ' RWF',
                             style: TextStyle(
                               fontSize: 12,
-                              fontFamily: 'DM Sans',
                               fontWeight: FontWeight.w400,
+                              fontFamily: 'DM Sans',
                               color: Color(0xFF606060),
                             ),
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          Image.asset(
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min, 
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
                             'assets/images/Frame 41.png',
                             width: 64,
                             height: 17,
-                            fit: BoxFit.contain,
                           ),
-                          const SizedBox(width: 2),
-                          Image.asset(
+                        ),
+                        const SizedBox(width: 2),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
                             'assets/images/Frame 42.png',
-                            width: 57,
                             height: 17,
-                            fit: BoxFit.contain,
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-              ],
-            ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 }
