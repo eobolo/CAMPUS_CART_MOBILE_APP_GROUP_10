@@ -4,6 +4,7 @@ class MealDeals extends StatelessWidget {
   const MealDeals({super.key});
 
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5C147),
