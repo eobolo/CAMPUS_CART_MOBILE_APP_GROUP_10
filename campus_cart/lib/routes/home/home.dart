@@ -502,7 +502,7 @@ class _HomeState extends State<Home> {
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.pushNamed(
-                                          context, '/most_used_kitchens');
+                                          context, '/all_kitchens');
                                     },
                                     child: const Stack(
                                       alignment: Alignment.center,
