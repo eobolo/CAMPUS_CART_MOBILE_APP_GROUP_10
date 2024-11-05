@@ -92,141 +92,139 @@ class MealDeals extends StatelessWidget {
     );
   }
 
-  Widget buildMealCard(
-    BuildContext context,
-    String mealTitle,
-    String kitchen,
-    String description,
-    String price,
-    String deliveryFee,
-    String time,
-    String imagePath,
-  ) {
-    bool isMimisJollof = mealTitle == "Mimi’s Jollof Rice";
-
-    return Card(
-      color: Colors.white,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
+ Widget buildMealCard(
+  BuildContext context,
+  String mealTitle,
+  String kitchen,
+  String description,
+  String price,
+  String deliveryFee,
+  String time,
+  String imagePath,
+) {
+  return Card(
+    color: Colors.white,
+    margin: const EdgeInsets.symmetric(vertical: 8),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
       ),
-      elevation: 2,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            child: Image.asset(
-              imagePath,
-              height: 120,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+    ),
+    elevation: 2,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      mealTitle,
+          child: Image.asset(
+            imagePath,
+            height: 120,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    mealTitle,
+                    style: const TextStyle(
+                      fontFamily: 'DM Sans',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      height: 1.4,
+                      letterSpacing: -0.01,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 240, 244, 249),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      kitchen,
                       style: const TextStyle(
-                        fontFamily: 'DM Sans',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        height: 1.4,
-                        letterSpacing: -0.01,
-                        color: Colors.black87,
+                        color: Color.fromARGB(255, 96, 96, 96),
+                        fontSize: 12,
                       ),
                     ),
-                    const SizedBox(width: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 240, 244, 249),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        kitchen,
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 96, 96, 96),
-                          fontSize: 12,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (description.isNotEmpty)
+                Text(
+                  description,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontFamily: 'DM Sans',
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF606060),
+                  ),
+                ),
+              const SizedBox(height: 8),
+              if (price.isNotEmpty)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          price.split(' ')[0],
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontFamily: 'DM Sans',
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 4),
+                        const Text(
+                          'RWF',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: 'DM Sans',
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF606060),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/Frame 41.png',
+                          width: 64,
+                          height: 17,
+                          fit: BoxFit.contain,
+                        ),
+                        const SizedBox(width: 2),
+                        Image.asset(
+                          'assets/images/Frame 42.png',
+                          width: 57,
+                          height: 17,
+                          fit: BoxFit.contain,
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                if (description.isNotEmpty)
-                  Text(
-                    description,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF606060),
-                    ),
-                  ),
-                const SizedBox(height: 8),
-                if (price.isNotEmpty)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            price.split(' ')[0],
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'DM Sans',
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black,
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          const Text(
-                            'RWF',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: 'DM Sans',
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF606060),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/Frame 41.png',
-                            width: 64,
-                            height: 17,
-                            fit: BoxFit.contain,
-                          ),
-                          const SizedBox(width: 2),
-                          Image.asset(
-                            'assets/images/Frame 42.png',
-                            width: 57,
-                            height: 17,
-                            fit: BoxFit.contain,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-              ],
-            ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 }

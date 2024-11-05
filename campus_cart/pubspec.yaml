@@ -93,7 +93,6 @@ flutter:
     - assets/images/black_bag_happy.png
     - assets/images/mesh.png
     - assets/images/bag-happy-bw.png
-<<<<<<< HEAD
     - assets/images/jollof_rice_1.png
     - assets/images/jollof_rice_2.png
     - assets/images/fried_rice.png
@@ -105,10 +104,6 @@ flutter:
     - assets/images/Frame 36.png
     - assets/images/Frame 41.png
     - assets/images/Frame 42.png
-    - assets/images/newfried rice.png
-    - assets/images/new jollof.png
-    - assets/images/new beans.png
-=======
     - assets/images/delivery_bike.png
     - assets/images/Blur_Image.png
     - assets/images/desert.png
@@ -134,7 +129,6 @@ flutter:
     - assets/images/store.png
     - assets/images/profile.png
 
->>>>>>> 059f4f1bd41701401e4a9642ef60ac811013edae
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
