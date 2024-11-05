@@ -60,7 +60,7 @@ class MealDealCheckoutScreen extends StatelessWidget {
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
                     ),
-                    child: Container(
+                    child: SizedBox(
                       height: 270,
                       width: double.infinity,
                       child: Image.asset(
