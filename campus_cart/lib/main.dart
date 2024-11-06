@@ -4,6 +4,7 @@ import 'package:campus_cart/routes/auth/terms_and_conditions.dart';
 import 'package:campus_cart/routes/home/getstartedpage.dart';
 import 'package:campus_cart/routes/home/home.dart';
 import 'package:campus_cart/routes/home/search_screen.dart';
+import 'package:campus_cart/routes/home/splashpage.dart';
 import 'package:campus_cart/routes/meal_deals/all_kitchen.dart';
 import 'package:campus_cart/routes/meal_deals/meal_deals.dart';
 import 'package:campus_cart/routes/orders/orders.dart';
@@ -26,8 +27,6 @@ import 'package:campus_cart/routes/store/second_store_profile.dart';
 import 'package:campus_cart/routes/store/setup_delivery.dart';
 import 'package:campus_cart/routes/store/splash_store.dart';
 import 'package:campus_cart/routes/store/store_profile.dart';
-import 'package:campus_cart/controllers/user_controllers.dart';
-import 'package:get/get.dart';
 
 void main() async {
   // Ensure that Flutter's bindings are initialized before Firebase
