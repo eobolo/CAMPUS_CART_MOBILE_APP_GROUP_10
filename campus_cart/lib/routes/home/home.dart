@@ -3,10 +3,7 @@ import 'package:campus_cart/controllers/user_controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
-<<<<<<< HEAD
-=======
 import 'package:campus_cart/routes/home/search_screen.dart';
->>>>>>> 059f4f1bd41701401e4a9642ef60ac811013edae
 
 // class hone for the home page
 class Home extends StatefulWidget {

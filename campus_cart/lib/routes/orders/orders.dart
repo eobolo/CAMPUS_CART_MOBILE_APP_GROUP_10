@@ -93,7 +93,7 @@ class Cart extends StatelessWidget {
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(40),
                       topRight: Radius.circular(40),
                     ),

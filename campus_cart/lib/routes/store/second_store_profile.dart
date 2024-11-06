@@ -8,8 +8,6 @@ class SecondStoreProfile extends StatelessWidget {
   final XFile? storeLogo;
 
   const SecondStoreProfile({super.key, this.storeLogo});
-<<<<<<< HEAD
-=======
 
   void _navigateToPage(int index, BuildContext context) {
     switch (index) {
@@ -27,7 +25,6 @@ class SecondStoreProfile extends StatelessWidget {
         break;
     }
   }
->>>>>>> 059f4f1bd41701401e4a9642ef60ac811013edae
 
   @override
   Widget build(BuildContext context) {
