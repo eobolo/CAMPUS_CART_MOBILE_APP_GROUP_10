@@ -68,6 +68,10 @@ flutter:
     - family: Iconify1
       fonts:
         - asset: assets/Iconify1.ttf
+    - family:  Icon1
+      fonts:
+        - asset: assets/Icon1.ttf
+        
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

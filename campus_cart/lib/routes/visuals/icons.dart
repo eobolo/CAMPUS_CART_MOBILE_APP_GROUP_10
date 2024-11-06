@@ -67,3 +67,21 @@ class Iconify1 {
   static const IconData notification =
       IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
+
+class Icon1 {
+  Icon1._();
+
+  static const _kFontFam = 'Icon1';
+  static const String? _kFontPkg = null;
+
+  static const IconData export_icon =
+      IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData lock =
+      IconData(0xe814, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData message_question =
+      IconData(0xe815, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData user_edit =
+      IconData(0xe816, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData call =
+      IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+}
