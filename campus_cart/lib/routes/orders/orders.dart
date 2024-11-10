@@ -24,95 +24,127 @@ class Cart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: 2,
-          type: BottomNavigationBarType.fixed,
-          selectedLabelStyle: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: Color(0xff202020),
-          ),
-          selectedItemColor: const Color(0xff202020),
-          unselectedItemColor: const Color(0xff606060),
-          unselectedLabelStyle: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: Color(0xff606060),
-          ),
-          onTap: (index) {
-            _navigateToPage(index, context);
-          },
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(MyFlutterApp.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(MyFlutterApp.search_normal),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(MyFlutterApp.bag_2),
-              label: 'Orders',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Iconify1.shop),
-              label: 'Your Store',
-            ),
-          ],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 2,
+        type: BottomNavigationBarType.fixed,
+        selectedLabelStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: Color(0xff202020),
         ),
-        backgroundColor: const Color(0xffF5C147),
-        body: SafeArea(
-          child: Stack(
-            children: [
-              // Back button at the top-left
-              Positioned(
-                top: 55,
-                left: 30,
-                width: 40,
-                height: 40,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_rounded),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    color: Colors.black,
-                  ),
-                ),
+        selectedItemColor: const Color(0xff202020),
+        unselectedItemColor: const Color(0xff606060),
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: Color(0xff606060),
+        ),
+        onTap: (index) {
+          _navigateToPage(index, context);
+        },
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(MyFlutterApp.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(MyFlutterApp.search_normal),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage('assets/images/bag-2.png'),
+            ),
+            label: 'Orders',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Iconify1.shop),
+            label: 'Your Store',
+          ),
+        ],
+      ),
+      backgroundColor: const Color(0xffF5C147),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: <Color>[
+                  Color(0xfff6c85b),
+                  Color(0xffffffff),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.center,
               ),
-              Positioned(
-                top: 120,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
+            ),
+          ),
+          // const SingleChildScrollView(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(height: 100),
+              Center(
+                child: Column(
+                  children: <Widget>[
+                    const Image(
+                      image: AssetImage('assets/images/moving_cart.png'),
+                      width: 160,
+                      height: 160,
                     ),
-                  ),
-                  padding: const EdgeInsets.only(left: 30, right: 30),
-                  child: const Center(
-                    child: Text(
+                    const Text(
                       'Coming Soon!',
                       style: TextStyle(
-                        fontSize: 28,
+                        fontSize: 20,
                         fontWeight: FontWeight.w700,
+                        color: Color(0xff202020),
+                        letterSpacing: 0.2,
                         fontFamily: 'DM Sans',
                       ),
                     ),
-                  ),
+                    // SizedBox(height: 10),
+                    const Padding(
+                      padding: EdgeInsets.only(right: 50, left: 50, top: 10),
+                      child: Text(
+                        "Order History is currently empty. But don't worry, it won't be for long! In the meantime, keep exploring our delicious menu and placing new orders.",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff606060),
+                          letterSpacing: 0.2,
+                          fontFamily: 'DM Sans',
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(350, 60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(80),
+                        ),
+                        backgroundColor: const Color(0xff202020),
+                      ),
+                      child: const Text(
+                        'Explore Meal Options',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xffffffff),
+                          letterSpacing: 0.9,
+                          fontFamily: 'DM Sans',
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
-          ),
-        ));
+          )
+        ],
+      ),
+    );
   }
 }
