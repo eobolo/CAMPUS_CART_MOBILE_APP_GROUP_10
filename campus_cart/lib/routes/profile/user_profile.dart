@@ -396,7 +396,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                           children: [
                             _buildMenuItem(
-                              imagePath: "assets/images/user_edit.png",
+                              imagePath: "assets/images/shop.png",
                               title: 'Edit Store',
                               onTap: _goToSetupStore,
                             ),

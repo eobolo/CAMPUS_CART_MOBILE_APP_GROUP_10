@@ -3,20 +3,20 @@ import 'package:campus_cart/controllers/all_users_controller.dart';
 import 'package:campus_cart/controllers/cart_controller.dart';
 import 'package:campus_cart/controllers/search_controller.dart';
 import 'package:campus_cart/controllers/user_controller.dart';
-import 'package:flutter/material.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
 import 'package:campus_cart/routes/visuals/meal_deal_cards.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MealDeals extends StatefulWidget {
-  const MealDeals({super.key});
+class MealType extends StatefulWidget {
+  final String mealType;
+  const MealType({super.key, required this.mealType});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _MealDealsState createState() => _MealDealsState();
+  State<MealType> createState() => _MealTypeState();
 }
 
-class _MealDealsState extends State<MealDeals> {
+class _MealTypeState extends State<MealType> {
   final TextEditingController _searchController = TextEditingController();
   final CartController cartController = Get.find<CartController>();
   AllSearchController allSearchController = Get.find<AllSearchController>();
@@ -25,16 +25,14 @@ class _MealDealsState extends State<MealDeals> {
   AllUsersController allUsersController = Get.find<AllUsersController>();
 
   void _performSearchOperation(String searchQuery) {
-    allSearchController.mealDealsSearchResults.clear();
+    allSearchController.mealTypeSearchResults.clear();
 
     List<String> mealInfoField = [
       "cuisine",
-      "dietary",
       "kitchen",
       "mealName",
       "preparationTime",
       "price",
-      "type"
     ];
 
     bool matchesQuery(
@@ -48,8 +46,31 @@ class _MealDealsState extends State<MealDeals> {
     List<dynamic> filteredList = allDishesController.processedAllDishes
         .where((item) => matchesQuery(item, searchQuery, mealInfoField))
         .toList();
-    allSearchController.mealDealsSearchResults.addAll([...filteredList]);
-    allSearchController.mealDealsSearchResults.refresh();
+    allSearchController.mealTypeSearchResults.addAll([...filteredList]);
+    allSearchController.mealTypeSearchResults.refresh();
+  }
+
+  void _performFirstSearch(String searchMealType) {
+    allSearchController.mealTypeSearchResults.clear();
+
+    List<String> mealInfoField = [
+      "type",
+      "dietary",
+    ];
+
+    bool matchesQuery(
+        Map<Object?, Object?> item, String query, List<String> fields) {
+      return fields.any((field) {
+        var value = item[field]?.toString().toLowerCase() ?? '';
+        return value.contains(query.toLowerCase());
+      });
+    }
+
+    List<dynamic> filteredList = allDishesController.processedAllDishes
+        .where((item) => matchesQuery(item, searchMealType, mealInfoField))
+        .toList();
+    allSearchController.mealTypeSearchResults.addAll([...filteredList]);
+    allSearchController.mealTypeSearchResults.refresh();
   }
 
   void _onSearchChanged(String? searchQuery) {
@@ -61,11 +82,8 @@ class _MealDealsState extends State<MealDeals> {
   @override
   void initState() {
     super.initState();
-    // Delay the update until after the first build completes
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      allSearchController.mealDealsSearchResults.clear();
-      allSearchController.mealDealsSearchResults
-          .addAll([...allDishesController.processedAllDishes]);
+      _performFirstSearch(widget.mealType);
     });
   }
 
@@ -95,9 +113,9 @@ class _MealDealsState extends State<MealDeals> {
                       },
                     ),
                   ),
-                  const Text(
-                    'Meal Deals',
-                    style: TextStyle(
+                  Text(
+                    widget.mealType,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'DM Sans',
@@ -143,7 +161,7 @@ class _MealDealsState extends State<MealDeals> {
                             child: Center(child: Obx(() {
                               return Text(
                                 '${cartController.itemsInCart.value}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Color(0xff202020),
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
@@ -191,7 +209,8 @@ class _MealDealsState extends State<MealDeals> {
                       ),
                     ),
                     Obx(() {
-                      if (allSearchController.mealDealsSearchResults.isEmpty) {
+                      // Check if there are search results
+                      if (allSearchController.mealTypeSearchResults.isEmpty) {
                         return const Center(
                           child: Padding(
                             padding: EdgeInsets.all(24.0),
@@ -206,12 +225,13 @@ class _MealDealsState extends State<MealDeals> {
                           ),
                         );
                       }
+
                       return Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(24),
                           child: ListView(
                             children: List.generate(
-                              allSearchController.mealDealsSearchResults.length,
+                              allSearchController.mealTypeSearchResults.length,
                               (index) {
                                 Widget listItem;
                                 dynamic buyerDetails = allUsersController
@@ -220,7 +240,7 @@ class _MealDealsState extends State<MealDeals> {
                                         eachUser["buyerId"] ==
                                         userStateController.loggedInuser.uid);
                                 dynamic dish = allSearchController
-                                    .mealDealsSearchResults[index];
+                                    .mealTypeSearchResults[index];
                                 dynamic vendorDetails = allUsersController
                                     .allUsersInfo
                                     .firstWhere((eachUser) =>
@@ -228,15 +248,14 @@ class _MealDealsState extends State<MealDeals> {
                                         dish["vendorId"]);
                                 String itemInCart =
                                     "${dish["vendorId"]}-${dish["mealId"]}";
-                                int? quantity =
-                                    cartController.mapOfItemsCount.entries
-                                        .firstWhere(
-                                          (entry) => entry.key == itemInCart,
-                                          orElse: () => MapEntry(itemInCart, {
-                                            "quantity": 0
-                                          }), // Provide a MapEntry here
-                                        )
-                                        .value["quantity"];
+                                int? quantity = cartController
+                                    .mapOfItemsCount.entries
+                                    .firstWhere(
+                                      (entry) => entry.key == itemInCart,
+                                      orElse: () =>
+                                          MapEntry(itemInCart, {"quantity": 0}),
+                                    )
+                                    .value["quantity"];
                                 listItem = MealCard(
                                   imagePath: dish["mealImageUrl"],
                                   mealName: dish["mealName"],
@@ -258,7 +277,7 @@ class _MealDealsState extends State<MealDeals> {
                                 return Column(
                                   children: [
                                     listItem,
-                                    SizedBox(height: 16), // Add spacing here
+                                    const SizedBox(height: 16),
                                   ],
                                 );
                               },

@@ -83,11 +83,10 @@ class _SignInState extends State<SignIn> {
           }
         } catch (e) {
           // do nothing
-        } finally {
-          if (mounted) {
-            // send user to splash store for now, will change to home later
-            Navigator.pushReplacementNamed(context, '/home');
-          }
+        }
+        if (mounted) {
+          // send user to splash store for now, will change to home later
+          Navigator.pushReplacementNamed(context, '/home');
         }
       } catch (e) {
         setState(() {

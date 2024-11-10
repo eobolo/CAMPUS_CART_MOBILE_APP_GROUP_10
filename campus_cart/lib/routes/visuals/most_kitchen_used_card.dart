@@ -6,13 +6,15 @@ class MostKitchenUsedCard extends StatelessWidget {
   const MostKitchenUsedCard({super.key, this.kitchen});
 
   bool _isKitchenOpen(String fromTime, String toTime) {
-    // Parse the "to" time
-    int kitchenToTime = int.tryParse(toTime) ?? 0;
-    int kitchenFromTime = int.tryParse(fromTime) ?? 0;
+    dynamic kitchenToTime = int.tryParse(toTime);
+    dynamic kitchenFromTime = int.tryParse(fromTime);
+
+    if (kitchenToTime == null || kitchenFromTime == null) {
+      return false;
+    }
 
     final currentHour = DateTime.now().hour;
 
-    // Change kitchen closing time from 0 to 24
     if (kitchenToTime == 0) {
       if (currentHour >= 1 && currentHour < 13) {
         kitchenToTime = 0;
@@ -22,11 +24,7 @@ class MostKitchenUsedCard extends StatelessWidget {
         kitchenToTime = 24;
       }
     }
-    if ((currentHour >= kitchenFromTime) && (currentHour <= kitchenToTime)) {
-      return true;
-    } else {
-      return false;
-    }
+    return (currentHour >= kitchenFromTime) && (currentHour <= kitchenToTime);
   }
 
   @override

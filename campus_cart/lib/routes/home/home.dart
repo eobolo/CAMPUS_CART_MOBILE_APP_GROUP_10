@@ -3,6 +3,7 @@ import 'package:campus_cart/controllers/all_users_controller.dart';
 import 'package:campus_cart/controllers/cart_controller.dart';
 import 'package:campus_cart/controllers/search_controller.dart';
 import 'package:campus_cart/controllers/user_controller.dart';
+import 'package:campus_cart/routes/category/meal_type.dart';
 import 'package:campus_cart/routes/stores/meal_deal_product_card.dart';
 import 'package:campus_cart/routes/visuals/most_kitchen_used_card.dart';
 import 'package:campus_cart/routes/home/search_screen.dart';
@@ -77,8 +78,8 @@ class _HomeState extends State<Home> {
 
   // list of categories names
   final List<String> categoriesNames = [
-    'Meals',
-    'Deserts',
+    'Main Course',
+    'Dessert',
     'Drinks',
     'Fruits',
     'Vegan',
@@ -255,7 +256,7 @@ class _HomeState extends State<Home> {
                         child: Center(
                           child: GestureDetector(
                             onTap: () {
-                              // handle click
+                              Navigator.pushNamed(context, '/orders');
                             },
                             child: const Icon(
                               Iconify.bagHhappy,
@@ -348,26 +349,36 @@ class _HomeState extends State<Home> {
                           children: List.generate(
                             categoriesImages.length,
                             (index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(left: 19),
-                                child: Column(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 30,
-                                      backgroundImage:
-                                          AssetImage(categoriesImages[index]),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      categoriesNames[index],
-                                      style: const TextStyle(
-                                        color: Color(0xff606060),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: 'DM Sans',
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MealType(
+                                            mealType: categoriesNames[index])),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 14),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 30,
+                                        backgroundImage:
+                                            AssetImage(categoriesImages[index]),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        categoriesNames[index],
+                                        style: const TextStyle(
+                                          color: Color(0xff606060),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'DM Sans',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },

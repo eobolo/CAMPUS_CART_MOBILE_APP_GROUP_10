@@ -36,7 +36,7 @@ class AllUsersController extends GetxController {
       final data = event.snapshot.value;
       if (data != null) {
         int index = allUsersController.allUsersInfo.indexWhere(
-            (dish) => (dish as Map)['buyerId'] == (data as Map)["buyerId"]);
+            (user) => (user as Map)['buyerId'] == (data as Map)["buyerId"]);
         allUsersController.allUsersInfo[index] = data;
       } else {
         // do nothing

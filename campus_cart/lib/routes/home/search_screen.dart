@@ -3,6 +3,7 @@ import 'package:campus_cart/controllers/all_users_controller.dart';
 import 'package:campus_cart/controllers/cart_controller.dart';
 import 'package:campus_cart/controllers/search_controller.dart';
 import 'package:campus_cart/controllers/user_controller.dart';
+import 'package:campus_cart/routes/category/meal_type.dart';
 import 'package:campus_cart/routes/stores/meal_deal_product_card.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
 import 'package:flutter/material.dart';
@@ -331,7 +332,7 @@ class _SearchScreenState extends State<SearchScreen> {
             physics: NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 12),
             children: [
-              _buildCategoryItem('Meals', 'assets/images/meal_cat.png'),
+              _buildCategoryItem('Main Course', 'assets/images/meal_cat.png'),
               _buildCategoryItem('Dessert', 'assets/images/desert.png'),
               _buildCategoryItem('Drinks', 'assets/images/drinks.png'),
               _buildCategoryItem('Fruits', 'assets/images/fruits.png'),
@@ -441,24 +442,26 @@ class _SearchScreenState extends State<SearchScreen> {
 
                   if (allSearchController.searchResults[index]
                       .containsKey("mealName")) {
-                    dynamic userDetails = allUsersController.allUsersInfo
+                    dynamic buyerDetails = allUsersController.allUsersInfo
                         .firstWhere((eachUser) =>
                             eachUser["buyerId"] ==
                             userStateController.loggedInuser.uid);
                     dynamic dish = allSearchController.searchResults[index];
-
+                    dynamic vendorDetails = allUsersController.allUsersInfo
+                        .firstWhere((eachUser) =>
+                            eachUser["buyerId"] == dish["vendorId"]);
                     listItem = MealDealProductCard(
                       mealImage: dish["mealImageUrl"],
                       mealName: dish["mealName"],
-                      phoneNumber: userDetails["PhoneNumber"],
-                      email: userDetails["email"],
+                      phoneNumber: buyerDetails["PhoneNumber"],
+                      email: buyerDetails["email"],
                       vendorId: dish["vendorId"],
-                      buyerId: userDetails["buyerId"],
+                      buyerId: buyerDetails["buyerId"],
                       preparationTime: dish["preparationTime"],
                       price: dish["price"],
                       mealId: dish["mealId"],
                       indexId: index,
-                      deliveryPrice: userDetails["maxFee"] ?? 1500,
+                      deliveryPrice: vendorDetails["maxFee"] ?? 1500,
                     );
                   } else {
                     listItem = _buildKitchenCard(
@@ -481,26 +484,34 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildCategoryItem(String name, String imagePath) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundImage: AssetImage(imagePath),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            name,
-            style: const TextStyle(
-              color: Color(0xff606060),
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              fontFamily: 'DM Sans',
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MealType(mealType: name)),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              radius: 30,
+              backgroundImage: AssetImage(imagePath),
             ),
-          ),
-        ],
+            const SizedBox(height: 5),
+            Text(
+              name,
+              style: const TextStyle(
+                color: Color(0xff606060),
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                fontFamily: 'DM Sans',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

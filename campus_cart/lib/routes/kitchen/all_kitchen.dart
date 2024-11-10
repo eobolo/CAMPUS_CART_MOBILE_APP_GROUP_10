@@ -61,8 +61,12 @@ class _AllKitchensState extends State<AllKitchens> {
   }
 
   bool _isKitchenOpen(String fromTime, String toTime) {
-    int kitchenToTime = int.tryParse(toTime) ?? 0;
-    int kitchenFromTime = int.tryParse(fromTime) ?? 0;
+    dynamic kitchenToTime = int.tryParse(toTime);
+    dynamic kitchenFromTime = int.tryParse(fromTime);
+
+    if (kitchenToTime == null || kitchenFromTime == null) {
+      return false;
+    }
 
     final currentHour = DateTime.now().hour;
 
@@ -81,9 +85,12 @@ class _AllKitchensState extends State<AllKitchens> {
   @override
   void initState() {
     super.initState();
-    allSearchController.allKitchenSearchResults.clear();
-    allSearchController.allKitchenSearchResults
-        .addAll([...allUsersController.allUsersInfo]);
+    // Delay the update of allKitchenSearchResults until after the first build completes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      allSearchController.allKitchenSearchResults.clear();
+      allSearchController.allKitchenSearchResults
+          .addAll([...allUsersController.allUsersInfo]);
+    });
   }
 
   @override
