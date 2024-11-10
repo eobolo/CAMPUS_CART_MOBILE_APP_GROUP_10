@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "899317925609",
+    "firebase_url": "https://campuscrt-default-rtdb.firebaseio.com",
     "project_id": "campuscrt",
     "storage_bucket": "campuscrt.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.campus_cart"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "899317925609-7epq7f2i2913plaacvutkl8piobpi1r4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.campus_cart",
+            "certificate_hash": "e9ad7bb6e48a82e98bf61d8430a4d159dd0054ab"
+          }
+        },
+        {
+          "client_id": "899317925609-2e7qsg7v7kk3q1ofatvonq6m88imub4j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAh3UD6MkHWsE0oJpVwsWyKK_AGRL-c7VE"
@@ -20,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899317925609-2e7qsg7v7kk3q1ofatvonq6m88imub4j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "899317925609-8aem96hvi4u9h3d292j47ukuckq5vjos.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.campusCart"
+              }
+            }
+          ]
         }
       }
     }

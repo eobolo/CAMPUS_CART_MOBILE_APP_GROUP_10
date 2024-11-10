@@ -186,13 +186,19 @@ class MealDealProductCard extends StatelessWidget {
                             SizedBox(
                               width: 1,
                             ),
-                            Text(
-                              '$preparationTime mins',
-                              style: TextStyle(
-                                color: Color(0xff606060),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'DM Sans',
+                            ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: 30.0),
+                              child: Text(
+                                '$preparationTime mins',
+                                overflow: TextOverflow
+                                    .ellipsis, // Adds "..." if text overflows
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: Color(0xff606060),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'DM Sans',
+                                ),
                               ),
                             ),
                           ],

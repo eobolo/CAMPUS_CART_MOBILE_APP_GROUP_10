@@ -1,3 +1,7 @@
+import 'package:campus_cart/controllers/meal_image_controller.dart';
+import 'package:campus_cart/controllers/setup_delivery_controller.dart';
+import 'package:campus_cart/controllers/setup_operation_controller.dart';
+import 'package:campus_cart/controllers/store_logo_controller.dart';
 import 'package:campus_cart/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_cart/routes/visuals/splashvisuals.dart';
@@ -16,9 +20,19 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final UserStateController userStateController = Get.find<UserStateController>();
+  final UserStateController userStateController =
+      Get.find<UserStateController>();
+  final StoreLogoStateController storeLogoStateController =
+      Get.find<StoreLogoStateController>();
+  final SetupOperationController setupOperationController =
+      Get.find<SetupOperationController>();
+  final SetupDeliveryController setupDeliveryController =
+      Get.find<SetupDeliveryController>();
+  final MealImageController mealImageController =
+      Get.find<MealImageController>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _agreedToTerms = false;
+  bool _passwordVisible = false;
 
   void _onSignUp() {
     if (!(_formKey.currentState!.validate())) {
@@ -40,6 +54,58 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
 
   void _onTermsAndCondition() {
     Navigator.pushNamed(context, '/terms_and_conditions');
+  }
+
+  void _authWithGoogle() async {
+    try {
+      await userStateController.signInWithGoogleAndStoreData(context);
+      try {
+        // do a try and catch for each call so the others doesn't affect the rest.
+        // in the future
+        // call retrieve logo.
+        try {
+          await storeLogoStateController
+              .retrieveImage(userStateController.loggedInuser?.uid ?? "");
+        } catch (e) {
+          // do nothing
+        }
+        // call setupdelivery, operations, payment infos, user dishes.
+        try {
+          await mealImageController.getAllUserDishes();
+        } catch (e) {
+          // do nothing
+        }
+        try {
+          await setupDeliveryController.getSetupDeliveryFromDb();
+        } catch (e) {
+          // do nothing
+        }
+        try {
+          await setupOperationController.getSetupOperationFromDb();
+        } catch (e) {
+          //do nothing
+        }
+      } catch (e) {
+        // do nothing
+      }
+      if (mounted) {
+        // send user to splash store for now, will change to home later
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } catch (e) {
+      // Handle and show errors
+      if (e.toString() == "Exception: campus user deleted") {
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+      }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: const Color.fromARGB(255, 255, 63, 49),
+        ));
+      }
+    }
   }
 
   @override
@@ -97,10 +163,11 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                 ],
               ),
               Positioned(
-                top: MediaQuery.of(context).size.height * 0.13,
+                top: MediaQuery.of(context).size.height * 0.10,
+                bottom: MediaQuery.of(context).size.height * 0.0001,
                 left: 0,
                 right: 0,
-                child: Expanded(
+                child: SingleChildScrollView(
                   child: Container(
                     height: MediaQuery.of(context).size.height * 1,
                     width: double.infinity,
@@ -300,18 +367,20 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                             return null; // Return null if valid
                           },
                           controller: passwordController,
+                          obscureText: !_passwordVisible,
                           keyboardType: TextInputType.visiblePassword,
                           decoration: InputDecoration(
                             hintText: 'Enter your password',
-                            suffixIcon: Padding(
+                            suffixIcon: IconButton(
                               padding: const EdgeInsets.only(right: 25),
-                              child: GestureDetector(
-                                onTap: () {
-                                  // Implement your password visibility toggle here
-                                },
-                                child: const Icon(Icons.visibility_outlined,
-                                    color: Color(0xFF202020)),
-                              ),
+                              icon: Icon(_passwordVisible
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined),
+                              onPressed: () {
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
                             ),
                             filled: true,
                             fillColor: const Color(0xFFE5E5E5),
@@ -364,7 +433,7 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                             Flexible(
                               child: GestureDetector(
                                 onTap: _onTermsAndCondition,
-                                child: Text.rich(
+                                child: const Text.rich(
                                   TextSpan(
                                     text: 'By signing up, I agree to the ',
                                     children: [
@@ -395,23 +464,87 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
                         ),
                         const SizedBox(height: 20),
                         ElevatedButton(
-                            onPressed: _onSignUp,
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 60),
-                              backgroundColor: const Color(0xFF202020),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(80),
-                              ),
+                          onPressed: _onSignUp,
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 60),
+                            backgroundColor: const Color(0xFF202020),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(80),
                             ),
-                            child: const Text(
-                              'Create Account',
-                              style: TextStyle(
-                                color: Color(0xFFFFFFFF),
-                                fontSize: 16,
-                                fontFamily: "DM Sans",
-                                fontWeight: FontWeight.bold,
+                          ),
+                          child: const Text(
+                            'Create Account',
+                            style: TextStyle(
+                              color: Color(0xFFFFFFFF),
+                              fontSize: 16,
+                              fontFamily: "DM Sans",
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(width: 20),
+                              Expanded(
+                                child: Divider(
+                                  color: Color(0xffC6C6C6),
+                                  thickness: 1,
+                                ),
                               ),
-                            )),
+                              SizedBox(width: 8),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                child: Text(
+                                  'or',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xff505050),
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'DM Sans',
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Divider(
+                                  color: Color(0xffC6C6C6),
+                                  thickness: 1,
+                                ),
+                              ),
+                              SizedBox(width: 20),
+                            ]),
+                        const SizedBox(height: 20),
+                        OutlinedButton.icon(
+                          onPressed: _authWithGoogle,
+                          icon: Image.asset(
+                            'assets/images/google_logo.png',
+                            width: 24,
+                            height: 24,
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            // padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                            minimumSize: const Size(double.infinity, 60),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            side: const BorderSide(
+                              color: Color(0xffD2D2D2),
+                              width: 1,
+                            ),
+                          ),
+                          label: const Text(
+                            'Continue with Google',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'DM Sans',
+                              color: Color(0xff202020),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),

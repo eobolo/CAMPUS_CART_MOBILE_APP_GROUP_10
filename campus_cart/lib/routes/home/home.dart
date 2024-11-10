@@ -151,12 +151,12 @@ class _HomeState extends State<Home> {
                       child: CircleAvatar(
                         radius: 30,
                         backgroundImage:
-                            userStateController.loggedInuser.photoURL == null
+                            userStateController.loggedInuser?.photoURL == null
                                 ? AssetImage(
                                     'assets/images/profile.png',
                                   )
                                 : NetworkImage(
-                                    userStateController.loggedInuser.photoURL,
+                                    userStateController.loggedInuser?.photoURL ?? "",
                                   ),
                         backgroundColor: Colors.transparent,
                       ),
@@ -463,7 +463,7 @@ class _HomeState extends State<Home> {
                                                     .firstWhere((eachUser) =>
                                                         eachUser["buyerId"] ==
                                                         userStateController
-                                                            .loggedInuser.uid);
+                                                            .loggedInuser?.uid);
                                             dynamic dish = allDishesController
                                                 .processedAllDishes[index];
                                             return MealDealProductCard(

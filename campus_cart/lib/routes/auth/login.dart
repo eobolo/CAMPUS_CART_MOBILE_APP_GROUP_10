@@ -29,6 +29,7 @@ class _SignInState extends State<SignIn> {
       Get.find<MealImageController>();
   final _formSignInKey = GlobalKey<FormState>();
   bool isLoading = false;
+  bool _passwordVisible = false;
 
   void _onSignUp() {
     Navigator.pushNamed(context, '/signup');
@@ -61,7 +62,7 @@ class _SignInState extends State<SignIn> {
           // call retrieve logo.
           try {
             await storeLogoStateController
-                .retrieveImage(userStateController.loggedInuser.uid);
+                .retrieveImage(userStateController.loggedInuser?.uid ?? "");
           } catch (e) {
             // do nothing
           }
@@ -105,6 +106,58 @@ class _SignInState extends State<SignIn> {
             backgroundColor: const Color.fromARGB(255, 255, 63, 49),
           ));
         }
+      }
+    }
+  }
+
+  void _authWithGoogle() async {
+    try {
+      await userStateController.signInWithGoogleAndStoreData(context);
+      try {
+        // do a try and catch for each call so the others doesn't affect the rest.
+        // in the future
+        // call retrieve logo.
+        try {
+          await storeLogoStateController
+              .retrieveImage(userStateController.loggedInuser?.uid ?? "");
+        } catch (e) {
+          // do nothing
+        }
+        // call setupdelivery, operations, payment infos, user dishes.
+        try {
+          await mealImageController.getAllUserDishes();
+        } catch (e) {
+          // do nothing
+        }
+        try {
+          await setupDeliveryController.getSetupDeliveryFromDb();
+        } catch (e) {
+          // do nothing
+        }
+        try {
+          await setupOperationController.getSetupOperationFromDb();
+        } catch (e) {
+          //do nothing
+        }
+      } catch (e) {
+        // do nothing
+      }
+      if (mounted) {
+        // send user to splash store for now, will change to home later
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } catch (e) {
+      // Handle and show errors
+      if (e.toString() == "Exception: campus user deleted") {
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+      }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: const Color.fromARGB(255, 255, 63, 49),
+        ));
       }
     }
   }
@@ -284,20 +337,19 @@ class _SignInState extends State<SignIn> {
                             return null; // Return null if valid
                           },
                           controller: passwordController,
-                          obscureText: true,
+                          obscureText: !_passwordVisible,
                           decoration: InputDecoration(
                             hintText: 'Enter your password',
-                            suffixIcon: Padding(
+                            suffixIcon: IconButton(
                               padding: const EdgeInsets.only(right: 25),
-                              child: GestureDetector(
-                                onTap: () {
-                                  // Implement your password visibility toggle here
-                                },
-                                child: const Icon(
-                                  Icons.visibility_outlined,
-                                  color: Color(0xFF202020),
-                                ),
-                              ),
+                              icon: Icon(_passwordVisible
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined),
+                              onPressed: () {
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
                             ),
                             filled: true,
                             fillColor: const Color(0xFFE5E5E5),
@@ -358,6 +410,69 @@ class _SignInState extends State<SignIn> {
                                   ),
                                 ),
                               ),
+                        const SizedBox(height: 20),
+                        const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(width: 20),
+                              Expanded(
+                                child: Divider(
+                                  color: Color(0xffC6C6C6),
+                                  thickness: 1,
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                child: Text(
+                                  'or',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xff505050),
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'DM Sans',
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Divider(
+                                  color: Color(0xffC6C6C6),
+                                  thickness: 1,
+                                ),
+                              ),
+                              SizedBox(width: 20),
+                            ]),
+                        const SizedBox(height: 20),
+                        OutlinedButton.icon(
+                          onPressed: _authWithGoogle,
+                          icon: Image.asset(
+                            'assets/images/google_logo.png',
+                            width: 24,
+                            height: 24,
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            // padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                            minimumSize: const Size(double.infinity, 60),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            side: const BorderSide(
+                              color: Color(0xffD2D2D2),
+                              width: 1,
+                            ),
+                          ),
+                          label: const Text(
+                            'Continue with Google',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'DM Sans',
+                              color: Color(0xff202020),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),

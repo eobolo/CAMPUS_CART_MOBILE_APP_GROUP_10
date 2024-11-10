@@ -3,6 +3,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
 
 class UserStateController extends GetxController {
@@ -29,6 +30,10 @@ class UserStateController extends GetxController {
   RxMap<dynamic, dynamic> campusCartUser = {}.obs;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: [
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/userinfo.email'
+  ]);
   PhoneAuthCredential? credential;
 
   RxString verificationId = ''.obs;
@@ -53,6 +58,54 @@ class UserStateController extends GetxController {
     campusCartUser.value = {};
     verificationId.value = "";
     otpSent.value = false;
+  }
+
+  Future<void> signInWithGoogleAndStoreData(BuildContext context) async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Sign in to Firebase with the credential
+      UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+      User? user = userCredential.user;
+      if (user != null) {
+        // Prepare user data to store in Realtime Database
+        loggedInuser = user;
+        final Map<String, Object> newUser = {
+          "email": user.email ?? "",
+          "PhoneNumber2": phoneNumber.value.isNotEmpty
+              ? phoneNumber.value
+              : "", // Use empty string if phone number is not set
+          "isBuyer": true,
+          "buyerId": user.uid,
+        };
+        // Update user data in Realtime Database to avoid overwriting existing data
+        await _dbRef.child("campusCartUsers").child(user.uid).update(newUser);
+
+        // Update reactive variable for campus cart user
+        try {
+          final event = await _dbRef
+              .child("campusCartUsers/${user.uid}")
+              .once(DatabaseEventType.value);
+          campusCartUser.value = event.snapshot.value as Map<dynamic, dynamic>;
+        } catch (e) {
+          throw Exception("campus user deleted");
+        }
+      }
+    } catch (e) {
+      throw Exception("Google sign-in failed: $e");
+    }
   }
 
   // Function to send OTP to the user's phone number
