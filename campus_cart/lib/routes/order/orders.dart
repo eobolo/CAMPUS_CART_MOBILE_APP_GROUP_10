@@ -119,7 +119,9 @@ class Cart extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/home');
+                      },
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(350, 60),
                         shape: RoundedRectangleBorder(

@@ -45,5 +45,21 @@ class AllDishesController extends GetxController {
       allDishesController.processedAllDishes.shuffle();
       allDishesController.processedAllDishes.refresh();
     });
+
+    _dishesRef.onChildRemoved.listen((DatabaseEvent event) {
+      final AllDishesController allDishesController =
+          Get.find<AllDishesController>();
+      final data = event.snapshot.value;
+      if (data != null) {
+        int index = allDishesController.processedAllDishes.indexWhere((dish) =>
+            ((dish as Map)['mealId'] == (data as Map)["mealId"]) &&
+            ((dish)['vendorId'] == (data)["vendorId"]));
+        if (index != -1) {
+          allDishesController.processedAllDishes.removeAt(index);
+        }
+      }
+      allDishesController.processedAllDishes.shuffle();
+      allDishesController.processedAllDishes.refresh();
+    });
   }
 }

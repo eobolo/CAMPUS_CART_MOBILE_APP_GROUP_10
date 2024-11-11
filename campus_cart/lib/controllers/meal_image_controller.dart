@@ -150,6 +150,7 @@ class MealImageController extends GetxController {
         Get.find<UserStateController>();
     final MealImageController mealImageController =
         Get.find<MealImageController>();
+
     if (mealImageController.mapOfDishes.isNotEmpty) {
       return;
     }
@@ -158,12 +159,29 @@ class MealImageController extends GetxController {
       final event = await _dbRef
           .child("dishes/${userStateController.loggedInuser.uid}")
           .once(DatabaseEventType.value);
+
       if (event.snapshot.value != null) {
-        // type cast real time database fixed length to dynamic length
-        List<Object?> vendorDishes =
-            List<Object?>.from(event.snapshot.value as List<Object?>);
-        processFirstElement(vendorDishes);
-        mealImageController.mapOfDishes.value = vendorDishes;
+        // Check the runtime type of the data
+        if ("${event.snapshot.value.runtimeType}" == "List<Object?>") {
+          // Handle List<Object?> scenario
+          List<Object?> vendorDishes =
+              List<Object?>.from(event.snapshot.value as List<Object?>);
+          processFirstElement(vendorDishes);
+          mealImageController.mapOfDishes.value = vendorDishes;
+        } else if ("${event.snapshot.value.runtimeType}" ==
+            "_Map<Object?, Object?>") {
+          // Handle Map<Object?, Object?> scenario
+          Map<Object?, Object?> vendorDishesMap =
+              event.snapshot.value as Map<Object?, Object?>;
+          List<Object?> vendorDishes = [];
+          vendorDishesMap.forEach((key, value) {
+            vendorDishes.add(value);
+          });
+          mealImageController.mapOfDishes.value = vendorDishes;
+        } else {
+          // Handle unexpected data type
+          mealImageController.mapOfDishes.value = [];
+        }
       } else {
         mealImageController.mapOfDishes.value = [];
       }
