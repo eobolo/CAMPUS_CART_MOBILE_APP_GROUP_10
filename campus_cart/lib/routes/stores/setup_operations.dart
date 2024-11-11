@@ -57,13 +57,15 @@ class _SetupOperationsScreenState extends State<SetupOperationsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: const Color.fromARGB(255, 255, 63, 49),
-          content: Text(
-            "operations setup failed: $e",
-            style: TextStyle(
-              color: Color(0xFF202020),
-              fontSize: 14,
-              fontFamily: "DM Sans",
-              fontWeight: FontWeight.bold,
+          content: Center(
+            child: Text(
+              "operations setup failed: $e",
+              style: TextStyle(
+                color: Color(0xFF202020),
+                fontSize: 14,
+                fontFamily: "DM Sans",
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ));
@@ -94,13 +96,15 @@ class _SetupOperationsScreenState extends State<SetupOperationsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: const Color.fromARGB(255, 116, 255, 121),
-          content: Text(
-            "operation setup fetch failed: $e",
-            style: TextStyle(
-              color: Color(0xFF202020),
-              fontSize: 14,
-              fontFamily: "DM Sans",
-              fontWeight: FontWeight.bold,
+          content: Center(
+            child: Text(
+              "operation setup fetch failed: $e",
+              style: TextStyle(
+                color: Color(0xFF202020),
+                fontSize: 14,
+                fontFamily: "DM Sans",
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ));

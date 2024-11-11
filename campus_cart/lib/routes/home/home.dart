@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
         Navigator.pushNamed(context, '/search');
         break;
       case 2:
-        // Navigator.pushNamed(context, '/orders');
+        Navigator.pushNamed(context, '/orders');
         break;
       case 3:
         if (userStateController.campusCartUser["isVendor"] != null) {

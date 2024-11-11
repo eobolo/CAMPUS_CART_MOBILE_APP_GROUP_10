@@ -50,6 +50,28 @@ class ProductCard extends StatelessWidget {
     Navigator.pushNamed(context, '/edit_menu');
   }
 
+  void _deleteMenu(BuildContext context) async {
+    try {
+      await mealImageController.deleteMenuFromDb(editMealId);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Center(child: Text("Menu deleted successfully")),
+          backgroundColor: const Color.fromARGB(255, 97, 255, 49),
+        ));
+      }
+      if (context.mounted) {
+        Navigator.pushNamed(context, "/store_profile");
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Center(child: Text("Menu deletion failed")),
+          backgroundColor: const Color.fromARGB(255, 255, 63, 49),
+        ));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isCreateNew) {
@@ -234,7 +256,7 @@ class ProductCard extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Positioned(
-          top: 405,
+          top: 370,
           left: 0,
           right: 0,
           child: Padding(
@@ -335,13 +357,40 @@ class ProductCard extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+                    child: OutlinedButton(
+                      onPressed: () => _deleteMenu(context),
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(80),
+                        ),
+                        side: const BorderSide(
+                          color: Color(0xffF8474A),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: const Text(
+                        'Delete Meal',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'DM Sans',
+                          color: Color(0xffF8474A),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
         ),
         Positioned(
-          top: 350,
+          top: 330,
           right: 16,
           child: CircleAvatar(
             radius: 20,

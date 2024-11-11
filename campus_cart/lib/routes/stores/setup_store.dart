@@ -47,7 +47,7 @@ class _SetUpStoreState extends State<SetUpStore> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(e.toString()),
+          content: Center(child: Text(e.toString())),
           backgroundColor: const Color.fromARGB(255, 116, 255, 95),
         ));
       }
@@ -76,7 +76,7 @@ class _SetUpStoreState extends State<SetUpStore> {
       userStateController.campusCartUser.refresh();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("New vendor '${_storeNameController.text}' created."),
+          content: Center(child: Text("New vendor '${_storeNameController.text}' created.")),
           backgroundColor: const Color.fromARGB(255, 116, 255, 95),
         ));
       }
@@ -90,7 +90,7 @@ class _SetUpStoreState extends State<SetUpStore> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(e.toString()),
+          content: Center(child: Text(e.toString())),
           backgroundColor: const Color.fromARGB(255, 255, 55, 55),
         ));
       }

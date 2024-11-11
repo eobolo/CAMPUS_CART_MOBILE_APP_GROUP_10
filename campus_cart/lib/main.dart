@@ -17,6 +17,7 @@ import 'package:campus_cart/routes/home/search_screen.dart';
 import 'package:campus_cart/routes/home/splashpage.dart';
 import 'package:campus_cart/routes/kitchen/all_kitchen.dart';
 import 'package:campus_cart/routes/meal_deal/meal_deals.dart';
+import 'package:campus_cart/routes/order/orders.dart';
 import 'package:campus_cart/routes/profile/security.dart';
 import 'package:campus_cart/routes/profile/user_edit.dart';
 import 'package:campus_cart/routes/profile/user_profile.dart';
@@ -136,6 +137,7 @@ class _MyAppState extends State<MyApp> {
         '/user_profile': (context) => ProfileScreen(),
         '/edit_profile': (context) => UserProfileEdit(),
         '/security': (context) => Security(),
+        '/orders': (context) => Cart(),
       },
     );
   }

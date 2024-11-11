@@ -54,13 +54,15 @@ class _DeliverySetupScreenState extends State<DeliverySetupScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: const Color.fromARGB(255, 255, 63, 49),
-          content: Text(
-            "Delivery setup failed: $e",
-            style: TextStyle(
-              color: Color(0xFF202020),
-              fontSize: 14,
-              fontFamily: "DM Sans",
-              fontWeight: FontWeight.bold,
+          content: Center(
+            child: Text(
+              "Delivery setup failed: $e",
+              style: TextStyle(
+                color: Color(0xFF202020),
+                fontSize: 14,
+                fontFamily: "DM Sans",
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ));
@@ -91,13 +93,15 @@ class _DeliverySetupScreenState extends State<DeliverySetupScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: const Color.fromARGB(255, 116, 255, 121),
-          content: Text(
-            "Delivery setup fetch failed: $e",
-            style: TextStyle(
-              color: Color(0xFF202020),
-              fontSize: 14,
-              fontFamily: "DM Sans",
-              fontWeight: FontWeight.bold,
+          content: Center(
+            child: Text(
+              "Delivery setup fetch failed: $e",
+              style: TextStyle(
+                color: Color(0xFF202020),
+                fontSize: 14,
+                fontFamily: "DM Sans",
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ));

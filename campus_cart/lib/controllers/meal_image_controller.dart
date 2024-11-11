@@ -172,6 +172,49 @@ class MealImageController extends GetxController {
     }
   }
 
+  Future<void> deleteMenuFromDb(int mealId) async {
+    final UserStateController userStateController =
+        Get.find<UserStateController>();
+    final MealImageController mealImageController =
+        Get.find<MealImageController>();
+    try {
+      // remove the meal from the dishes table
+      await _dbRef
+          .child('dishes/${userStateController.loggedInuser?.uid}/$mealId')
+          .remove();
+      // remove the meal from the allDishes table
+      await _dbRef
+          .child('allDishes/${userStateController.loggedInuser?.uid}-$mealId')
+          .remove();
+      // remove the meal from the mapofdishes reactive list variable
+      mealImageController.mapOfDishes
+          .removeWhere((dish) => dish["mealId"] == mealId);
+      mealImageController.mapOfDishes.refresh();
+
+      // remove the meal image from storage
+      // Create a reference to the file to delete
+      final storageRef = FirebaseStorage.instance.ref();
+      final mealImageRef = storageRef.child(
+          "meal_images/${userStateController.loggedInuser.uid}/$mealId/meal_image.png");
+      await mealImageRef.delete();
+    } on FirebaseException catch (e) {
+      // Handle Firebase Database errors
+      switch (e.code) {
+        case 'permission-denied':
+          throw Exception('Permission denied: ${e.message}');
+        case 'disconnected':
+          throw Exception('Disconnected from the database: ${e.message}');
+        case 'invalid-argument':
+          throw Exception('Invalid argument: ${e.message}');
+        default:
+          throw Exception('Database error: ${e.message}');
+      }
+    } catch (e) {
+      // Handle general errors
+      throw Exception('An error occurred: $e');
+    }
+  }
+
   Future<void> editMenuToDb() async {
     final UserStateController userStateController =
         Get.find<UserStateController>();

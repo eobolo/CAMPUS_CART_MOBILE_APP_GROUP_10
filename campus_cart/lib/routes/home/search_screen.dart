@@ -42,7 +42,7 @@ class _SearchScreenState extends State<SearchScreen> {
         Navigator.pushNamed(context, '/search');
         break;
       case 2:
-        // Navigator.pushNamed(context, '/orders');
+        Navigator.pushNamed(context, '/orders');
         break;
       case 3:
         if (userStateController.campusCartUser["isVendor"] != null) {
@@ -268,7 +268,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               child: Center(
                                 child: GestureDetector(
                                   onTap: () {
-                                    // handle click
+                                    Navigator.pushNamed(context, '/orders');
                                   },
                                   child: const Icon(
                                     Iconify.bagHhappy,
