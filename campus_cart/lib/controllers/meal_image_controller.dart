@@ -55,39 +55,31 @@ class MealImageController extends GetxController {
       - create a new menu by adding 1 to lastest dish id
     */
     Map<String, dynamic> newMenu = {};
+    Map<String, dynamic> sendMenu = {
+      "mealName": mealImageController.mealName.value,
+      "mealDescription": mealImageController.mealDescription.value,
+      "cuisine": mealImageController.cuisine.value,
+      "type": mealImageController.type.value,
+      "dietary": mealImageController.dietary.value,
+      "preparationTime": mealImageController.preparationTime.value,
+      "price": mealImageController.price.value,
+      "kitchen": userStateController.campusCartUser["vendorName"],
+      "vendorId": userStateController.loggedInuser.uid,
+    };
     int newId = 1;
+
     if (mealImageController.mapOfDishes.isEmpty) {
       newId = 1;
+      sendMenu["mealId"] = newId;
       newMenu = {
-        "$newId": {
-          "mealName": mealImageController.mealName.value,
-          "mealDescription": mealImageController.mealDescription.value,
-          "cuisine": mealImageController.cuisine.value,
-          "type": mealImageController.type.value,
-          "dietary": mealImageController.dietary.value,
-          "preparationTime": mealImageController.preparationTime.value,
-          "price": mealImageController.price.value,
-          "mealId": newId,
-          "kitchen": userStateController.campusCartUser["vendorName"],
-          "vendorId": userStateController.loggedInuser.uid,
-        }
+        "$newId": sendMenu,
       };
     } else {
       var lastDish = mapOfDishes.last;
       newId = lastDish["mealId"] + 1;
+      sendMenu["mealId"] = newId;
       newMenu = {
-        "$newId": {
-          "mealName": mealImageController.mealName.value,
-          "mealDescription": mealImageController.mealDescription.value,
-          "cuisine": mealImageController.cuisine.value,
-          "type": mealImageController.type.value,
-          "dietary": mealImageController.dietary.value,
-          "preparationTime": mealImageController.preparationTime.value,
-          "price": mealImageController.price.value,
-          "mealId": newId,
-          "kitchen": userStateController.campusCartUser["vendorName"],
-          "vendorId": userStateController.loggedInuser.uid,
-        }
+        "$newId": sendMenu,
       };
     }
     try {
@@ -98,35 +90,13 @@ class MealImageController extends GetxController {
           .update(newMenu);
       // store latest mealid and store new menu to mapofdishes
       mealImageController.latestMealId.value = newId;
-      mealImageController.mapOfDishes.add({
-        "mealName": mealImageController.mealName.value,
-        "mealDescription": mealImageController.mealDescription.value,
-        "cuisine": mealImageController.cuisine.value,
-        "type": mealImageController.type.value,
-        "dietary": mealImageController.dietary.value,
-        "preparationTime": mealImageController.preparationTime.value,
-        "price": mealImageController.price.value,
-        "mealId": newId,
-        "kitchen": userStateController.campusCartUser["vendorName"],
-        "vendorId": userStateController.loggedInuser.uid,
-      });
+      mealImageController.mapOfDishes.add(sendMenu);
 
       // store this dish into Alldishes table.
       await _dbRef
           .child("allDishes")
           .child("${userStateController.loggedInuser.uid}-$newId")
-          .update({
-        "mealName": mealImageController.mealName.value,
-        "mealDescription": mealImageController.mealDescription.value,
-        "cuisine": mealImageController.cuisine.value,
-        "type": mealImageController.type.value,
-        "dietary": mealImageController.dietary.value,
-        "preparationTime": mealImageController.preparationTime.value,
-        "price": mealImageController.price.value,
-        "mealId": newId,
-        "kitchen": userStateController.campusCartUser["vendorName"],
-        "vendorId": userStateController.loggedInuser.uid,
-      });
+          .update(sendMenu);
     } on FirebaseException catch (e) {
       // Handle Firebase Database errors
       switch (e.code) {
@@ -239,20 +209,21 @@ class MealImageController extends GetxController {
     final MealImageController mealImageController =
         Get.find<MealImageController>();
     Map<String, dynamic> newMenu = {};
+    Map<String, dynamic> sendMenu = {
+      "mealName": mealImageController.mealName.value,
+      "mealDescription": mealImageController.mealDescription.value,
+      "cuisine": mealImageController.cuisine.value,
+      "type": mealImageController.type.value,
+      "dietary": mealImageController.dietary.value,
+      "preparationTime": mealImageController.preparationTime.value,
+      "price": mealImageController.price.value,
+      "kitchen": userStateController.campusCartUser["vendorName"],
+      "vendorId": userStateController.loggedInuser.uid,
+    };
     int mealId = mealImageController.editMealId.value;
+    sendMenu["mealId"] = mealId;
     newMenu = {
-      "$mealId": {
-        "mealName": mealImageController.mealName.value,
-        "mealDescription": mealImageController.mealDescription.value,
-        "cuisine": mealImageController.cuisine.value,
-        "type": mealImageController.type.value,
-        "dietary": mealImageController.dietary.value,
-        "preparationTime": mealImageController.preparationTime.value,
-        "price": mealImageController.price.value,
-        "mealId": mealId,
-        "kitchen": userStateController.campusCartUser["vendorName"],
-        "vendorId": userStateController.loggedInuser.uid,
-      }
+      "$mealId": sendMenu,
     };
     try {
       // save edited value to dishes table
@@ -264,36 +235,14 @@ class MealImageController extends GetxController {
       await _dbRef
           .child("allDishes")
           .child("${userStateController.loggedInuser.uid}-$mealId")
-          .update({
-        "mealName": mealImageController.mealName.value,
-        "mealDescription": mealImageController.mealDescription.value,
-        "cuisine": mealImageController.cuisine.value,
-        "type": mealImageController.type.value,
-        "dietary": mealImageController.dietary.value,
-        "preparationTime": mealImageController.preparationTime.value,
-        "price": mealImageController.price.value,
-        "mealId": mealId,
-        "kitchen": userStateController.campusCartUser["vendorName"],
-        "vendorId": userStateController.loggedInuser.uid,
-      });
+          .update(sendMenu);
 
       // save to getx controller
       int index = mealImageController.mapOfDishes
           .indexWhere((dish) => (dish as Map)['mealId'] == mealId);
 
       if (index != -1) {
-        mealImageController.mapOfDishes[index] = {
-          "mealName": mealImageController.mealName.value,
-          "mealDescription": mealImageController.mealDescription.value,
-          "cuisine": mealImageController.cuisine.value,
-          "type": mealImageController.type.value,
-          "dietary": mealImageController.dietary.value,
-          "preparationTime": mealImageController.preparationTime.value,
-          "price": mealImageController.price.value,
-          "mealId": mealId,
-          "kitchen": userStateController.campusCartUser["vendorName"],
-          "vendorId": userStateController.loggedInuser.uid,
-        };
+        mealImageController.mapOfDishes[index] = sendMenu;
         mealImageController.mapOfDishes.refresh();
       }
     } on FirebaseException catch (e) {
