@@ -144,7 +144,7 @@ class StoreProfile extends StatelessWidget {
                 const SizedBox(height: 20),
                 Obx(() {
                   return Text(
-                    userStateController.campusCartUser["vendorName"],
+                    userStateController.campusCartUser["vendorName"] ?? "Classic Name",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
