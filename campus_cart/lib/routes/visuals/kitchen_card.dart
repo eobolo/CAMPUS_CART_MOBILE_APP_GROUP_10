@@ -61,7 +61,7 @@ class KitchenCard extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
+                      child: Image.network(
                         profileImagePath,
                         fit: BoxFit.cover,
                       ),

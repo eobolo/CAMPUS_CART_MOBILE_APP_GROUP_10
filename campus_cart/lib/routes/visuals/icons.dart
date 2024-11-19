@@ -6,11 +6,11 @@ class MyFlutterApp {
   static const _kFontFam = 'MyFlutterApp';
   static const String? _kFontPkg = null;
 
-  static const IconData home_bold =
+  static const IconData homeBold =
       IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData search_bold =
+  static const IconData searchBold =
       IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData search_normal =
+  static const IconData searchNormal =
       IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData shop =
       IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
@@ -26,7 +26,7 @@ class Icon2 {
   static const _kFontFam = 'Icon2';
   static const String? _kFontPkg = null;
 
-  static const IconData direct_right =
+  static const IconData directRight =
       IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData bike =
       IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
@@ -66,22 +66,4 @@ class Iconify1 {
       IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData notification =
       IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-}
-
-class Icon1 {
-  Icon1._();
-
-  static const _kFontFam = 'Icon1';
-  static const String? _kFontPkg = null;
-
-  static const IconData export_icon =
-      IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData lock =
-      IconData(0xe814, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData message_question =
-      IconData(0xe815, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData user_edit =
-      IconData(0xe816, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData call =
-      IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

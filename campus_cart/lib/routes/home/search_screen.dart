@@ -1,7 +1,19 @@
+import 'package:campus_cart/controllers/all_dishes_controller.dart';
+import 'package:campus_cart/controllers/all_users_controller.dart';
+import 'package:campus_cart/controllers/cart_controller.dart';
+import 'package:campus_cart/controllers/search_controller.dart';
+import 'package:campus_cart/controllers/user_controller.dart';
+import 'package:campus_cart/routes/category/meal_type.dart';
+import 'package:campus_cart/routes/stores/meal_deal_product_card.dart';
+import 'package:campus_cart/routes/visuals/icons.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+AllSearchController allSearchController = Get.find<AllSearchController>();
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key, required String query});
+  final String query;
+  const SearchScreen({super.key, required this.query});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -9,45 +21,131 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final TextEditingController _searchController = TextEditingController();
-  final List<String> _recentSearches = [
-    'Pizza',
-    'Burger and Fries',
-    'Fried rice and salad'
-  ];
-
-  final List<Map<String, String>> kitchens = [
-    {
-      'name': "Love's Kitchen",
-      'deliveryTime': '15-16 mins',
-      'imageUrl': 'assets/images/test.png',
-    },
-    {
-      'name': "Divine's Kitchen",
-      'deliveryTime': '15-20 mins',
-      'imageUrl': 'assets/images/test.png',
-    },
-  ];
-
-  final List<Map<String, String>> foodItems = [
-    {
-      'name': "Mimi's Jollof Rice",
-      'kitchen': "Mimi's Kitchen",
-      'description': 'A plate of jollof rice, chicken, beef and plantain',
-      'price': '2400',
-      'cookTime': '15 mins',
-      'imageUrl': 'assets/images/vegan.png',
-    },
-  ];
+  late TextEditingController _searchController;
+  CartController cartController = Get.find<CartController>();
+  AllDishesController allDishesController = Get.find<AllDishesController>();
+  AllUsersController allUsersController = Get.find<AllUsersController>();
+  UserStateController userStateController = Get.find<UserStateController>();
 
   bool _isSearching = false;
   String _searchQuery = '';
   final Color customYellow = const Color(0xFFF5C147);
 
+  // navigating to pages
+  void _navigateToPage(int index, BuildContext context) {
+    _saveAsRecentSearch();
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/search');
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/orders');
+        break;
+      case 3:
+        if (userStateController.campusCartUser["isVendor"] != null) {
+          Navigator.pushNamed(context, '/store_profile');
+        } else {
+          Navigator.pushNamed(context, '/splash_store');
+        }
+        break;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _searchController = TextEditingController(text: widget.query);
     _searchController.addListener(_onSearchChanged);
+  }
+
+  bool _isKitchenOpen(String fromTime, String toTime) {
+    // Parse the "to" time
+    int kitchenToTime = int.tryParse(toTime) ?? 0;
+    int kitchenFromTime = int.tryParse(fromTime) ?? 0;
+
+    final currentHour = DateTime.now().hour;
+
+    // Change kitchen closing time from 0 to 24
+    if (kitchenToTime == 0) {
+      if (currentHour >= 1 && currentHour < 13) {
+        kitchenToTime = 0;
+      } else if (currentHour == 0) {
+        kitchenFromTime = 0;
+      } else {
+        kitchenToTime = 24;
+      }
+    }
+    if ((currentHour >= kitchenFromTime) && (currentHour <= kitchenToTime)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void _performSearchOperation() {
+    allSearchController.searchResults.clear();
+
+    List<String> list1Fields = [
+      "cuisine",
+      "dietary",
+      "kitchen",
+      "mealName",
+      "preparationTime",
+      "price",
+      "type"
+    ];
+    List<String> list2Fields = [
+      "city",
+      "from",
+      "to",
+      "maxFee",
+      "minFee",
+      "vendorName"
+    ];
+    // Function to check if query matches any value in the map
+    bool matchesQuery(
+        Map<Object?, Object?> item, String query, List<String> fields) {
+      return fields.any((field) {
+        var value = item[field]?.toString().toLowerCase() ?? '';
+        return value.contains(query.toLowerCase());
+      });
+    }
+
+    // Filtered results based on query
+    List<dynamic> filteredList1 = allDishesController.processedAllDishes
+        .where((item) => matchesQuery(item, _searchQuery, list1Fields))
+        .toList();
+
+    List<dynamic> filteredList2 = allUsersController.allUsersInfo
+        .where((item) => matchesQuery(item, _searchQuery, list2Fields))
+        .toList();
+    allSearchController.searchResults
+        .addAll([...filteredList1, ...filteredList2]);
+    allSearchController.searchResults.refresh();
+  }
+
+  void _saveAsRecentSearch({String? searchquery}) {
+    if ((searchquery != null || _searchQuery.isNotEmpty) &&
+        (searchquery != "")) {
+      if (allSearchController.recentSearches.length > 5) {
+        allSearchController.recentSearches.removeAt(0);
+      }
+      allSearchController.recentSearches.add(searchquery ?? _searchQuery);
+      allSearchController.recentSearches.refresh();
+    }
+  }
+
+  void _pickRecentSearchToSearch(int index) {
+    _searchController.text = allSearchController.recentSearches[index];
+    _onSearchChanged();
+  }
+
+  void _removeRecentSearch(int index) {
+    allSearchController.recentSearches.removeAt(index);
+    allSearchController.recentSearches.refresh();
   }
 
   void _onSearchChanged() {
@@ -55,6 +153,9 @@ class _SearchScreenState extends State<SearchScreen> {
       _searchQuery = _searchController.text;
       _isSearching = _searchQuery.isNotEmpty;
     });
+    if (_isSearching) {
+      _performSearchOperation();
+    }
   }
 
   @override
@@ -66,66 +167,159 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(200.0),
-        child: Container(
-          color: customYellow,
-          child: SafeArea(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 55,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: Center(
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: 1,
+          type: BottomNavigationBarType.fixed,
+          selectedLabelStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: Color(0xff202020),
+          ),
+          selectedItemColor: const Color(0xff202020),
+          unselectedItemColor: const Color(0xff606060),
+          unselectedLabelStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: Color(0xff606060),
+          ),
+          onTap: (index) {
+            _navigateToPage(index, context);
+          },
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(MyFlutterApp.homeBold),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(MyFlutterApp.searchNormal),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(MyFlutterApp.bag_2),
+              label: 'Orders',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Iconify1.shop),
+              label: 'Your Store',
+            ),
+          ],
+        ),
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: Size(double.infinity, 130.0),
+          child: Container(
+            color: customYellow,
+            child: SafeArea(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 15, left: 10.0, right: 10.0),
+                      child: SizedBox(
+                        width: 320.0,
                         child: TextField(
+                          onSubmitted: (searchquery) =>
+                              _saveAsRecentSearch(searchquery: searchquery),
                           controller: _searchController,
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.only(top: 2),
-                              child:
-                                  Icon(Icons.search, color: Colors.grey[600]),
-                            ),
-                            contentPadding: const EdgeInsets.only(top: 12),
-                            hintText: 'Search for food...',
+                          cursorHeight: 14,
+                          decoration: const InputDecoration(
+                            hintText:
+                                'search anything ..., press enter to save.',
                             hintStyle: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 16,
+                              color: Color(0xff9B9B9B),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'DM Sans',
                             ),
+                            prefixIcon: Padding(
+                              padding: EdgeInsets.only(left: 25, right: 10),
+                              child: Icon(Iconify.search),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(80)),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: Color(0xffFFFFFF),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(40),
+                    const SizedBox(width: 5),
+                    SizedBox(
+                      width: 50,
+                      height: 60,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            top: 10,
+                            child: Container(
+                              width: 50,
+                              height: 50,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, '/orders');
+                                  },
+                                  child: const Icon(
+                                    Iconify.bagHhappy,
+                                    size: 24,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 10,
+                            top: 10,
+                            child: Container(
+                              width: 14,
+                              height: 14,
+                              decoration: const BoxDecoration(
+                                color: Color(0xffFF5A5A),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(child: Obx(() {
+                                return Text(
+                                  '${cartController.itemsInCart.value}',
+                                  style: TextStyle(
+                                    color: Color(0xff202020),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'DM Sans',
+                                  ),
+                                );
+                              })),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: Image.asset("assets/images/cup.png")),
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-      body: _isSearching ? _buildSearchResults() : _buildInitialContent(),
-    );
+        body: Obx(() {
+          return _isSearching
+              ? allSearchController.searchResults.isNotEmpty
+                  ? _buildSearchResults()
+                  : _buildInitialContent(true)
+              : _buildInitialContent(false);
+        }));
   }
 
-  Widget _buildInitialContent() {
+  Widget _buildInitialContent(bool isError) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -135,17 +329,29 @@ class _SearchScreenState extends State<SearchScreen> {
           margin: const EdgeInsets.only(top: 10),
           child: ListView(
             scrollDirection: Axis.horizontal,
+            physics: NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 12),
             children: [
-              _buildCategoryItem('Meals', 'assets/images/meals.png'),
-              _buildCategoryItem('Dessert', 'assets/images/dessert.png'),
+              _buildCategoryItem('Main Course', 'assets/images/meal_cat.png'),
+              _buildCategoryItem('Dessert', 'assets/images/desert.png'),
               _buildCategoryItem('Drinks', 'assets/images/drinks.png'),
               _buildCategoryItem('Fruits', 'assets/images/fruits.png'),
-              _buildCategoryItem('Vegan', 'assets/images/vegan.png'),
+              _buildCategoryItem('Vegan', 'assets/images/salad.png'),
             ],
           ),
         ),
-
+        SizedBox(height: 5.0),
+        isError
+            ? Center(
+                child: Text(
+                'No result(s) found...',
+                style: const TextStyle(
+                  color: Color.fromARGB(255, 44, 44, 44),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ))
+            : SizedBox(),
         // Recent Searches
         Padding(
           padding: const EdgeInsets.all(16.0),
@@ -157,40 +363,50 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
         ),
-
-        Expanded(
+        Flexible(
           child: ListView.builder(
-            itemCount: _recentSearches.length,
+            itemCount: allSearchController.recentSearches.length,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: customYellow.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(Icons.search,
-                          size: 20, color: Colors.black54),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        _recentSearches[index],
-                        style: const TextStyle(fontSize: 15),
-                      ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => _pickRecentSearchToSearch(index),
+                          child: Container(
+                            width: 28.0,
+                            height: 28.0,
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Color(0XFFFFF1DA),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Image.asset(
+                              "assets/images/search_normal.png",
+                              width: 16.0,
+                              height: 16.0,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          allSearchController.recentSearches[index],
+                          style: const TextStyle(fontSize: 15),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
                     GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _recentSearches.removeAt(index);
-                        });
-                      },
-                      child: const Icon(Icons.close,
-                          size: 20, color: Colors.black54),
+                      onTap: () => _removeRecentSearch(index),
+                      child: const Icon(
+                        Icons.close,
+                        size: 16,
+                        color: Colors.black54,
+                      ),
                     ),
                   ],
                 ),
@@ -216,229 +432,183 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
         ),
-        Expanded(
-          child: ListView(
-            children: [
-              ...kitchens
-                  .where((kitchen) => kitchen['name']!
-                      .toLowerCase()
-                      .contains(_searchQuery.toLowerCase()))
-                  .map((kitchen) => _buildKitchenCard(kitchen)),
-              ...foodItems
-                  .where((food) => food['name']!
-                      .toLowerCase()
-                      .contains(_searchQuery.toLowerCase()))
-                  .map((food) => _buildFoodCard(food)),
-            ],
-          ),
-        ),
+        Obx(() {
+          return Flexible(
+            child: ListView(
+              children: List.generate(
+                allSearchController.searchResults.length,
+                (index) {
+                  Widget listItem;
+
+                  if (allSearchController.searchResults[index]
+                      .containsKey("mealName")) {
+                    dynamic buyerDetails = allUsersController.allUsersInfo
+                        .firstWhere((eachUser) =>
+                            eachUser["buyerId"] ==
+                            userStateController.loggedInuser.uid);
+                    dynamic dish = allSearchController.searchResults[index];
+                    dynamic vendorDetails = allUsersController.allUsersInfo
+                        .firstWhere((eachUser) =>
+                            eachUser["buyerId"] == dish["vendorId"]);
+                    listItem = MealDealProductCard(
+                      mealImage: dish["mealImageUrl"],
+                      mealName: dish["mealName"],
+                      phoneNumber: buyerDetails["PhoneNumber"],
+                      email: buyerDetails["email"],
+                      vendorId: dish["vendorId"],
+                      buyerId: buyerDetails["buyerId"],
+                      preparationTime: dish["preparationTime"],
+                      price: dish["price"],
+                      mealId: dish["mealId"],
+                      indexId: index,
+                      deliveryPrice: vendorDetails["maxFee"] ?? 1500,
+                    );
+                  } else {
+                    listItem = _buildKitchenCard(
+                        allSearchController.searchResults[index]);
+                  }
+                  return Column(
+                    children: [
+                      listItem,
+                      SizedBox(height: 10), // Add spacing here
+                    ],
+                  );
+                },
+                growable: true,
+              ),
+            ),
+          );
+        })
       ],
     );
   }
 
   Widget _buildCategoryItem(String name, String imagePath) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MealType(mealType: name)),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              radius: 30,
+              backgroundImage: AssetImage(imagePath),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              name,
+              style: const TextStyle(
+                color: Color(0xff606060),
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                fontFamily: 'DM Sans',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildKitchenCard(dynamic kitchen) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ClipOval(
-            child: Image.asset(
-              imagePath,
-              width: 70,
-              height: 70,
-              fit: BoxFit.cover,
+      child: Container(
+        width: 250, // Match the width of MealDealProductCard
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16), // Match the border radius
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x1A000000),
+              spreadRadius: 1,
+              offset: Offset(0, 0),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            name,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildKitchenCard(Map<String, String> kitchen) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: const Color(0xFFE4E4E4),
-                width: 1,
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+              child: kitchen["storeLogo"] != null
+                  ? Image.network(
+                      "${kitchen["storeLogo"]}",
+                      width: 250,
+                      height: 116.0,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      "assets/images/store.png",
+                      width: 250,
+                      height: 116.0,
+                      fit: BoxFit.cover,
+                    ),
             ),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
+            Padding(
+              padding: const EdgeInsets.only(left: 7.5, top: 10, right: 7.5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "${kitchen["vendorName"] ?? "N/A"}",
+                    style: const TextStyle(
+                      color: Color(0xff202020),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600, // Match font weight
+                      fontFamily: 'DM Sans',
+                    ),
                   ),
-                  child: Image.asset(
-                    'assets/images/wavy.png',
-                    width: double.infinity,
-                    height: 80,
-                    fit: BoxFit.fill,
+                  const SizedBox(height: 5),
+                  // Add a placeholder for additional information or description
+                  Text(
+                    "Delivery will be made in 10-30 mins", // Placeholder text
+                    style: TextStyle(
+                      color: Color(0xff606060),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'DM Sans',
+                    ),
                   ),
-                ),
-                const SizedBox(height: 40),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: Text(
-                          kitchen['name']!,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Text(
-                          'Open',
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.delivery_dining,
-                        size: 16,
-                        color: Colors.grey[600],
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        kitchen['deliveryTime']!,
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFoodCard(Map<String, String> food) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: const Color(0xFFE4E4E4),
-                width: 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
-                  ),
-                  child: Image.asset(
-                    food['imageUrl']!,
-                    width: double.infinity,
-                    height: 120,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        food['name']!,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        food['description']!,
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'RWF ${food['price']}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                  const SizedBox(height: 5),
+                  // Kitchen open status
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.green.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: kitchen["from"] != null && kitchen["to"] != null
+                        ? Text(
+                            _isKitchenOpen(
+                                    "${kitchen["from"]}", "${kitchen["to"]}")
+                                ? 'Open'
+                                : 'Closed',
+                            style: TextStyle(
+                              color: _isKitchenOpen(
+                                      "${kitchen["from"]}", "${kitchen["to"]}")
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontSize: 12,
                             ),
-                          ),
-                          Text(
-                            food['cookTime']!,
-                            style: TextStyle(color: Colors.grey[600]),
-                          ),
-                        ],
-                      ),
-                    ],
+                          )
+                        : Text("N/A"),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

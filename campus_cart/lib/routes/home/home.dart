@@ -1,9 +1,16 @@
-import 'package:campus_cart/controllers/user_controllers.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:campus_cart/controllers/all_dishes_controller.dart';
+import 'package:campus_cart/controllers/all_users_controller.dart';
+import 'package:campus_cart/controllers/cart_controller.dart';
+import 'package:campus_cart/controllers/search_controller.dart';
+import 'package:campus_cart/controllers/user_controller.dart';
+import 'package:campus_cart/routes/category/meal_type.dart';
+import 'package:campus_cart/routes/stores/meal_deal_product_card.dart';
+import 'package:campus_cart/routes/visuals/most_kitchen_used_card.dart';
+import 'package:campus_cart/routes/home/search_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
-import 'package:campus_cart/routes/home/search_screen.dart';
 
 // class hone for the home page
 class Home extends StatefulWidget {
@@ -16,61 +23,29 @@ class Home extends StatefulWidget {
 // Home state
 class _HomeState extends State<Home> {
   UserStateController userStateController = Get.find<UserStateController>();
-
-  int count = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      count++;
-    });
-  }
+  AllDishesController allDishesController = Get.find<AllDishesController>();
+  AllUsersController allUsersController = Get.find<AllUsersController>();
+  CartController cartController = Get.find<CartController>();
+  AllSearchController allSearchController = Get.find<AllSearchController>();
 
   // text controller for the search bar
   final TextEditingController _searchController = TextEditingController();
 
-  // list of specially reserved images
-  final List<String> speciallyReservedImages = [
-    'assets/images/meal1.png',
-    'assets/images/meal3.png',
-    'assets/images/meal2.png',
-  ];
-
-  // list of categories images
-  final List<String> categoriesImages = [
-    'assets/images/meal_cat.png',
-    'assets/images/desert.png',
-    'assets/images/drinks.png',
-    'assets/images/fruits.png',
-    'assets/images/salad.png',
-  ];
-
-  // list of categories names
-  final List<String> categoriesNames = [
-    'Meals',
-    'Deserts',
-    'Drinks',
-    'Fruits',
-    'Vegan',
-  ];
-
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   // Check if the user is logged in
-  //   if (FirebaseAuth.instance.currentUser == null ||
-  //       userStateController.loggedInuser == null) {
-  //     // Navigate to login if not authenticated
-  //     Future.delayed(Duration.zero, () {
-  //       if (mounted) {
-  //         Navigator.pushReplacementNamed(context, '/login');
-  //       }
-  //     });
-  //   } else {
-  //     // Optionally, update the reactive loggedInuser from FirebaseAuth
-  //     // userStateController.loggedInuser = FirebaseAuth.instance.currentUser;
-  //   }
-  // }
+  @override
+  void initState() {
+    super.initState();
+    // Check if the user is logged in
+    if (FirebaseAuth.instance.currentUser == null ||
+        userStateController.loggedInuser == null) {
+      // Navigate to login if not authenticated
+      Future.delayed(Duration.zero, () {
+        if (mounted) {
+          // send user to splash store for now, will change to home later
+          Navigator.pushReplacementNamed(context, '/login');
+        }
+      });
+    }
+  }
 
   // navigating to pages
   void _navigateToPage(int index, BuildContext context) {
@@ -85,12 +60,33 @@ class _HomeState extends State<Home> {
         Navigator.pushNamed(context, '/orders');
         break;
       case 3:
-        Navigator.pushNamed(context, '/store_profile');
+        if (userStateController.campusCartUser["isVendor"] != null) {
+          Navigator.pushNamed(context, '/store_profile');
+        } else {
+          Navigator.pushNamed(context, '/splash_store');
+        }
         break;
     }
   }
 
-  // build method
+  // list of categories images
+  final List<String> categoriesImages = [
+    'assets/images/meal_cat.png',
+    'assets/images/desert.png',
+    'assets/images/drinks.png',
+    'assets/images/fruits.png',
+    'assets/images/salad.png',
+  ];
+
+  // list of categories names
+  final List<String> categoriesNames = [
+    'Main Course',
+    'Dessert',
+    'Drinks',
+    'Fruits',
+    'Vegan',
+  ];
+
   @override
   Widget build(BuildContext context) {
     //   body: Center(
@@ -116,11 +112,11 @@ class _HomeState extends State<Home> {
         },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(MyFlutterApp.home_bold),
+            icon: Icon(MyFlutterApp.homeBold),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(MyFlutterApp.search_normal),
+            icon: Icon(MyFlutterApp.searchNormal),
             label: 'Search',
           ),
           BottomNavigationBarItem(
@@ -156,10 +152,16 @@ class _HomeState extends State<Home> {
                           width: 2,
                         ),
                       ),
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
                         radius: 30,
                         backgroundImage:
-                            AssetImage('assets/images/profile.png'),
+                            userStateController.loggedInuser?.photoURL == null
+                                ? AssetImage(
+                                    'assets/images/profile.png',
+                                  )
+                                : NetworkImage(
+                                    userStateController.loggedInuser?.photoURL ?? "",
+                                  ),
                         backgroundColor: Colors.transparent,
                       ),
                     ),
@@ -277,17 +279,17 @@ class _HomeState extends State<Home> {
                             color: Color(0xffFF5A5A),
                             shape: BoxShape.circle,
                           ),
-                          child: const Center(
-                            child: Text(
-                              '2',
+                          child: Center(child: Obx(() {
+                            return Text(
+                              '${cartController.itemsInCart.value}',
                               style: TextStyle(
                                 color: Color(0xff202020),
                                 fontSize: 10,
                                 fontWeight: FontWeight.w600,
                                 fontFamily: 'DM Sans',
                               ),
-                            ),
-                          ),
+                            );
+                          })),
                         ),
                       ),
                     ],
@@ -320,7 +322,7 @@ class _HomeState extends State<Home> {
                   fillColor: Color(0xffFFFFFF),
                 ),
                 onSubmitted: (String value) {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SearchScreen(query: value),
@@ -351,26 +353,36 @@ class _HomeState extends State<Home> {
                           children: List.generate(
                             categoriesImages.length,
                             (index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(left: 19),
-                                child: Column(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 30,
-                                      backgroundImage:
-                                          AssetImage(categoriesImages[index]),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      categoriesNames[index],
-                                      style: const TextStyle(
-                                        color: Color(0xff606060),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: 'DM Sans',
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MealType(
+                                            mealType: categoriesNames[index])),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 14),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 30,
+                                        backgroundImage:
+                                            AssetImage(categoriesImages[index]),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        categoriesNames[index],
+                                        style: const TextStyle(
+                                          color: Color(0xff606060),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'DM Sans',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -434,579 +446,51 @@ class _HomeState extends State<Home> {
                                 ],
                               ),
                               const SizedBox(height: 20),
+                              // enclosed this in a reactive variable
                               SizedBox(
                                 height: 218,
                                 child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8),
-                                        child: Container(
-                                          width: 235,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xffffffff),
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Color(0x1A000000),
-                                                spreadRadius: 1,
-                                                offset: Offset(0, 0),
-                                              ),
-                                            ],
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                  topLeft: Radius.circular(16),
-                                                  topRight: Radius.circular(16),
-                                                ),
-                                                child: Stack(
-                                                  children: [
-                                                    Image.asset(
-                                                      speciallyReservedImages[
-                                                          0],
-                                                      width: 235,
-                                                      height: 116,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                    Positioned(
-                                                      bottom: 5,
-                                                      left: 8,
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          _incrementCounter();
-                                                        },
-                                                        child: Container(
-                                                          width: 60,
-                                                          height: 28,
-                                                          decoration: BoxDecoration(
-                                                              color: const Color(
-                                                                  0xff202020),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          16)),
-                                                          child: const Center(
-                                                            child: Text(
-                                                              'Add +',
-                                                              style: TextStyle(
-                                                                color: Color(
-                                                                    0xffffffff),
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                fontFamily:
-                                                                    'DM Sans',
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 15, top: 10),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Mimi's Jollof Rice",
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xff202020),
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontFamily: 'DM Sans',
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    Text(
-                                                      "What do you want to get?",
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xff606060),
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontFamily: 'DM Sans',
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          '2400 RWF',
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xff202020),
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontFamily:
-                                                                'DM Sans',
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  right: 15),
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icon2.bike,
-                                                                color: Color(
-                                                                    0xff606060),
-                                                                size: 12,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 1,
-                                                              ),
-                                                              Text(
-                                                                '300RWF',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Color(
-                                                                      0xff606060),
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontFamily:
-                                                                      'DM Sans',
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                  width: 3),
-                                                              Icon(
-                                                                Iconify.time,
-                                                                color: Color(
-                                                                    0xff606060),
-                                                                size: 12,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 1,
-                                                              ),
-                                                              Text(
-                                                                '15 mins',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Color(
-                                                                      0xff606060),
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontFamily:
-                                                                      'DM Sans',
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                    scrollDirection: Axis.horizontal,
+                                    child: Obx(() {
+                                      return Row(
+                                        children: List.generate(
+                                          allDishesController.processedAllDishes
+                                                      .length >=
+                                                  10
+                                              ? 10
+                                              : allDishesController
+                                                  .processedAllDishes.length,
+                                          (index) {
+                                            dynamic userDetails =
+                                                allUsersController
+                                                    .allUsersInfo
+                                                    .firstWhere((eachUser) =>
+                                                        eachUser["buyerId"] ==
+                                                        userStateController
+                                                            .loggedInuser?.uid);
+                                            dynamic dish = allDishesController
+                                                .processedAllDishes[index];
+                                            return MealDealProductCard(
+                                              mealImage: dish["mealImageUrl"],
+                                              mealName: dish["mealName"],
+                                              phoneNumber:
+                                                  userDetails["PhoneNumber"],
+                                              email: userDetails["email"],
+                                              vendorId: dish["vendorId"],
+                                              buyerId: userDetails["buyerId"],
+                                              preparationTime:
+                                                  dish["preparationTime"],
+                                              price: dish["price"],
+                                              mealId: dish["mealId"],
+                                              indexId: index,
+                                              deliveryPrice:
+                                                  userDetails["maxFee"] ?? 1500,
+                                            );
+                                          },
+                                          growable: true,
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8),
-                                        child: Container(
-                                          width: 235,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xffffffff),
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Color(0x1A000000),
-                                                spreadRadius: 1,
-                                                offset: Offset(0, 0),
-                                              ),
-                                            ],
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                  topLeft: Radius.circular(16),
-                                                  topRight: Radius.circular(16),
-                                                ),
-                                                child: Stack(
-                                                  children: [
-                                                    Image.asset(
-                                                      speciallyReservedImages[
-                                                          1],
-                                                      width: 235,
-                                                      height: 116,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                    Positioned(
-                                                      bottom: 5,
-                                                      left: 8,
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          _incrementCounter();
-                                                        },
-                                                        child: Container(
-                                                          width: 60,
-                                                          height: 28,
-                                                          decoration: BoxDecoration(
-                                                              color: const Color(
-                                                                  0xff202020),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          16)),
-                                                          child: const Center(
-                                                            child: Text(
-                                                              'Add +',
-                                                              style: TextStyle(
-                                                                color: Color(
-                                                                    0xffffffff),
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                fontFamily:
-                                                                    'DM Sans',
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 15, top: 10),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Ewa Agoyin",
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xff202020),
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontFamily: 'DM Sans',
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    Text(
-                                                      "What do you want to get?",
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xff606060),
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontFamily: 'DM Sans',
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          '5200 RWF',
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xff202020),
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontFamily:
-                                                                'DM Sans',
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  right: 15),
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icon2.bike,
-                                                                color: Color(
-                                                                    0xff606060),
-                                                                size: 12,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 1,
-                                                              ),
-                                                              Text(
-                                                                '300RWF',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Color(
-                                                                      0xff606060),
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontFamily:
-                                                                      'DM Sans',
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                  width: 3),
-                                                              Icon(
-                                                                Iconify.time,
-                                                                color: Color(
-                                                                    0xff606060),
-                                                                size: 12,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 1,
-                                                              ),
-                                                              Text(
-                                                                '15 mins',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Color(
-                                                                      0xff606060),
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontFamily:
-                                                                      'DM Sans',
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8),
-                                        child: Container(
-                                          width: 235,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xffffffff),
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Color(0x1A000000),
-                                                spreadRadius: 1,
-                                                offset: Offset(0, 0),
-                                              ),
-                                            ],
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                  topLeft: Radius.circular(16),
-                                                  topRight: Radius.circular(16),
-                                                ),
-                                                child: Stack(
-                                                  children: [
-                                                    Image.asset(
-                                                      speciallyReservedImages[
-                                                          0],
-                                                      width: 235,
-                                                      height: 116,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                    Positioned(
-                                                      bottom: 5,
-                                                      left: 8,
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          _incrementCounter();
-                                                        },
-                                                        child: Container(
-                                                          width: 60,
-                                                          height: 28,
-                                                          decoration: BoxDecoration(
-                                                              color: const Color(
-                                                                  0xff202020),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          16)),
-                                                          child: const Center(
-                                                            child: Text(
-                                                              'Add +',
-                                                              style: TextStyle(
-                                                                color: Color(
-                                                                    0xffffffff),
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                fontFamily:
-                                                                    'DM Sans',
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 15, top: 10),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Mimi’s Jollof Rice",
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xff202020),
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontFamily: 'DM Sans',
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    Text(
-                                                      "What do you want to get?",
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xff606060),
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontFamily: 'DM Sans',
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          '2400 RWF',
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xff202020),
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontFamily:
-                                                                'DM Sans',
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  right: 15),
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icon2.bike,
-                                                                color: Color(
-                                                                    0xff606060),
-                                                                size: 12,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 1,
-                                                              ),
-                                                              Text(
-                                                                '300RWF',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Color(
-                                                                      0xff606060),
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontFamily:
-                                                                      'DM Sans',
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                  width: 3),
-                                                              Icon(
-                                                                Iconify.time,
-                                                                color: Color(
-                                                                    0xff606060),
-                                                                size: 12,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 1,
-                                                              ),
-                                                              Text(
-                                                                '15 mins',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Color(
-                                                                      0xff606060),
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontFamily:
-                                                                      'DM Sans',
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                      );
+                                    })),
                               ),
                             ],
                           ),
@@ -1033,7 +517,7 @@ class _HomeState extends State<Home> {
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.pushNamed(
-                                          context, '/most_used_kitchens');
+                                          context, '/all_kitchens');
                                     },
                                     child: const Stack(
                                       alignment: Alignment.center,
@@ -1069,270 +553,27 @@ class _HomeState extends State<Home> {
                               ),
                               const SizedBox(height: 20),
                               SizedBox(
-                                height: 270,
+                                height: 218,
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8),
-                                        child: Container(
-                                          width: 235,
-                                          height: 270,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xffffffff),
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Color(0x1A000000),
-                                                spreadRadius: 1,
-                                                offset: Offset(0, 0),
-                                              ),
-                                            ],
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                  topLeft: Radius.circular(16),
-                                                  topRight: Radius.circular(16),
-                                                ),
-                                                child: Stack(
-                                                  children: [
-                                                    Image.asset(
-                                                      'assets/images/store.png',
-                                                      height: 116.0,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                    // Positioned(
-                                                    //     top: 90,
-                                                    //     left: 15.0,
-                                                    //     height: 52.0,
-                                                    //     width: 52.0,
-                                                    //     child:
-                                                    //         Transform.translate(
-                                                    //       offset:
-                                                    //           Offset(10, -10),
-                                                    //       child: Image.asset(
-                                                    //           'assets/images/person.png'),
-                                                    //     )),
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 15, top: 50),
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          const Text(
-                                                            "Lore's Kitchen",
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xff202020),
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontFamily:
-                                                                  'DM Sans',
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 15),
-                                                          Container(
-                                                            width: 47,
-                                                            height: 20,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          16),
-                                                              color: const Color(
-                                                                  0xffFFE4E4),
-                                                            ),
-                                                            child: const Center(
-                                                              child: Text(
-                                                                'Closed',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Color(
-                                                                      0xffFF5A5A),
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontFamily:
-                                                                      'DM Sans',
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      const SizedBox(height: 5),
-                                                      const Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icon2.bike,
-                                                            color: Color(
-                                                                0xff606060),
-                                                            size: 14,
-                                                          ),
-                                                          SizedBox(width: 2),
-                                                          Text(
-                                                            'Delivery will be made in 5-15 mins',
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xff606060),
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              fontFamily:
-                                                                  'DM Sans',
-                                                            ),
-                                                          )
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ))
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8),
-                                        child: Container(
-                                          width: 235,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xffffffff),
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Color(0x1A000000),
-                                                spreadRadius: 1,
-                                                offset: Offset(0, 0),
-                                              ),
-                                            ],
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                  topLeft: Radius.circular(16),
-                                                  topRight: Radius.circular(16),
-                                                ),
-                                                child: Stack(
-                                                  children: [
-                                                    Image.asset(
-                                                      'assets/images/store.png',
-                                                      height: 116,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 15, top: 45),
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          const Text(
-                                                            "Divine's Kitchen",
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xff202020),
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontFamily:
-                                                                  'DM Sans',
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 15),
-                                                          Container(
-                                                            width: 47,
-                                                            height: 20,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          16),
-                                                              color: const Color(
-                                                                  0xffFFE4E4),
-                                                            ),
-                                                            child: const Center(
-                                                              child: Text(
-                                                                'Closed',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Color(
-                                                                      0xffFF5A5A),
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontFamily:
-                                                                      'DM Sans',
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      const SizedBox(height: 5),
-                                                      const Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icon2.bike,
-                                                            color: Color(
-                                                                0xff606060),
-                                                            size: 14,
-                                                          ),
-                                                          SizedBox(width: 2),
-                                                          Text(
-                                                            'Delivery will be made in 5-15 mins',
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xff606060),
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              fontFamily:
-                                                                  'DM Sans',
-                                                            ),
-                                                          )
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ))
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  child: Obx(() {
+                                    return Row(
+                                        children: List.generate(
+                                      allUsersController.allUsersInfo.length >=
+                                              10
+                                          ? 10
+                                          : allUsersController
+                                              .allUsersInfo.length,
+                                      (index) {
+                                        dynamic kitchen = allUsersController
+                                            .allUsersInfo[index];
+                                        return MostKitchenUsedCard(
+                                          kitchen: kitchen,
+                                        );
+                                      },
+                                      growable: true,
+                                    ));
+                                  }),
                                 ),
                               ),
                             ],

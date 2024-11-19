@@ -1,267 +1,503 @@
+import 'dart:io';
+import 'package:campus_cart/controllers/cart_controller.dart';
+import 'package:campus_cart/controllers/meal_image_controller.dart';
+import 'package:campus_cart/controllers/profile_image_controller.dart';
+import 'package:campus_cart/controllers/search_controller.dart';
+import 'package:campus_cart/controllers/setup_delivery_controller.dart';
+import 'package:campus_cart/controllers/setup_operation_controller.dart';
+import 'package:campus_cart/controllers/store_logo_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:campus_cart/routes/visuals/icons.dart';
+import 'package:campus_cart/controllers/user_controller.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final UserStateController userStateController =
+      Get.find<UserStateController>();
+  final ProfileImageController profileImageController =
+      Get.find<ProfileImageController>();
+
+  XFile? _profileImage;
+
+  Future<void> _pickStoreLogo() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedLogo =
+        await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _profileImage = pickedLogo;
+    });
+    try {
+      await profileImageController.uploadImage(
+          _profileImage, userStateController.loggedInuser.uid);
+    } catch (e) {
+      //
+    }
+  }
+
+  void _goToStoreProfile() {
+    Navigator.pushNamed(context, '/store_profile');
+  }
+
+  void _goToSplashStore() {
+    Navigator.pushNamed(context, '/splash_store');
+  }
+
+  void _goToSetupStore() {
+    Navigator.pushNamed(context, '/setup_store');
+  }
+
+  void _goToEditProfile() {
+    Navigator.pushNamed(context, '/edit_profile');
+  }
+
+  void _goToSecurity() {
+    Navigator.pushNamed(context, '/security');
+  }
+
+  void resetAllControllers() {
+    // CartController
+    Get.find<CartController>().reset();
+
+    // MealImageController
+    Get.find<MealImageController>().reset();
+
+    // AllSearchController
+    Get.find<AllSearchController>().reset();
+
+    // SetupDeliveryController
+    Get.find<SetupDeliveryController>().reset();
+
+    // SetupOperationController
+    Get.find<SetupOperationController>().reset();
+
+    // StoreLogoStateController
+    Get.find<StoreLogoStateController>().reset();
+
+    // UserStateController
+    Get.find<UserStateController>().reset();
+  }
+
+  void _signOutUser() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      resetAllControllers();
+      if (mounted) {
+        Navigator.pushNamed(context, '/login');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Center(child: Text("logging out failed. $e")),
+              backgroundColor: Colors.red),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF5C147),
+      backgroundColor: const Color(0xFFF5C147),
       body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.arrow_back_ios_new_outlined,
-                          size: 24,
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10, left: 160),
-                    child: Text(
-                      'Profile',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "DM Sans",
-                        color: Color(0xff202020),
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Column(
-              children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color(0xFFFEE5E5),
-                    border: Border.all(color: Colors.white, width: 2),
-                  ),
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/profile.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                const Text(
-                  'Favour Akinwande',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff202020),
-                    fontFamily: "DM Sans",
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                const SizedBox(height: 10),
-              ],
-            ),
-            Container(
-              width: 279,
-              height: 50,
-              padding: const EdgeInsets.only(top: 8, left: 8, bottom: 8),
-              decoration: BoxDecoration(
-                color: const Color(0xffffffff),
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 143,
-                    height: 34,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFDEACB),
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: const Text(
-                      'Are you a vendor?',
-                      style: TextStyle(
-                        color: Color(0xff212121),
-                        fontSize: 14,
-                        fontFamily: "DM Sans",
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/splash_store');
-                      },
-                      child: const Row(
-                        children: [
-                          Text(
-                            'Set up store',
-                            style: TextStyle(
-                              color: Color(0xff606060),
-                              fontSize: 14,
-                              fontFamily: "DM Sans",
-                              fontWeight: FontWeight.w500,
+        child: SingleChildScrollView(
+          // Wrap with SingleChildScrollView
+          child: Column(
+            children: [
+              SizedBox(
+                width: 400.0,
+                height: 320.0,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SizedBox(
+                        width: 400.0,
+                        height: 70.0,
+                        child: Stack(
+                          children: [
+                            // Back Button aligned to the left
+                            // Back button at the top-left
+                            Positioned(
+                              top: 15.0,
+                              left: 0,
+                              width: 40,
+                              height: 40,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: IconButton(
+                                  icon:
+                                      const Icon(Icons.arrow_back_ios_rounded),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  color: Colors.black,
+                                ),
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 8),
-                          Icon(
-                            Icons.arrow_forward_sharp,
-                            size: 16,
-                            color: Color(0xff202020),
-                          ),
-                        ],
+                            const Center(
+                              child: Text(
+                                'Profile',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.zero,
-                      ),
+                    Column(
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 2),
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              ClipOval(
+                                child:
+                                    userStateController.loggedInuser.photoURL ==
+                                            null
+                                        ? _profileImage == null
+                                            ? Image.asset(
+                                                'assets/images/profile.png',
+                                                fit: BoxFit.cover,
+                                                width: 100,
+                                                height: 100,
+                                              )
+                                            : Image.file(
+                                                File(_profileImage!.path),
+                                                fit: BoxFit.cover,
+                                                width: 100,
+                                                height: 100,
+                                              )
+                                        : Image.network(
+                                            userStateController
+                                                .loggedInuser.photoURL,
+                                            fit: BoxFit.cover,
+                                            width: 100,
+                                            height: 100,
+                                          ),
+                              ),
+                              Positioned(
+                                top: 60,
+                                left: 60,
+                                child: GestureDetector(
+                                  onTap: _pickStoreLogo,
+                                  child: Image.asset(
+                                    "assets/images/profile_picker.png",
+                                    width: 26.0,
+                                    height: 26.0,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 13),
+                        Text(
+                          userStateController.loggedInuser.displayName ??
+                              "Anonymous",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 13),
+                      ],
                     ),
-                  ),
-                  Positioned(
-                    top: MediaQuery.of(context).size.height * 0.06,
-                    left: 16,
-                    right: 16,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.52,
+                    Container(
+                      width: 285.0,
+                      height: 55.0,
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF0F4F9),
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          _buildMenuItem(
-                            icon: Icon1.user_edit,
-                            title: 'Edit Profile',
-                            onTap: () {},
-                          ),
-                          const Divider(
-                            color: Color(0xff7D7F88),
-                            thickness: 0.25,
-                          ),
-                          _buildMenuItem(
-                            icon: Icon1.lock,
-                            title: 'Security',
-                            onTap: () {},
-                          ),
-                          const Divider(
-                            color: Color(0xff7D7F88),
-                            thickness: 0.25,
-                          ),
-                          _buildMenuItem(
-                            icon: Iconify1.location,
-                            title: 'Addresses',
-                            onTap: () {},
-                          ),
-                          const Divider(
-                            color: Color(0xff7D7F88),
-                            thickness: 0.25,
-                          ),
-                          _buildMenuItem(
-                            icon: Icon1.call,
-                            title: 'Contact Us',
-                            onTap: () {},
-                          ),
-                          const Divider(
-                            color: Color(0xff7D7F88),
-                            thickness: 0.25,
-                          ),
-                          _buildMenuItem(
-                            icon: Icon1.message_question,
-                            title: 'FAQs',
-                            onTap: () {},
-                          ),
-                          const Divider(
-                            color: Color(0xff7D7F88),
-                            thickness: 0.25,
-                          ),
-                          _buildMenuItem(
-                            icon: Icon1.export_icon,
-                            title: 'Log Out',
-                            onTap: () {
-                              Navigator.pushNamed(context, '/login');
-                            },
-                            textColor: const Color(0xffF8474A),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 10,
+                            offset: Offset(0, 4),
                           ),
                         ],
                       ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          userStateController.campusCartUser["isVendor"] != null
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFFDEACB),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: const Text(
+                                        'Vendor store created',
+                                        style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 16, 16, 16),
+                                          fontSize: 10,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    TextButton(
+                                      onPressed: _goToStoreProfile,
+                                      child: const Row(
+                                        children: [
+                                          Text(
+                                            'Visit store',
+                                            style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 10,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(
+                                            width: 10.0,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: 3.0,
+                                            ),
+                                            child: Icon(
+                                              Icons.arrow_forward,
+                                              size: 15,
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFFDEACB),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: const Text(
+                                        'Are you a vendor?',
+                                        style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 16, 16, 16),
+                                          fontSize: 10,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    TextButton(
+                                      onPressed: _goToSplashStore,
+                                      child: const Row(
+                                        children: [
+                                          Text(
+                                            'Set up store',
+                                            style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 10,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(
+                                            width: 10.0,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: 3.0,
+                                            ),
+                                            child: Icon(
+                                              Icons.arrow_forward,
+                                              size: 15,
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              Container(
+                height: 540.0,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.zero,
+                ),
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    // Background container
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.zero,
+                        ),
+                      ),
+                    ),
+                    // Menu container
+                    Positioned(
+                      top: MediaQuery.of(context).size.height * 0.016,
+                      left: 16,
+                      right: 16,
+                      bottom: MediaQuery.of(context).size.height * 0.03,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        decoration: BoxDecoration(
+                          color:
+                              const Color(0xFFF0F4F9), // Light background color
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.only(
+                          left: 10.0,
+                          right: 10.0,
+                        ),
+                        child: Column(
+                          children: [
+                            _buildMenuItem(
+                              imagePath: "assets/images/shop.png",
+                              title: 'Edit Store',
+                              onTap: _goToSetupStore,
+                            ),
+                            const Divider(
+                              color: Color.fromRGBO(0, 0, 0, 0.6),
+                              thickness: 0.1,
+                            ),
+                            _buildMenuItem(
+                              imagePath: "assets/images/user_edit.png",
+                              title: 'Edit Profile',
+                              onTap: _goToEditProfile,
+                            ),
+                            const Divider(
+                              color: Color.fromRGBO(0, 0, 0, 0.6),
+                              thickness: 0.1,
+                            ),
+                            _buildMenuItem(
+                              imagePath: "assets/images/lock.png",
+                              title: 'Security',
+                              onTap: _goToSecurity,
+                            ),
+                            const Divider(
+                              color: Color.fromRGBO(0, 0, 0, 0.6),
+                              thickness: 0.1,
+                            ),
+                            _buildMenuItem(
+                              imagePath: "assets/images/location.png",
+                              title: 'Addresses',
+                              onTap: () {},
+                            ),
+                            const Divider(
+                              color: Color.fromRGBO(0, 0, 0, 0.6),
+                              thickness: 0.1,
+                            ),
+                            _buildMenuItem(
+                              imagePath: "assets/images/call.png",
+                              title: 'Contact',
+                              onTap: () {},
+                            ),
+                            const Divider(
+                              color: Color.fromRGBO(0, 0, 0, 0.6),
+                              thickness: 0.1,
+                            ),
+                            _buildMenuItem(
+                              imagePath: "assets/images/message_question.png",
+                              title: 'FAQs',
+                              onTap: () {},
+                            ),
+                            const Divider(
+                              color: Color.fromRGBO(0, 0, 0, 0.6),
+                              thickness: 0.1,
+                            ),
+                            _buildMenuItem(
+                              imagePath: "assets/images/export.png",
+                              title: 'Logout',
+                              onTap: _signOutUser,
+                              textColor: Colors.red,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildMenuItem({
-    required IconData icon,
+    required String imagePath,
     required String title,
     required VoidCallback onTap,
     Color? textColor,
   }) {
     return ListTile(
       leading: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: const Color(0xFFFFFFFF),
-          borderRadius: BorderRadius.circular(200),
+          color: Color(0xFFFFFFFF),
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: Icon(icon, color: textColor ?? const Color(0xff202020)),
+        child: Image.asset(
+          imagePath,
+          width: 20.0,
+          height: 20.0,
+        ),
       ),
       title: Text(
         title,
         style: TextStyle(
-          fontFamily: "DM Sans",
-          fontWeight: FontWeight.w500,
-          color: textColor ?? const Color(0xff202020),
-          fontSize: 14,
+          color: textColor ?? Colors.black87,
+          fontSize: 16,
         ),
       ),
       trailing: const Icon(
-        Icons.arrow_forward_ios,
-        color: Color(0xff808080),
-        size: 20,
+        Icons.chevron_right,
+        color: Colors.black54,
       ),
       onTap: onTap,
     );

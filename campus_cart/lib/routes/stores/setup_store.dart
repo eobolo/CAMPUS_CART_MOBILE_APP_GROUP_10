@@ -1,24 +1,32 @@
+import 'package:campus_cart/controllers/store_logo_controller.dart';
+import 'package:campus_cart/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:campus_cart/routes/visuals/icons.dart';
 
-class CreateStore extends StatefulWidget {
-  const CreateStore({super.key});
+class SetUpStore extends StatefulWidget {
+  const SetUpStore({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
   _SetUpStoreState createState() => _SetUpStoreState();
 }
 
-class _SetUpStoreState extends State<CreateStore> {
+class _SetUpStoreState extends State<SetUpStore> {
   final TextEditingController _storeNameController = TextEditingController();
   final TextEditingController _storeAddressController = TextEditingController();
   final TextEditingController _storeCityController = TextEditingController();
   final TextEditingController _storeDescriptionController =
       TextEditingController();
+  final UserStateController userStateController =
+      Get.find<UserStateController>();
+  final StoreLogoStateController storeLogoStateController =
+      Get.find<StoreLogoStateController>();
 
   XFile? _storeLogo;
+  String? downloadedImageUrl;
 
   Future<void> _pickStoreLogo() async {
     final ImagePicker picker = ImagePicker();
@@ -27,6 +35,76 @@ class _SetUpStoreState extends State<CreateStore> {
     setState(() {
       _storeLogo = pickedLogo;
     });
+  }
+
+  Future<void> _initializeDownloadedImage() async {
+    try {
+      await storeLogoStateController
+          .retrieveImage(userStateController.loggedInuser.uid);
+      setState(() {
+        downloadedImageUrl = storeLogoStateController.imageUrl.value;
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Center(child: Text(e.toString())),
+          backgroundColor: const Color.fromARGB(255, 116, 255, 95),
+        ));
+      }
+    }
+  }
+
+  void _setUpStore() async {
+    try {
+      await storeLogoStateController.uploadImage(
+          _storeLogo, userStateController.loggedInuser.uid);
+      await userStateController.updateCampusUserData(
+          _storeNameController.text,
+          _storeAddressController.text,
+          _storeCityController.text,
+          _storeDescriptionController.text,
+          userStateController.loggedInuser.uid);
+      // update campus user state
+      userStateController.campusCartUser["isVendor"] = true;
+      userStateController.campusCartUser["vendorName"] =
+          _storeNameController.text;
+      userStateController.campusCartUser["address"] =
+          _storeAddressController.text;
+      userStateController.campusCartUser["city"] = _storeCityController.text;
+      userStateController.campusCartUser["storeDetails"] =
+          _storeDescriptionController.text;
+      userStateController.campusCartUser.refresh();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Center(child: Text("New vendor '${_storeNameController.text}' created.")),
+          backgroundColor: const Color.fromARGB(255, 116, 255, 95),
+        ));
+      }
+
+      // delay for 3 secs
+      Future.delayed(Duration(seconds: 2));
+
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/store_profile');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Center(child: Text(e.toString())),
+          backgroundColor: const Color.fromARGB(255, 255, 55, 55),
+        ));
+      }
+    }
+  }
+
+  void _initStore() {
+    Navigator.pop(context);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeDownloadedImage();
   }
 
   @override
@@ -50,13 +128,16 @@ class _SetUpStoreState extends State<CreateStore> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 40),
-                CircleAvatar(
-                  radius: 35,
-                  backgroundColor: Colors.white,
-                  child: Image.asset(
-                    'assets/images/lepra.png',
-                    width: 55,
-                    height: 55,
+                GestureDetector(
+                  onTap: _initStore,
+                  child: CircleAvatar(
+                    radius: 35,
+                    backgroundColor: Colors.white,
+                    child: Image.asset(
+                      'assets/images/lepra.png',
+                      width: 55,
+                      height: 55,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -230,24 +311,33 @@ class _SetUpStoreState extends State<CreateStore> {
                           CircleAvatar(
                             radius: 30,
                             backgroundColor: const Color(0xffffffff),
-                            child: _storeLogo == null
-                                ? const Icon(
-                                    Icon2.gallery,
-                                    color: Color(0xff606060),
-                                    size: 30,
-                                  )
-                                : ClipOval(
-                                    child: Image.file(
-                                      File(_storeLogo!.path),
-                                      width: 70,
-                                      height: 70,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                            child:
+                                _storeLogo == null && downloadedImageUrl == null
+                                    ? const Icon(
+                                        Icon2.gallery,
+                                        color: Color(0xff606060),
+                                        size: 30,
+                                      )
+                                    : ClipOval(
+                                        child: _storeLogo != null
+                                            ? Image.file(
+                                                File(_storeLogo!.path),
+                                                width: 70,
+                                                height: 70,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.network(
+                                                storeLogoStateController
+                                                    .imageUrl.value,
+                                                width: 70,
+                                                height: 70,
+                                                fit: BoxFit.cover,
+                                              ),
+                                      ),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            _storeLogo == null
+                            _storeLogo == null && downloadedImageUrl == null
                                 ? 'Add Store Logo'
                                 : 'Change Store Logo',
                             style: const TextStyle(
@@ -264,9 +354,7 @@ class _SetUpStoreState extends State<CreateStore> {
                 ),
                 const SizedBox(height: 40),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/initial_store_profile');
-                  },
+                  onPressed: _setUpStore,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff202020),
                     padding: const EdgeInsets.symmetric(

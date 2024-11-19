@@ -3,6 +3,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
 
 class UserStateController extends GetxController {
@@ -14,8 +15,8 @@ class UserStateController extends GetxController {
   RxString email = "".obs;
   RxString password = "".obs;
   RxString phoneNumber = "".obs;
-  bool isBuyer = true;
   RxBool iSTermsAndConditionRead = false.obs;
+  bool isBuyer = true;
 
   // messages for Auth Pages
   RxString createAccountMessage = "".obs;
@@ -26,8 +27,13 @@ class UserStateController extends GetxController {
   // this is a perfect way to create reactive variables for databases classes
   dynamic loggedInuser = null.obs;
   dynamic userDetailInsecure = null.obs;
+  RxMap<dynamic, dynamic> campusCartUser = {}.obs;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: [
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/userinfo.email'
+  ]);
   PhoneAuthCredential? credential;
 
   RxString verificationId = ''.obs;
@@ -38,6 +44,69 @@ class UserStateController extends GetxController {
 
   // Flag to indicate if in testing mode
   bool isTestingMode = true; // Change this to false to send actual SMS
+
+  void reset() {
+    email.value = "";
+    password.value = "";
+    phoneNumber.value = "";
+    iSTermsAndConditionRead.value = false;
+    isBuyer = true;
+    createAccountMessage.value = "";
+    signUpOtpMessage.value = "";
+    loggedInuser = null;
+    userDetailInsecure = null;
+    campusCartUser.value = {};
+    verificationId.value = "";
+    otpSent.value = false;
+  }
+
+  Future<void> signInWithGoogleAndStoreData(BuildContext context) async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Sign in to Firebase with the credential
+      UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+      User? user = userCredential.user;
+      if (user != null) {
+        // Prepare user data to store in Realtime Database
+        loggedInuser = user;
+        final Map<String, Object> newUser = {
+          "email": user.email ?? "",
+          "PhoneNumber2": phoneNumber.value.isNotEmpty
+              ? phoneNumber.value
+              : "", // Use empty string if phone number is not set
+          "isBuyer": true,
+          "buyerId": user.uid,
+        };
+        // Update user data in Realtime Database to avoid overwriting existing data
+        await _dbRef.child("campusCartUsers").child(user.uid).update(newUser);
+
+        // Update reactive variable for campus cart user
+        try {
+          final event = await _dbRef
+              .child("campusCartUsers/${user.uid}")
+              .once(DatabaseEventType.value);
+          campusCartUser.value = event.snapshot.value as Map<dynamic, dynamic>;
+        } catch (e) {
+          throw Exception("campus user deleted");
+        }
+      }
+    } catch (e) {
+      throw Exception("Google sign-in failed: $e");
+    }
+  }
 
   // Function to send OTP to the user's phone number
   Future<void> sendOTP(String phoneNumber, BuildContext context) async {
@@ -138,12 +207,18 @@ class UserStateController extends GetxController {
             "email": email.value,
             "PhoneNumber": phoneNumber.value,
             "isBuyer": true,
+            "buyerId": user.uid,
           };
           await _dbRef.child("campusCartUsers").child(user.uid).set(newUser);
+          // add new campus cart user to a reactive variable
+          campusCartUser.value = newUser;
+          // update sign in otp message
           signUpOtpMessage.value =
               "Campus user created successfully with additional info!";
           await Future.delayed(const Duration(seconds: 2));
+          await loginUser(email.value, password.value);
           if (context.mounted) {
+            // send user to splash store for now, will change to home later
             Navigator.pushReplacementNamed(context, '/home');
           }
         }
@@ -191,6 +266,14 @@ class UserStateController extends GetxController {
       loggedInuser = userCredential.user;
     } catch (e) {
       throw Exception("Login failed: $e");
+    }
+    try {
+      final event = await _dbRef
+          .child("campusCartUsers/${loggedInuser.uid}")
+          .once(DatabaseEventType.value);
+      campusCartUser.value = event.snapshot.value as Map<dynamic, dynamic>;
+    } catch (e) {
+      throw Exception("campus user deleted");
     }
   }
 
@@ -342,7 +425,8 @@ class UserStateController extends GetxController {
     final UserStateController userStateController =
         Get.find<UserStateController>();
     try {
-      await _auth.sendPasswordResetEmail(email: userStateController.email.value.trim()); 
+      await _auth.sendPasswordResetEmail(
+          email: userStateController.email.value.trim());
       return "Password reset email sent successfully. redirect to login";
     } on FirebaseAuthException catch (e) {
       // Handle specific Firebase Auth exceptions
@@ -356,6 +440,37 @@ class UserStateController extends GetxController {
     } catch (e) {
       // Handle any other exceptions
       throw Exception("An unexpected error occurred: $e");
+    }
+  }
+
+  Future<void> updateCampusUserData(String vendorName, String address,
+      String city, String storeDetails, String uuid) async {
+    final dbRef = _dbRef.child("campusCartUsers").child(uuid);
+    final Map<String, Object> addedUserData = {
+      "isVendor": true,
+      "vendorName": vendorName,
+      "address": address,
+      "city": city,
+      "storeDetails": storeDetails,
+    };
+
+    try {
+      await dbRef.update(addedUserData);
+    } on FirebaseException catch (e) {
+      // Handle Firebase Database errors
+      switch (e.code) {
+        case 'permission-denied':
+          throw Exception('Permission denied: ${e.message}');
+        case 'disconnected':
+          throw Exception('Disconnected from the database: ${e.message}');
+        case 'invalid-argument':
+          throw Exception('Invalid argument: ${e.message}');
+        default:
+          throw Exception('Database error: ${e.message}');
+      }
+    } catch (e) {
+      // Handle general errors
+      throw Exception('An error occurred: $e');
     }
   }
 }

@@ -1,12 +1,24 @@
+import 'package:campus_cart/controllers/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
+import 'package:get/get.dart';
 
-class MealCard extends StatelessWidget {
+final CartController cartController = Get.find<CartController>();
+
+class MealCard extends StatefulWidget {
   final String imagePath;
   final String mealName;
   final String kitchenName;
+  final String phoneNumber;
+  final String email;
+  final String vendorId;
+  final String buyerId;
   final String description;
+  final String preparationTime;
   final int price;
+  final int? mealId;
+  final int? indexId;
+  final int quantity;
   final String deliveryFee;
   final String deliveryTime;
 
@@ -15,11 +27,45 @@ class MealCard extends StatelessWidget {
     required this.imagePath,
     required this.mealName,
     required this.kitchenName,
+    required this.phoneNumber,
+    required this.email,
+    required this.vendorId,
+    required this.buyerId,
     required this.description,
+    required this.preparationTime,
     required this.price,
+    this.mealId,
+    this.indexId,
+    this.quantity = 0,
     required this.deliveryFee,
     required this.deliveryTime,
   });
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _MealCardState createState() => _MealCardState();
+}
+
+class _MealCardState extends State<MealCard> {
+  void _incrementCartInallAspect() {
+    Map<String, dynamic> addToCart = {
+      "mealImage": widget.imagePath,
+      "mealName": widget.mealName,
+      "generalText": widget.description,
+      "phoneNumber": widget.phoneNumber,
+      "email": widget.email,
+      "vendorId": widget.vendorId,
+      "buyerId": widget.buyerId,
+      "preparationTime": widget.preparationTime,
+      "price": widget.price,
+      "mealId": widget.mealId,
+      "indexId": widget.indexId,
+      "quantity": widget.quantity,
+      "deliveryPrice": widget.deliveryFee,
+    };
+    // Add this item to the cart (assuming a method exists in cartController)
+    cartController.updateMapOfItemsCount(addToCart);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +83,21 @@ class MealCard extends StatelessWidget {
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
               builder: (BuildContext context) => MealDetailModal(
-                imagePath: imagePath,
-                mealName: mealName,
-                kitchenName: kitchenName,
-                description: description,
-                price: price,
-                deliveryFee: deliveryFee,
-                deliveryTime: deliveryTime,
+                imagePath: widget.imagePath,
+                mealName: widget.mealName,
+                kitchenName: widget.kitchenName,
+                description: widget.description,
+                price: widget.price,
+                quantity: widget.quantity,
+                deliveryFee: widget.deliveryFee,
+                deliveryTime: widget.deliveryTime,
+                vendorId: widget.vendorId,
+                buyerId: widget.buyerId,
+                preparationTime: widget.preparationTime,
+                phoneNumber: widget.phoneNumber,
+                email: widget.email,
+                mealId: widget.mealId,
+                indexId: widget.indexId,
               ),
             );
           },
@@ -55,11 +109,40 @@ class MealCard extends StatelessWidget {
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
                 ),
-                child: Image.asset(
-                  imagePath,
-                  height: 116,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+                child: Stack(
+                  children: [
+                    Image.network(
+                      widget.imagePath,
+                      height: 116,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                    Positioned(
+                      bottom: 5,
+                      right: 8,
+                      child: GestureDetector(
+                        onTap: _incrementCartInallAspect,
+                        child: Container(
+                          width: 60,
+                          height: 28,
+                          decoration: BoxDecoration(
+                              color: const Color(0xff202020),
+                              borderRadius: BorderRadius.circular(16)),
+                          child: const Center(
+                            child: Text(
+                              'Add +',
+                              style: TextStyle(
+                                color: Color(0xffffffff),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'DM Sans',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 8),
@@ -71,7 +154,7 @@ class MealCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          mealName,
+                          widget.mealName,
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
@@ -81,18 +164,18 @@ class MealCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Container(
-                          width: 95,
-                          height: 25,
+                          width: 105,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: const Color(0xffF0F4F9),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Center(
                             child: Text(
-                              kitchenName,
+                              widget.kitchenName,
                               style: const TextStyle(
                                 color: Color(0xff606060),
-                                fontSize: 12,
+                                fontSize: 10,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: 'DM Sans',
                                 letterSpacing: 0.5,
@@ -104,7 +187,7 @@ class MealCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      description,
+                      widget.description,
                       style: const TextStyle(
                         color: Color(0xff606060),
                         fontSize: 12,
@@ -119,7 +202,7 @@ class MealCard extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '$price',
+                              '${widget.price}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 15,
@@ -147,7 +230,7 @@ class MealCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 3),
                             Text(
-                              deliveryFee,
+                              widget.deliveryFee,
                               style: const TextStyle(
                                 color: Color(0xff606060),
                                 fontSize: 12,
@@ -163,7 +246,7 @@ class MealCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 3),
                             Text(
-                              deliveryTime,
+                              widget.deliveryTime,
                               style: const TextStyle(
                                 color: Color(0xff606060),
                                 fontSize: 12,
@@ -190,8 +273,16 @@ class MealDetailModal extends StatefulWidget {
   final String imagePath;
   final String mealName;
   final String kitchenName;
+  final String phoneNumber;
+  final String email;
+  final String vendorId;
+  final String buyerId;
   final String description;
+  final String preparationTime;
   final int price;
+  final int? mealId;
+  final int? indexId;
+  final int quantity;
   final String deliveryFee;
   final String deliveryTime;
 
@@ -200,18 +291,82 @@ class MealDetailModal extends StatefulWidget {
     required this.imagePath,
     required this.mealName,
     required this.kitchenName,
+    required this.phoneNumber,
+    required this.email,
+    required this.vendorId,
+    required this.buyerId,
     required this.description,
+    required this.preparationTime,
     required this.price,
+    this.mealId,
+    this.indexId,
+    this.quantity = 0,
     required this.deliveryFee,
     required this.deliveryTime,
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _MealDetailModalState createState() => _MealDetailModalState();
 }
 
 class _MealDetailModalState extends State<MealDetailModal> {
-  int quantity = 1;
+  int currentQuantity = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    currentQuantity = widget.quantity;
+  }
+
+  void _decreaseCartItemQuantity() {
+    Map<String, dynamic> addToCart = {
+      "mealImage": widget.imagePath,
+      "mealName": widget.mealName,
+      "generalText": widget.description,
+      "phoneNumber": widget.phoneNumber,
+      "email": widget.email,
+      "vendorId": widget.vendorId,
+      "buyerId": widget.buyerId,
+      "preparationTime": widget.preparationTime,
+      "price": widget.price,
+      "mealId": widget.mealId,
+      "indexId": widget.indexId,
+      "quantity": widget.quantity,
+      "deliveryPrice": widget.deliveryFee,
+    };
+    cartController.decreaseMapOfItemsCount(addToCart);
+    if (currentQuantity == 0) {
+      return;
+    } else {
+      setState(() {
+        currentQuantity--;
+      });
+    }
+  }
+
+  void _increaseCartItemQuantity() {
+    Map<String, dynamic> addToCart = {
+      "mealImage": widget.imagePath,
+      "mealName": widget.mealName,
+      "generalText": widget.description,
+      "phoneNumber": widget.phoneNumber,
+      "email": widget.email,
+      "vendorId": widget.vendorId,
+      "buyerId": widget.buyerId,
+      "preparationTime": widget.preparationTime,
+      "price": widget.price,
+      "mealId": widget.mealId,
+      "indexId": widget.indexId,
+      "quantity": widget.quantity,
+      "deliveryPrice": widget.deliveryFee,
+    };
+    cartController.increaseMapOfItemsCount(addToCart);
+
+    setState(() {
+      currentQuantity++;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,7 +386,7 @@ class _MealDetailModalState extends State<MealDetailModal> {
               topLeft: Radius.circular(29),
               topRight: Radius.circular(29),
             ),
-            child: Image.asset(
+            child: Image.network(
               widget.imagePath,
               height: 248,
               width: double.infinity,
@@ -258,8 +413,8 @@ class _MealDetailModalState extends State<MealDetailModal> {
                     ),
                     const SizedBox(width: 8),
                     Container(
-                      width: 120,
-                      height: 25,
+                      width: 105,
+                      height: 30,
                       decoration: BoxDecoration(
                         color: const Color(0xffF0F4F9),
                         borderRadius: BorderRadius.circular(20),
@@ -269,7 +424,7 @@ class _MealDetailModalState extends State<MealDetailModal> {
                           widget.kitchenName,
                           style: const TextStyle(
                             color: Color(0xff606060),
-                            fontSize: 14,
+                            fontSize: 10,
                             fontWeight: FontWeight.w400,
                             fontFamily: 'DM Sans',
                             letterSpacing: 0.5,
@@ -373,11 +528,7 @@ class _MealDetailModalState extends State<MealDetailModal> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  quantity++;
-                                });
-                              },
+                              onPressed: _increaseCartItemQuantity,
                               icon: const Icon(
                                 Icons.add,
                                 color: Color(0xff202020),
@@ -388,7 +539,7 @@ class _MealDetailModalState extends State<MealDetailModal> {
                             Flexible(
                               child: Center(
                                 child: Text(
-                                  '$quantity',
+                                  '$currentQuantity',
                                   style: const TextStyle(
                                     color: Color(0xff202020),
                                     fontSize: 16,
@@ -399,11 +550,7 @@ class _MealDetailModalState extends State<MealDetailModal> {
                               ),
                             ),
                             IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  quantity--;
-                                });
-                              },
+                              onPressed: _decreaseCartItemQuantity,
                               icon: const Icon(
                                 Icons.remove,
                                 color: Color(0xff202020),
@@ -432,7 +579,7 @@ class _MealDetailModalState extends State<MealDetailModal> {
                       child: Row(
                         children: [
                           Text(
-                            'Checkout for ${widget.price * quantity + 300}',
+                            'Checkout for ${widget.price * currentQuantity + 300}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 14,
