@@ -65,8 +65,7 @@ class ProductCard extends StatelessWidget {
               right: 12,
               child: GestureDetector(
                 onTap: () {
-                  // Handle the "ADD" action here later
-                  print('ADD button tapped!');
+                  Navigator.pushNamed(context, '/create_menu');
                 },
                 child: Container(
                   padding:

@@ -18,7 +18,7 @@ class SecondStoreProfile extends StatelessWidget {
         Navigator.pushNamed(context, '/search');
         break;
       case 2:
-        // Navigator.pushNamed(context, '/orders');
+        Navigator.pushNamed(context, '/orders');
         break;
       case 3:
         Navigator.pushNamed(context, '/store_profile');

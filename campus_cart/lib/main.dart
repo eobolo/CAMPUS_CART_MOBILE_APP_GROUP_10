@@ -5,7 +5,9 @@ import 'package:campus_cart/routes/home/getstartedpage.dart';
 import 'package:campus_cart/routes/home/home.dart';
 import 'package:campus_cart/routes/home/search_screen.dart';
 import 'package:campus_cart/routes/home/splashpage.dart';
+import 'package:campus_cart/routes/meal_deals/all_kitchen.dart';
 import 'package:campus_cart/routes/meal_deals/meal_deals.dart';
+import 'package:campus_cart/routes/orders/orders.dart';
 import 'package:campus_cart/routes/profile/user_profile.dart';
 import 'package:campus_cart/routes/store/create_menu.dart';
 import 'package:campus_cart/routes/store/edit_menu.dart';
@@ -30,7 +32,7 @@ void main() async {
   // Ensure that Flutter's bindings are initialized before Firebase
   WidgetsFlutterBinding.ensureInitialized();
 
-  // register firebase app
+  // // register firebase app
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -40,7 +42,8 @@ void main() async {
   */
   // Get.put(UserStateController());
   Get.put(
-      UserStateController()); // or Get.lazyPut(() => UserStateController());
+      // UserStateController());
+      Get.lazyPut(() => UserStateController()));
 
   // Run the app
   runApp(const MyApp());
@@ -55,7 +58,6 @@ class MyApp extends StatelessWidget {
       title: "Orders from Favourite Uni 😁",
       debugShowCheckedModeBanner: false,
       home: const MainWidget(), // Start with MainWidget
-      // home: const Home(),
       theme: ThemeData(
         useMaterial3: true,
       ),
@@ -79,10 +81,13 @@ class MyApp extends StatelessWidget {
               query: '',
             ),
         '/meal_deals': (context) => const MealDeals(),
-        '/most_used_kitchens': (context) => const Getstartedpage(),
+        '/all_kitchens': (context) => const AllKitchens(),
         '/create_menu': (context) => const CreateMenuScreen(),
         '/edit_menu': (context) => const EditMenuScreen(),
+        // ignore: equal_keys_in_map
+        '/setup_delivery': (context) => const DeliverySetupScreen(),
         '/setup_operation': (context) => const SetupOperationsScreen(),
+        '/orders': (context) => const Cart(),
       },
     );
   }
