@@ -2,6 +2,7 @@ import 'package:campus_cart/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// class for the reset password page
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
 
@@ -10,6 +11,7 @@ class ResetPassword extends StatefulWidget {
   _ResetPasswordState createState() => _ResetPasswordState();
 }
 
+// state class for the reset password page
 class _ResetPasswordState extends State<ResetPassword> {
   final _formKey = GlobalKey<FormState>();
   final UserStateController userStateController =
@@ -21,6 +23,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   bool _confirmPasswordVisible = false;
   bool _isButtonDisabled = true;
 
+  // function to validate password
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password is required';
@@ -34,6 +37,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     }
   }
 
+  // function to validate confirm password
   String? _validateConfirmPassword(String? value) {
     if (value != _passwordController.text) {
       return 'Passwords do not match';
@@ -42,6 +46,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     }
   }
 
+  // function to check if password is changed
   void _onPasswordChanged() {
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -56,17 +61,18 @@ class _ResetPasswordState extends State<ResetPassword> {
     }
   }
 
+  // function to update user password
   void _updateUserPassword() async {
     try {
-      String result = await userStateController
-          .sendPasswordReset(); // Call the controller method
-      // Show success message
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(result), backgroundColor: Colors.green),
-        );
-      }
-      await Future.delayed(const Duration(seconds: 2));
+      // String result = await userStateController
+      //     .sendPasswordReset(); // Call the controller method
+      // // Show success message
+      // if (mounted) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(content: Text(result), backgroundColor: Colors.green),
+      //   );
+      // }
+      // await Future.delayed(const Duration(seconds: 2));
       if (mounted) {
         Navigator.pushReplacementNamed(context, '/login');
       }
@@ -80,6 +86,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     }
   }
 
+  // build method for the reset password page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -7,6 +7,7 @@ import 'package:campus_cart/routes/visuals/splashvisuals.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// This is the sign in page
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
 
@@ -14,6 +15,7 @@ class SignIn extends StatefulWidget {
   State<SignIn> createState() => _SignInState();
 }
 
+// This is the state of the sign in page
 class _SignInState extends State<SignIn> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -31,6 +33,7 @@ class _SignInState extends State<SignIn> {
   bool isLoading = false;
   bool _passwordVisible = false;
 
+  // This function is called when the user clicks on the create
   void _onSignUp() {
     Navigator.pushNamed(context, '/signup');
   }
@@ -47,10 +50,10 @@ class _SignInState extends State<SignIn> {
       });
       try {
         // call firebase Aith method to login
-        await userStateController.loginUser(
-          userStateController.email.value.trim(),
-          userStateController.password.value.trim(),
-        );
+        // await userStateController.loginUser(
+        //   userStateController.email.value.trim(),
+        //   userStateController.password.value.trim(),
+        // );
 
         setState(() {
           isLoading =
@@ -169,6 +172,7 @@ class _SignInState extends State<SignIn> {
     Navigator.pushNamed(context, '/forget_password');
   }
 
+  // This is the build method for the sign in page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

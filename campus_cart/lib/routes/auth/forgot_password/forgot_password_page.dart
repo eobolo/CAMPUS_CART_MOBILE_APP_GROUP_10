@@ -2,6 +2,7 @@ import 'package:campus_cart/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// class for the forgot password page
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
 
@@ -10,6 +11,7 @@ class ForgotPasswordPage extends StatefulWidget {
   _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
 }
 
+// state class for the forgot password page
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final TextEditingController emailController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -17,6 +19,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       Get.find<UserStateController>();
   bool _isLoading = false;
 
+  // function to send password reset email
   void _sendPasswordResetEmail() async {
     if (!(_formKey.currentState!.validate())) {
       return;
@@ -50,6 +53,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           userStateController.triggerUserForgotPasswordOtp(
               userStateController.phoneNumber.value, context);
         }
+        if (mounted) {
+          Navigator.pushNamed(context, '/reset_password_otp');
+        }
       } catch (e) {
         setState(() {
           _isLoading = false;
@@ -78,6 +84,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     }
   }
 
+  // build method for the forgot password page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

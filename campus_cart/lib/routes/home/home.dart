@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:campus_cart/routes/visuals/icons.dart';
 
+// class hone for the home page
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -19,6 +20,7 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+// Home state
 class _HomeState extends State<Home> {
   UserStateController userStateController = Get.find<UserStateController>();
   AllDishesController allDishesController = Get.find<AllDishesController>();
@@ -87,6 +89,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    //   body: Center(
+    //     child: Text(userStateController.loggedInuser?.email),
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
