@@ -49,11 +49,11 @@ class _SignInState extends State<SignIn> {
         isLoading = true; // to make circular loading action
       });
       try {
-        // call firebase Aith method to login
-        // await userStateController.loginUser(
-        //   userStateController.email.value.trim(),
-        //   userStateController.password.value.trim(),
-        // );
+        // call firebase Auth method to login
+        await userStateController.loginUser(
+          userStateController.email.value.trim(),
+          userStateController.password.value.trim(),
+        );
 
         setState(() {
           isLoading =
