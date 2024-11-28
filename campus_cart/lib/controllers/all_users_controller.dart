@@ -2,64 +2,55 @@ import 'package:get/get.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class AllUsersController extends GetxController {
-  dynamic allUsersInfo = [].obs;
+  var allUsersInfo = <dynamic>[].obs; // RxList for reactive UI updates
   final DatabaseReference _usersRef =
       FirebaseDatabase.instance.ref('campusCartUsers');
 
   @override
   void onInit() {
     super.onInit();
-    _setupListeners();
     _fetchInitialData();
+    _setupListeners();
   }
 
-  /*
-    real time updates for dishes created an updated by vendors
-  */
-
-  // Initial data fetch from the database
+  // Fetch initial data from the Firebase Realtime Database
   void _fetchInitialData() async {
-    final AllUsersController allUsersController =
-        Get.find<AllUsersController>();
-    final DataSnapshot snapshot = await _usersRef.get();
-    if (snapshot.exists && snapshot.value != null) {
-      final data = snapshot.value as Map<Object?, Object?>;
-      allUsersController.allUsersInfo.clear(); // Clear any existing data
-      allUsersController.allUsersInfo
-          .addAll(data.values.toList()); // Add each user info to the list
-      allUsersController.allUsersInfo
-          .shuffle(); // Optional: Randomize the order
-      allUsersController.allUsersInfo.refresh(); // Update the UI
+    try {
+      final DataSnapshot snapshot = await _usersRef.get();
+      if (snapshot.exists && snapshot.value != null) {
+        final data = snapshot.value as Map<dynamic, dynamic>;
+        allUsersInfo.clear(); // Clear existing data
+        allUsersInfo.addAll(data.values.toList()); // Populate with new data
+        allUsersInfo.shuffle(); // Optional: Randomize the order
+      }
+    } catch (e) {
+      print(
+          'Error fetching initial user data: $e'); // Log the error (consider using a logger)
     }
   }
 
+  // Set up real-time listeners for updates from Firebase
   void _setupListeners() {
     _usersRef.onChildAdded.listen((DatabaseEvent event) {
-      final AllUsersController allUsersController =
-          Get.find<AllUsersController>();
       final data = event.snapshot.value;
       if (data != null) {
-        allUsersController.allUsersInfo.add(data);
-      } else {
-        // do nothing
+        allUsersInfo.add(data); // Add new user data
+        allUsersInfo.shuffle(); // Optional: Randomize after adding
       }
-      allUsersController.allUsersInfo.shuffle();
-      allUsersController.allUsersInfo.refresh();
     });
 
     _usersRef.onChildChanged.listen((DatabaseEvent event) {
-      final AllUsersController allUsersController =
-          Get.find<AllUsersController>();
       final data = event.snapshot.value;
       if (data != null) {
-        int index = allUsersController.allUsersInfo.indexWhere(
-            (user) => (user as Map)['buyerId'] == (data as Map)["buyerId"]);
-        allUsersController.allUsersInfo[index] = data;
-      } else {
-        // do nothing
+        final updatedUser = data as Map<dynamic, dynamic>;
+        int index = allUsersInfo
+            .indexWhere((user) => user['buyerId'] == updatedUser['buyerId']);
+
+        if (index != -1) {
+          allUsersInfo[index] = updatedUser; // Update existing user data
+          allUsersInfo.shuffle(); // Optional: Randomize after updating
+        }
       }
-      allUsersController.allUsersInfo.shuffle();
-      allUsersController.allUsersInfo.refresh();
     });
   }
 }
