@@ -160,7 +160,9 @@ class _HomeState extends State<Home> {
                                     'assets/images/profile.png',
                                   )
                                 : NetworkImage(
-                                    userStateController.loggedInuser?.photoURL ?? "",
+                                    userStateController
+                                            .loggedInuser?.photoURL ??
+                                        "",
                                   ),
                         backgroundColor: Colors.transparent,
                       ),
@@ -471,16 +473,18 @@ class _HomeState extends State<Home> {
                                             dynamic dish = allDishesController
                                                 .processedAllDishes[index];
                                             return MealDealProductCard(
-                                              mealImage: dish["mealImageUrl"],
-                                              mealName: dish["mealName"],
+                                              mealImage: dish["mealImageUrl"] ?? "",
+                                              mealName: dish["mealName"] ?? "",
                                               phoneNumber:
-                                                  userDetails["PhoneNumber"],
-                                              email: userDetails["email"],
-                                              vendorId: dish["vendorId"],
-                                              buyerId: userDetails["buyerId"],
+                                                  userDetails["PhoneNumber"] ??
+                                                      "",
+                                              email: userDetails["email"] ?? "",
+                                              vendorId: dish["vendorId"] ?? "",
+                                              buyerId:
+                                                  userDetails["buyerId"] ?? "",
                                               preparationTime:
-                                                  dish["preparationTime"],
-                                              price: dish["price"],
+                                                  dish["preparationTime"] ?? 0,
+                                              price: dish["price"] ?? 0,
                                               mealId: dish["mealId"],
                                               indexId: index,
                                               deliveryPrice:
