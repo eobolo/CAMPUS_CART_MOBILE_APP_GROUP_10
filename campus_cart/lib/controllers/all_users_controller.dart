@@ -1,56 +1,72 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class AllUsersController extends GetxController {
-  var allUsersInfo = <dynamic>[].obs; // RxList for reactive UI updates
+  var allUsersInfo = <dynamic>[].obs;
   final DatabaseReference _usersRef =
       FirebaseDatabase.instance.ref('campusCartUsers');
+
+  // Create a variable to store the subscriptions
+  late StreamSubscription<DatabaseEvent> _childAddedSubscription;
+  late StreamSubscription<DatabaseEvent> _childChangedSubscription;
 
   @override
   void onInit() {
     super.onInit();
-    _fetchInitialData();
     _setupListeners();
   }
 
-  // Fetch initial data from the Firebase Realtime Database
-  void _fetchInitialData() async {
-    try {
-      final DataSnapshot snapshot = await _usersRef.get();
-      if (snapshot.exists && snapshot.value != null) {
-        final data = snapshot.value as Map<dynamic, dynamic>;
-        allUsersInfo.clear(); // Clear existing data
-        allUsersInfo.addAll(data.values.toList()); // Populate with new data
-        allUsersInfo.shuffle(); // Optional: Randomize the order
-      }
-    } catch (e) {
-      print(
-          'Error fetching initial user data: $e'); // Log the error (consider using a logger)
+  @override
+  void onClose() {
+    // Cancel subscriptions when the controller is closed or account is switched
+    _childAddedSubscription.cancel();
+    _childChangedSubscription.cancel();
+    super.onClose();
+  }
+
+  void reset() {
+    allUsersInfo.clear(); // Clear the list
+    allUsersInfo.refresh(); // Ensure the UI updates
+
+    // After resetting, you can reinitialize the listeners if necessary.
+    _setupListeners();
+  }
+
+  Future<void> fetchInitialData() async {
+    final DataSnapshot snapshot = await _usersRef.get();
+    if (snapshot.exists && snapshot.value != null) {
+      final data = snapshot.value as Map<Object?, Object?>;
+      allUsersInfo.clear();
+      allUsersInfo.addAll(data.values.toList());
+      allUsersInfo.shuffle();
+      allUsersInfo.refresh();
     }
   }
 
-  // Set up real-time listeners for updates from Firebase
-  void _setupListeners() {
-    _usersRef.onChildAdded.listen((DatabaseEvent event) {
+  void _setupListeners() async {
+    // Add listeners again (after reset)
+    _childAddedSubscription =
+        _usersRef.onChildAdded.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       if (data != null) {
-        allUsersInfo.add(data); // Add new user data
-        allUsersInfo.shuffle(); // Optional: Randomize after adding
+        allUsersInfo.add(data);
       }
+      allUsersInfo.shuffle();
+      allUsersInfo.refresh();
     });
 
-    _usersRef.onChildChanged.listen((DatabaseEvent event) {
+    _childChangedSubscription =
+        _usersRef.onChildChanged.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       if (data != null) {
-        final updatedUser = data as Map<dynamic, dynamic>;
-        int index = allUsersInfo
-            .indexWhere((user) => user['buyerId'] == updatedUser['buyerId']);
-
-        if (index != -1) {
-          allUsersInfo[index] = updatedUser; // Update existing user data
-          allUsersInfo.shuffle(); // Optional: Randomize after updating
-        }
+        int index = allUsersInfo.indexWhere(
+            (user) => (user as Map)['buyerId'] == (data as Map)["buyerId"]);
+        allUsersInfo[index] = data;
       }
+      allUsersInfo.shuffle();
+      allUsersInfo.refresh();
     });
   }
 }

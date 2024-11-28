@@ -1,3 +1,5 @@
+import 'package:campus_cart/controllers/all_dishes_controller.dart';
+import 'package:campus_cart/controllers/all_users_controller.dart';
 import 'package:campus_cart/controllers/meal_image_controller.dart';
 import 'package:campus_cart/controllers/setup_delivery_controller.dart';
 import 'package:campus_cart/controllers/setup_operation_controller.dart';
@@ -29,6 +31,9 @@ class _SignInState extends State<SignIn> {
       Get.find<SetupDeliveryController>();
   final MealImageController mealImageController =
       Get.find<MealImageController>();
+  final AllUsersController allUsersController = Get.find<AllUsersController>();
+  final AllDishesController allDishesController =
+      Get.find<AllDishesController>();
   final _formSignInKey = GlobalKey<FormState>();
   bool isLoading = false;
   bool _passwordVisible = false;
@@ -82,6 +87,16 @@ class _SignInState extends State<SignIn> {
           }
           try {
             await setupOperationController.getSetupOperationFromDb();
+          } catch (e) {
+            //do nothing
+          }
+          try {
+            await allUsersController.fetchInitialData();
+          } catch (e) {
+            //do nothing
+          }
+          try {
+            await allDishesController.fetchInitialData();
           } catch (e) {
             //do nothing
           }
@@ -139,6 +154,16 @@ class _SignInState extends State<SignIn> {
         }
         try {
           await setupOperationController.getSetupOperationFromDb();
+        } catch (e) {
+          //do nothing
+        }
+        try {
+          await allUsersController.fetchInitialData();
+        } catch (e) {
+          //do nothing
+        }
+        try {
+          await allDishesController.fetchInitialData();
         } catch (e) {
           //do nothing
         }

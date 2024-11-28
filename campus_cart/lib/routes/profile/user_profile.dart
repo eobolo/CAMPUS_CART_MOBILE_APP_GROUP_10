@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:campus_cart/controllers/all_dishes_controller.dart';
+import 'package:campus_cart/controllers/all_users_controller.dart';
 import 'package:campus_cart/controllers/cart_controller.dart';
 import 'package:campus_cart/controllers/meal_image_controller.dart';
 import 'package:campus_cart/controllers/profile_image_controller.dart';
@@ -84,6 +86,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     // UserStateController
     Get.find<UserStateController>().reset();
+
+    // AllDishesController
+    Get.find<AllDishesController>().reset();
+
+    // AllUsersController
+    Get.find<AllUsersController>().reset();
   }
 
   void _signOutUser() async {

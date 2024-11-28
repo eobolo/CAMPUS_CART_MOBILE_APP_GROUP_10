@@ -1,71 +1,90 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class AllDishesController extends GetxController {
-  // RxList for real-time UI updates
   var processedAllDishes = <dynamic>[].obs;
-  final DatabaseReference _dishesRef = FirebaseDatabase.instance.ref('allDishes');
+  final DatabaseReference _dishesRef =
+      FirebaseDatabase.instance.ref('allDishes');
+
+  // Create a variable to store the subscriptions
+  late StreamSubscription<DatabaseEvent> _childAddedSubscription;
+  late StreamSubscription<DatabaseEvent> _childChangedSubscription;
+  late StreamSubscription<DatabaseEvent> _childRemovedSubscription;
 
   @override
   void onInit() {
     super.onInit();
-    _fetchInitialData();
     _setupListeners();
   }
 
-  // Fetch initial data from Firebase
-  void _fetchInitialData() async {
-    try {
-      final DataSnapshot snapshot = await _dishesRef.get();
-      if (snapshot.exists && snapshot.value != null) {
-        final data = snapshot.value as Map<dynamic, dynamic>;
-        processedAllDishes.clear();  // Clear existing data
-        processedAllDishes.addAll(data.values.toList());
-        processedAllDishes.shuffle();  // Optional: shuffle for randomness
-      }
-    } catch (e) {
-      print('Error fetching initial data: $e');  // Log error (consider using a logger)
+  @override
+  void onClose() {
+    // Cancel subscriptions when the controller is closed or account is switched
+    _childAddedSubscription.cancel();
+    _childChangedSubscription.cancel();
+    _childRemovedSubscription.cancel();
+    super.onClose();
+  }
+
+  void reset() {
+    processedAllDishes.clear(); // Clear the list
+    processedAllDishes.refresh(); // Ensure the UI updates
+
+    // After resetting, you can reinitialize the listeners if necessary.
+    _setupListeners();
+  }
+
+  Future<void> fetchInitialData() async {
+    final DataSnapshot snapshot = await _dishesRef.get();
+    if (snapshot.exists && snapshot.value != null) {
+      final data = snapshot.value as Map<Object?, Object?>;
+      processedAllDishes.clear();
+      processedAllDishes.addAll(data.values.toList());
+      processedAllDishes.shuffle();
+      processedAllDishes.refresh();
     }
   }
 
-  // Set up real-time listeners for database changes
   void _setupListeners() {
-    _dishesRef.onChildAdded.listen((DatabaseEvent event) {
+    // Add listeners again (after reset)
+    _childAddedSubscription =
+        _dishesRef.onChildAdded.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       if (data != null) {
         processedAllDishes.add(data);
-        processedAllDishes.shuffle();
       }
+      processedAllDishes.shuffle();
+      processedAllDishes.refresh();
     });
 
-    _dishesRef.onChildChanged.listen((DatabaseEvent event) {
+    _childChangedSubscription =
+        _dishesRef.onChildChanged.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       if (data != null) {
-        final updatedDish = data as Map<dynamic, dynamic>;
         int index = processedAllDishes.indexWhere((dish) =>
-            dish['mealId'] == updatedDish['mealId'] &&
-            dish['vendorId'] == updatedDish['vendorId']);
-
-        if (index != -1) {
-          processedAllDishes[index] = updatedDish;  // Update the specific dish
-          processedAllDishes.shuffle();  // Optional
-        }
+            ((dish as Map)['mealId'] == (data as Map)["mealId"]) &&
+            ((dish)['vendorId'] == (data)["vendorId"]));
+        processedAllDishes[index] = data;
       }
+      processedAllDishes.shuffle();
+      processedAllDishes.refresh();
     });
 
-    _dishesRef.onChildRemoved.listen((DatabaseEvent event) {
+    _childRemovedSubscription =
+        _dishesRef.onChildRemoved.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       if (data != null) {
-        final removedDish = data as Map<dynamic, dynamic>;
         int index = processedAllDishes.indexWhere((dish) =>
-            dish['mealId'] == removedDish['mealId'] &&
-            dish['vendorId'] == removedDish['vendorId']);
-
+            ((dish as Map)['mealId'] == (data as Map)["mealId"]) &&
+            ((dish)['vendorId'] == (data)["vendorId"]));
         if (index != -1) {
-          processedAllDishes.removeAt(index);  // Remove the dish
-          processedAllDishes.shuffle();  // Optional
+          processedAllDishes.removeAt(index);
         }
       }
+      processedAllDishes.shuffle();
+      processedAllDishes.refresh();
     });
   }
 }

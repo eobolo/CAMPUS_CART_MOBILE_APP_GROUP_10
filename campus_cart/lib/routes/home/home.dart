@@ -473,7 +473,8 @@ class _HomeState extends State<Home> {
                                             dynamic dish = allDishesController
                                                 .processedAllDishes[index];
                                             return MealDealProductCard(
-                                              mealImage: dish["mealImageUrl"] ?? "",
+                                              mealImage:
+                                                  dish["mealImageUrl"] ?? "",
                                               mealName: dish["mealName"] ?? "",
                                               phoneNumber:
                                                   userDetails["PhoneNumber"] ??
