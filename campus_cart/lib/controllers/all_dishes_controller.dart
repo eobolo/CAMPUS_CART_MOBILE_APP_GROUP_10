@@ -8,32 +8,15 @@ class AllDishesController extends GetxController {
   final DatabaseReference _dishesRef =
       FirebaseDatabase.instance.ref('allDishes');
 
-  // Create a variable to store the subscriptions
-  late StreamSubscription<DatabaseEvent> _childAddedSubscription;
-  late StreamSubscription<DatabaseEvent> _childChangedSubscription;
-  late StreamSubscription<DatabaseEvent> _childRemovedSubscription;
-
   @override
   void onInit() {
     super.onInit();
     _setupListeners();
   }
 
-  @override
-  void onClose() {
-    // Cancel subscriptions when the controller is closed or account is switched
-    _childAddedSubscription.cancel();
-    _childChangedSubscription.cancel();
-    _childRemovedSubscription.cancel();
-    super.onClose();
-  }
-
   void reset() {
     processedAllDishes.clear(); // Clear the list
     processedAllDishes.refresh(); // Ensure the UI updates
-
-    // After resetting, you can reinitialize the listeners if necessary.
-    _setupListeners();
   }
 
   Future<void> fetchInitialData() async {
@@ -49,8 +32,7 @@ class AllDishesController extends GetxController {
 
   void _setupListeners() {
     // Add listeners again (after reset)
-    _childAddedSubscription =
-        _dishesRef.onChildAdded.listen((DatabaseEvent event) {
+    _dishesRef.onChildAdded.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       if (data != null) {
         processedAllDishes.add(data);
@@ -59,8 +41,7 @@ class AllDishesController extends GetxController {
       processedAllDishes.refresh();
     });
 
-    _childChangedSubscription =
-        _dishesRef.onChildChanged.listen((DatabaseEvent event) {
+    _dishesRef.onChildChanged.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       if (data != null) {
         int index = processedAllDishes.indexWhere((dish) =>
@@ -72,8 +53,7 @@ class AllDishesController extends GetxController {
       processedAllDishes.refresh();
     });
 
-    _childRemovedSubscription =
-        _dishesRef.onChildRemoved.listen((DatabaseEvent event) {
+    _dishesRef.onChildRemoved.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       if (data != null) {
         int index = processedAllDishes.indexWhere((dish) =>
