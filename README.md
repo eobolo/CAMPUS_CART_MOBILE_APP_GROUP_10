@@ -64,3 +64,5 @@ We welcome contributions! Please fork the repository and submit a pull request.
 - In-app messaging and push notifications
 - Multiple payment methods and delivery options
 
+### AK testing
+[Download APK File](https://drive.google.com/file/d/1A1iw9byf6XsNqsBBQuoiZXQ4plVSCMg_/view?usp=sharing)
