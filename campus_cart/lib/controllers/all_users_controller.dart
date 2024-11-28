@@ -3,21 +3,38 @@ import 'package:firebase_database/firebase_database.dart';
 
 class AllUsersController extends GetxController {
   dynamic allUsersInfo = [].obs;
-  final DatabaseReference _dishesRef =
+  final DatabaseReference _usersRef =
       FirebaseDatabase.instance.ref('campusCartUsers');
 
   @override
   void onInit() {
     super.onInit();
     _setupListeners();
+    _fetchInitialData();
   }
 
   /*
     real time updates for dishes created an updated by vendors
   */
 
+  // Initial data fetch from the database
+  void _fetchInitialData() async {
+    final AllUsersController allUsersController =
+        Get.find<AllUsersController>();
+    final DataSnapshot snapshot = await _usersRef.get();
+    if (snapshot.exists && snapshot.value != null) {
+      final data = snapshot.value as Map<Object?, Object?>;
+      allUsersController.allUsersInfo.clear(); // Clear any existing data
+      allUsersController.allUsersInfo
+          .addAll(data.values.toList()); // Add each user info to the list
+      allUsersController.allUsersInfo
+          .shuffle(); // Optional: Randomize the order
+      allUsersController.allUsersInfo.refresh(); // Update the UI
+    }
+  }
+
   void _setupListeners() {
-    _dishesRef.onChildAdded.listen((DatabaseEvent event) {
+    _usersRef.onChildAdded.listen((DatabaseEvent event) {
       final AllUsersController allUsersController =
           Get.find<AllUsersController>();
       final data = event.snapshot.value;
@@ -30,7 +47,7 @@ class AllUsersController extends GetxController {
       allUsersController.allUsersInfo.refresh();
     });
 
-    _dishesRef.onChildChanged.listen((DatabaseEvent event) {
+    _usersRef.onChildChanged.listen((DatabaseEvent event) {
       final AllUsersController allUsersController =
           Get.find<AllUsersController>();
       final data = event.snapshot.value;

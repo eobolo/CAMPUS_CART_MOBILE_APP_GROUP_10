@@ -9,12 +9,28 @@ class AllDishesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _fetchInitialData();
     _setupListeners();
   }
 
   /*
     real time updates for dishes created an updated by vendors
   */
+
+  void _fetchInitialData() async {
+    final AllDishesController allDishesController =
+        Get.find<AllDishesController>();
+    final DataSnapshot snapshot = await _dishesRef.get();
+    if (snapshot.exists && snapshot.value != null) {
+      final data = snapshot.value as Map<Object?, Object?>;
+      // Clear the list first, then add the values
+      allDishesController.processedAllDishes.clear();
+      allDishesController.processedAllDishes.addAll(data.values.toList());
+      allDishesController.processedAllDishes
+          .shuffle(); // Optional: Shuffle for randomness
+      allDishesController.processedAllDishes.refresh(); // Ensure UI updates
+    }
+  }
 
   void _setupListeners() {
     _dishesRef.onChildAdded.listen((DatabaseEvent event) {
