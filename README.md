@@ -1,4 +1,4 @@
-![Flutter](https://img.shields.io/badge/Flutter-3.x-blue.svg) ![Dart](https://img.shields.io/badge/Dart-90%25-green.svg) ![Firebase](https://img.shields.io/badge/Firebase-Auth%20%7C%20Storage%20%7C%20DB-orange.svg) ![Geolocator](https://img.shields.io/badge/Geolocator-13.0.1-lightgrey.svg) ![Image Picker](https://img.shields.io/badge/Image%20Picker-1.1.2-red.svg) ![Contributors](https://img.shields.io/badge/contributors-1-orange.svg)
+![Flutter](https://img.shields.io/badge/Flutter-3.x-blue.svg) ![Dart](https://img.shields.io/badge/Dart-90%25-green.svg) ![Firebase](https://img.shields.io/badge/Firebase-Auth%20%7C%20Storage%20%7C%20DB-orange.svg) ![Geolocator](https://img.shields.io/badge/Geolocator-13.0.1-lightgrey.svg) ![Image Picker](https://img.shields.io/badge/Image%20Picker-1.1.2-red.svg) ![Contributors](https://img.shields.io/badge/contributors-6-orange.svg)
 
 # Campus Cart Mobile App
 
